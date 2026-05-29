@@ -33,7 +33,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
     var storeList by mutableStateOf<List<StoreInfo>>(emptyList())
         private set
 
-    var isLoadingDetail by mutableStateOf(false)
+    var isLoadingDetail by mutableStateOf(value = false)
         private set
 
     var isMonitored by mutableStateOf(false)
@@ -93,7 +93,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
                                 SteamPriceClient.steamApiService.getAppDetails(appId)
                             }
                             val gameData = steamResponse[appId]
-                            if (gameData?.success == true && gameData.data != null) {
+                            if ((gameData?.success == true) && (gameData.data != null)) {
                                 val freshDetail = gameData.data
                                 priceDetail = priceDetail?.copy(steamDetail = freshDetail)
                                 
@@ -104,7 +104,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
                                             gameId = gameId,
                                             steamAppId = appId,
                                             detailJson = gson.toJson(freshDetail),
-                                            lastCachedTime = System.currentTimeMillis()
+                                            lastCachedTime = System.currentTimeMillis(),
                                         )
                                     )
                                 }

@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
  */
 class SyncWorker(
     context: Context,
-    params: WorkerParameters
+    params: WorkerParameters,
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
@@ -52,7 +52,7 @@ class SyncWorker(
                             val now = System.currentTimeMillis()
                             val updatedGame = game.copy(
                                 currentPrice = newPrice,
-                                lastUpdateTime = now
+                                lastUpdateTime = now,
                             )
                             dao.insertMonitoredGame(updatedGame)
                             

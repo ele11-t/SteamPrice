@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -47,6 +46,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.ImeAction
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.core.net.toUri
 import com.ele.steamprice.data.DealItem
 import com.ele.steamprice.data.StoreInfo
 import java.util.Locale
@@ -82,7 +82,7 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
     // 🎯 优化 2: 动态申请通知权限（适配 Android 13-16）
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
+    ) { _ ->
         // 可以在这里处理权限被拒绝后的逻辑（如提示用户去设置开启）
     }
 
@@ -201,7 +201,6 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
                     LaunchedEffect(Unit) { marketViewModel.setTopDealsMode(false) }
                     MarketTab(
                         viewModel = marketViewModel,
-                        showFilterSheet = showFilterSheet,
                         onToggleFilter = { showFilterSheet = it },
                         onGameClick = { selectedDeal = it },
                         outerPadding = innerPadding // 🎯 传入外层 Scaffold 的 Padding
@@ -212,7 +211,6 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
                     LaunchedEffect(Unit) { marketViewModel.setTopDealsMode(true) }
                     TopDealsTab(
                         viewModel = marketViewModel,
-                        showFilterSheet = showFilterSheet,
                         onToggleFilter = { showFilterSheet = it },
                         onGameClick = { selectedDeal = it },
                         outerPadding = innerPadding // 🎯 传入外层 Scaffold 的 Padding
@@ -244,7 +242,7 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
                 },
                 confirmButton = {
                     Button(onClick = {
-                        context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(release.htmlUrl)))
+                        context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, release.htmlUrl.toUri()))
                     }) {
                         Text("立即去下载")
                     }
@@ -273,7 +271,6 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
 @Composable
 fun MarketTab(
     viewModel: MarketViewModel,
-    showFilterSheet: Boolean,
     onToggleFilter: (Boolean) -> Unit,
     onGameClick: (DealItem) -> Unit,
     outerPadding: PaddingValues // 🎯 新增：接收外层 Padding
@@ -560,7 +557,6 @@ fun GameDealCard(
 @Composable
 fun TopDealsTab(
     viewModel: MarketViewModel,
-    showFilterSheet: Boolean,
     onToggleFilter: (Boolean) -> Unit,
     onGameClick: (DealItem) -> Unit,
     outerPadding: PaddingValues // 🎯 新增

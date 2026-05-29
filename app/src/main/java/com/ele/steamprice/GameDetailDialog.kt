@@ -60,7 +60,7 @@ fun GameDetailDialog(
     onDismiss: () -> Unit,
     isRmbMode: Boolean = false,
     exchangeRate: Float = 1.0f,
-    viewModel: DetailViewModel = viewModel()
+    viewModel: DetailViewModel = viewModel(),
 ) {
     val uriHandler = LocalUriHandler.current
     val formatPrice = { priceStr: String ->
@@ -103,7 +103,7 @@ fun GameDetailDialog(
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(deal.hdCapsuleUrl)
-                            .crossfade(true)
+                            .crossfade(enable = true)
                             .diskCacheKey(deal.hdCapsuleUrl)
                             .build(),
                         contentDescription = null,
@@ -223,7 +223,7 @@ fun GameDetailDialog(
                                         AsyncImage(
                                             model = ImageRequest.Builder(LocalContext.current)
                                                 .data(shot.path_thumbnail)
-                                                .crossfade(true)
+                                                .crossfade(enable = true)
                                                 .build(),
                                             contentDescription = null,
                                             contentScale = ContentScale.Crop,
@@ -475,7 +475,7 @@ fun GameDetailDialog(
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(selectedImageUrl)
-                            .crossfade(true)
+                            .crossfade(enable = true)
                             .build(),
                         contentDescription = "大图预览",
                         modifier = Modifier

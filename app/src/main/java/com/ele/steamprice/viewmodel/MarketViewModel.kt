@@ -40,9 +40,9 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
 
     // 状态控制：当前页码、是否正在加载、是否已经全部加载完
     private var currentPage = 0
-    var isPageLoading by mutableStateOf(false)
+    var isPageLoading by mutableStateOf(value = false)
         private set
-    var isAllLoaded by mutableStateOf(false)
+    var isAllLoaded by mutableStateOf(value = false)
         private set
 
     // ⚖️ 排序模式
@@ -84,7 +84,7 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
     // 💰 汇率控制：人民币模式
     var isRmbMode by mutableStateOf(false)
         private set
-    var exchangeRate by mutableStateOf(7.23f) 
+    var exchangeRate by mutableFloatStateOf(7.23f) 
         private set
 
     // 🚀 更新控制
@@ -273,7 +273,7 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
                         upperPrice = if (maxPrice < 50) maxPrice.toInt() else null,
                         steamRating = if (minSteamRating > 0) minSteamRating else null,
                         minReviewCount = if (minReviewCount > 0) minReviewCount else null,
-                        metacritic = if (isTopDealsOnly) 85 else null
+                        metacritic = if (isTopDealsOnly) 85 else null,
                     )
                 }
 
