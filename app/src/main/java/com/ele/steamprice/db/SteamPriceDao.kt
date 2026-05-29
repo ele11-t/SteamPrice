@@ -29,6 +29,12 @@ interface SteamPriceDao {
     fun getAllMonitoredGamesFlow(): Flow<List<MonitoredGameEntity>>
 
     /**
+     * 📥 直接获取所有的监控游戏列表（非 Flow，用于 Worker 等后台任务）
+     */
+    @Query("SELECT * FROM monitored_games")
+    suspend fun getAllMonitoredGames(): List<MonitoredGameEntity>
+
+    /**
      * 🔍 检查某个游戏是否已经被监控（用于详情页显示“已关注”或“加监控”按钮）
      */
     @Query("SELECT * FROM monitored_games WHERE gameId = :gameId LIMIT 1")

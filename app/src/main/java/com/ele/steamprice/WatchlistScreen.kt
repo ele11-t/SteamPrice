@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,6 +18,9 @@ import androidx.compose.ui.unit.sp
 import com.ele.steamprice.db.MonitoredGameEntity
 import com.ele.steamprice.viewmodel.MarketViewModel
 
+import java.util.Locale
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WatchlistScreen(viewModel: MarketViewModel) {
     // 🎯 核心核心！实时监听来自 Room 数据库的 Flow 变动
@@ -43,8 +46,46 @@ fun WatchlistScreen(viewModel: MarketViewModel) {
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(monitoredList) { game ->
-                MonitoredGameCard(game = game)
+            items(
+                items = monitoredList,
+                key = { it.gameId }
+            ) { game ->
+                val dismissState = rememberSwipeToDismissBoxState(
+                    confirmValueChange = {
+                        if (it == SwipeToDismissBoxValue.EndToStart) {
+                            viewModel.removeFromWatchlist(game)
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                )
+
+                SwipeToDismissBox(
+                    state = dismissState,
+                    backgroundContent = {
+                        val color = when (dismissState.dismissDirection) {
+                            SwipeToDismissBoxValue.EndToStart -> Color.Red.copy(alpha = 0.8f)
+                            else -> Color.Transparent
+                        }
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color, RoundedCornerShape(12.dp))
+                                .padding(horizontal = 20.dp),
+                            contentAlignment = Alignment.CenterEnd
+                        ) {
+                            Icon(
+                                Icons.Default.Delete,
+                                contentDescription = "删除",
+                                tint = Color.White
+                            )
+                        }
+                    },
+                    enableDismissFromStartToEnd = false
+                ) {
+                    MonitoredGameCard(game = game)
+                }
             }
         }
     }
@@ -90,7 +131,7 @@ fun MonitoredGameCard(game: MonitoredGameEntity) {
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = "目标价: $${String.format("%.2f", game.targetPrice)}",
+                        text = "目标价: $${String.format(Locale.US, "%.2f", game.targetPrice)}",
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onErrorContainer,
                         fontWeight = FontWeight.Bold

@@ -13,12 +13,13 @@ data class DealItem(
     val metacriticScore: String,  // 媒体评分（可以直接在卡片上亮出来，逼格+1）
     val steamRatingText: String?, // Steam评价（如 "Very Positive"）
     val steamRatingPercent: String?, // Steam好评率（如 "92"）
+    val steamRatingCount: String?,   // 🎯 新增：Steam评价总数（例如 "12543"）
     val steamAppID: String?,      // 🚨 最核心：Steam官方的AppID，用于拼接高清封面图
     val thumb: String             // 缩略图
 ) {
     // 💡 这是一个黑科技属性：CheapShark 自带的图太小，我们直接用 steamAppID 动态拼接 Steam 官方的高清大图！
     val hdCapsuleUrl: String get() = if (!steamAppID.isNullOrBlank()) {
-        "https://cdn.cloudflare.steamstatic.com/steam/apps/$steamAppID/header.jpg"
+        "https://cdn.akamai.steamstatic.com/steam/apps/$steamAppID/header.jpg"
     } else {
         thumb
     }
@@ -27,10 +28,22 @@ data class DealItem(
     val discountPercent: Int get() = savings.toDoubleOrNull()?.toInt() ?: 0
 }
 
-// 2. 详情页史低数据模型
+/**
+ * 🎯 游戏搜索结果模型（用于解决搜索不准的问题）
+ */
+data class GameSearchResult(
+    val gameID: String,
+    val cheapestDealID: String?, // 注意：搜索库时，有些游戏可能当前没有任何 DealID
+    val external: String,
+    val thumb: String
+)
+
+// 2. 详情页数据模型
 data class GamePriceDetail(
     val info: GameInfo,
-    val cheapestPriceEver: CheapestPriceEver // 🚨 史低核心数据！
+    val cheapestPriceEver: CheapestPriceEver, // 🚨 史低核心数据！
+    val deals: List<GameDealDetail>, // 🎯 新增：该游戏在全网各大商店的实时报价列表
+    var steamDetail: SteamStoreDetail? = null // 🎯 新增：从 Steam 官网抓取的详细信息（截图、简介）
 )
 
 data class GameInfo(
@@ -39,7 +52,64 @@ data class GameInfo(
     val steamAppID: String?
 )
 
+// 🎯 新增：Steam 商店详情模型
+data class SteamStoreDetail(
+    val short_description: String,
+    val detailed_description: String, // 🎯 新增：HTML 格式的详细介绍
+    val developers: List<String>?,    // 🎯 新增：开发商
+    val genres: List<SteamGenre>?,    // 🎯 新增：游戏类型
+    val screenshots: List<SteamScreenshot>,
+    val pc_requirements: SteamRequirements?, // 🎯 新增：PC 配置要求
+    val supported_languages: String?,         // 🎯 新增：支持语言（HTML 格式）
+    val categories: List<SteamCategory>?     // 🎯 新增：游戏特性（单人、成就、云存档等）
+)
+
+data class SteamCategory(
+    val id: Int,
+    val description: String
+)
+
+data class SteamRequirements(
+    val minimum: String?,
+    val recommended: String?
+)
+
+data class SteamGenre(
+    val id: String,
+    val description: String
+)
+
+data class SteamScreenshot(
+    val id: Int,
+    val path_thumbnail: String,
+    val path_full: String
+)
+
 data class CheapestPriceEver(
     val price: String, // 史低价格
     val date: Long     // 触发史低的时间戳（秒）
 )
+
+// 🎯 新增：各大商店报价项模型
+data class GameDealDetail(
+    val storeID: String,
+    val dealID: String,
+    val price: String,
+    val retailPrice: String,
+    val savings: String
+)
+
+// 🎯 新增：商店元数据模型
+data class StoreInfo(
+    val storeID: String,
+    val storeName: String,
+    val images: StoreImages
+)
+
+data class StoreImages(
+    val icon: String,
+    val logo: String,
+    val banner: String
+) {
+    val fullIconUrl: String get() = "https://www.cheapshark.com$icon"
+}
