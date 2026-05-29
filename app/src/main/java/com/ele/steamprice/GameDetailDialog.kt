@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -61,6 +62,7 @@ fun GameDetailDialog(
     exchangeRate: Float = 1.0f,
     viewModel: DetailViewModel = viewModel()
 ) {
+    val uriHandler = LocalUriHandler.current
     val formatPrice = { priceStr: String ->
         val price = priceStr.toDoubleOrNull() ?: 0.0
         if (isRmbMode) {
@@ -234,7 +236,7 @@ fun GameDetailDialog(
                             // 3. 详细介绍 (带展开收起)
                             val fullDescription = remember(steam.detailed_description) {
                                 HtmlCompat.fromHtml(
-                                    steam.detailed_description,
+                                    steam.detailed_description ?: "",
                                     HtmlCompat.FROM_HTML_MODE_COMPACT
                                 ).toString().trim()
                             }
@@ -246,7 +248,7 @@ fun GameDetailDialog(
                                     .clickable { isExpanded = !isExpanded }
                             ) {
                                 Text(
-                                    text = if (isExpanded) fullDescription else steam.short_description,
+                                    text = if (isExpanded) fullDescription else (steam.short_description ?: ""),
                                     fontSize = 12.sp,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     maxLines = if (isExpanded) Int.MAX_VALUE else 3,
@@ -300,6 +302,55 @@ fun GameDetailDialog(
                             steam.developers?.let { devs ->
                                 Text(
                                     text = "开发商: ${devs.joinToString(", ")}",
+                                    fontSize = 11.sp,
+                                    color = Color.Gray,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
+
+                            // 5. 发行日期与媒体评分
+                            Row(
+                                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                            ) {
+                                steam.release_date?.let { release ->
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(text = "📅 发行日期", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                        Text(text = if (release.coming_soon) "即将推出" else release.date, fontSize = 11.sp, color = Color.Gray)
+                                    }
+                                }
+
+                                steam.metacritic?.let { meta ->
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(text = "⭐ 媒体评分", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                        Text(
+                                            text = "${meta.score} / 100",
+                                            fontSize = 11.sp,
+                                            color = MaterialTheme.colorScheme.primary,
+                                            fontWeight = FontWeight.Bold,
+                                            textDecoration = TextDecoration.Underline,
+                                            modifier = Modifier.clickable {
+                                                uriHandler.openUri(meta.url)
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+
+                            // 6. DLC 信息
+                            steam.dlc?.let { dlcList ->
+                                Text(
+                                    text = "📦 包含 ${dlcList.size} 个可选 DLC",
+                                    fontSize = 11.sp,
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    modifier = Modifier.padding(top = 8.dp)
+                                )
+                            }
+
+                            // 7. 玩家推荐
+                            steam.recommendations?.let { recs ->
+                                Text(
+                                    text = "👍 Steam 共有 ${recs.total} 位玩家推荐",
                                     fontSize = 11.sp,
                                     color = Color.Gray,
                                     modifier = Modifier.padding(top = 4.dp)

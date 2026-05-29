@@ -56,4 +56,14 @@ interface SteamPriceDao {
      */
     @Query("SELECT * FROM price_history WHERE gameId = :gameId ORDER BY recordTime ASC")
     fun getPriceHistoryFlow(gameId: String): Flow<List<PriceHistoryEntity>>
+
+    // ==========================================
+    // 二级缓存核心操作
+    // ==========================================
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDetailCache(cache: GameDetailCacheEntity)
+
+    @Query("SELECT * FROM game_detail_cache WHERE gameId = :gameId LIMIT 1")
+    suspend fun getDetailCacheById(gameId: String): GameDetailCacheEntity?
 }

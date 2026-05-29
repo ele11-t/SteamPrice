@@ -44,3 +44,16 @@ data class PriceHistoryEntity(
     val recordedPrice: Double,   // 记录时刻的价格
     val recordTime: Long         // 记录时刻的时间戳
 )
+
+/**
+ * 💾 表3：详情页信息二级缓存
+ * 专门缓存来自 Steam 官方 API 的简介、截图链接等静态信息，避免重复请求
+ */
+@Entity(tableName = "game_detail_cache")
+data class GameDetailCacheEntity(
+    @PrimaryKey
+    val gameId: String,          // CheapShark 的 gameID
+    val steamAppId: String?,
+    val detailJson: String,      // 序列化后的 SteamStoreDetail JSON 字符串
+    val lastCachedTime: Long     // 缓存时间戳
+)

@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Image
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +34,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import androidx.compose.ui.platform.LocalContext
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.ImeAction
+import androidx.activity.compose.rememberLauncherForActivityResult
 import com.ele.steamprice.data.DealItem
 import com.ele.steamprice.data.StoreInfo
 import java.util.Locale
@@ -41,6 +55,9 @@ import com.ele.steamprice.viewmodel.MarketViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 🎯 优化 1: 开启全屏边到边适配（Android 15+ 强制要求）
+        enableEdgeToEdge()
+
         setContent {
             MaterialTheme {
                 Surface(
@@ -57,9 +74,25 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
+    val context = LocalContext.current
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Market) }
     var selectedDeal by remember { mutableStateOf<DealItem?>(null) }
     var showFilterSheet by remember { mutableStateOf(false) }
+
+    // 🎯 优化 2: 动态申请通知权限（适配 Android 13-16）
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        // 可以在这里处理权限被拒绝后的逻辑（如提示用户去设置开启）
+    }
+
+    LaunchedEffect(Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
 
     Scaffold(
         bottomBar = {
@@ -192,10 +225,36 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
                 }
                 Screen.Settings -> {
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        SettingsTab()
+                        SettingsTab(viewModel = marketViewModel)
                     }
                 }
             }
+        }
+
+        // 🎯 优化 3: 全局版本更新弹窗
+        marketViewModel.latestRelease?.let { release ->
+            AlertDialog(
+                onDismissRequest = { marketViewModel.dismissUpdate() },
+                title = { Text("🚀 发现新版本：${release.tagName}") },
+                text = {
+                    Column {
+                        Text(text = "更新日志：", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        Text(text = release.body, fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
+                    }
+                },
+                confirmButton = {
+                    Button(onClick = {
+                        context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(release.htmlUrl)))
+                    }) {
+                        Text("立即去下载")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { marketViewModel.dismissUpdate() }) {
+                        Text("稍后再说")
+                    }
+                }
+            )
         }
     }
 
@@ -239,38 +298,14 @@ fun MarketTab(
                     )
                 }
 
-                // 🔍 搜索框 + AAA开关 + 商店切换 + 更多过滤
+                // 🎮 顶层控制区：品质过滤 + 商店切换 + AAA 开关
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
                 ) {
-                    OutlinedTextField(
-                        value = viewModel.searchQuery,
-                        onValueChange = { viewModel.onSearchQueryChanged(it) },
-                        modifier = Modifier.weight(1f),
-                        placeholder = { Text("搜索...", fontSize = 14.sp) },
-                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                        trailingIcon = {
-                            if (viewModel.searchQuery.isNotEmpty()) {
-                                IconButton(onClick = { viewModel.onSearchQueryChanged("") }) {
-                                    Icon(Icons.Default.Close, contentDescription = "清除搜索")
-                                }
-                            }
-                        },
-                        singleLine = true,
-                        shape = RoundedCornerShape(12.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent
-                        )
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
                     // 🏆 更多过滤按钮
                     IconButton(onClick = { onToggleFilter(true) }) {
                         Icon(
@@ -280,7 +315,7 @@ fun MarketTab(
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
 
                     // 🏪 商店切换开关
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -301,7 +336,7 @@ fun MarketTab(
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
 
                     // 🎮 AAA 过滤开关
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -323,50 +358,19 @@ fun MarketTab(
                     }
                 }
 
-                // 🔍 搜索历史
-                if (viewModel.searchHistory.isNotEmpty()) {
-                    LazyRow(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 2.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        item {
-                            Text("最近搜索:", fontSize = 10.sp, color = Color.Gray)
-                        }
-                        items(viewModel.searchHistory) { history ->
-                            SuggestionChip(
-                                onClick = { viewModel.onSearchQueryChanged(history) },
-                                label = { Text(history, fontSize = 10.sp) },
-                                shape = RoundedCornerShape(8.dp),
-                                border = null,
-                                colors = SuggestionChipDefaults.suggestionChipColors(
-                                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                                )
-                            )
-                        }
-                        item {
-                            TextButton(onClick = { viewModel.clearSearchHistory() }) {
-                                Text("清除", fontSize = 10.sp, color = MaterialTheme.colorScheme.error)
-                            }
-                        }
-                    }
-                }
-
                 // 📊 排序子 Tab
                 TabRow(
                     selectedTabIndex = viewModel.currentSortMode.ordinal,
                     containerColor = Color.Transparent,
                     divider = {},
                     indicator = { tabPositions ->
-                        TabRowDefaults.SecondaryIndicator(
+                        SecondaryIndicator(
                             Modifier.tabIndicatorOffset(tabPositions[viewModel.currentSortMode.ordinal]),
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
                 ) {
-                    MarketViewModel.SortMode.values().forEach { mode ->
+                    MarketViewModel.SortMode.entries.forEach { mode ->
                         Tab(
                             selected = viewModel.currentSortMode == mode,
                             onClick = { viewModel.onSortModeChanged(mode) },
@@ -386,6 +390,19 @@ fun MarketTab(
             }
         }
     ) { innerPadding ->
+        if (viewModel.dealList.isEmpty() && !viewModel.isPageLoading) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("🔍", fontSize = 48.sp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("未找到相关折扣游戏", color = Color.Gray)
+                    if (viewModel.isSteamOnly) {
+                        Text("试试在搜索时关闭“仅看Steam”开关", fontSize = 12.sp, color = Color.Gray.copy(alpha = 0.7f))
+                    }
+                }
+            }
+        }
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -412,17 +429,19 @@ fun MarketTab(
 
             // 无限下拉分页触发器
             item {
+                // 🎯 修复死循环：常驻触发器，由内部逻辑控制是否发送请求
+                LaunchedEffect(viewModel.dealList.size) {
+                    if (!viewModel.isAllLoaded && !viewModel.isPageLoading) {
+                        viewModel.loadNextPage()
+                    }
+                }
+
                 if (viewModel.isPageLoading) {
                     Box(
                         modifier = Modifier.fillMaxWidth().padding(16.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                    }
-                } else if (!viewModel.isAllLoaded) {
-                    // 🎯 修复：使用 dealList.size 作为 Key，确保列表更新后能重新触发分页加载
-                    LaunchedEffect(viewModel.dealList.size) {
-                        viewModel.loadNextPage()
                     }
                 }
             }
@@ -575,6 +594,19 @@ fun TopDealsTab(
             }
         }
     ) { innerPadding ->
+        if (viewModel.dealList.isEmpty() && !viewModel.isPageLoading) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("🔍", fontSize = 48.sp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("未找到相关折扣游戏", color = Color.Gray)
+                    if (viewModel.isSteamOnly) {
+                        Text("试试在搜索时关闭“仅看Steam”开关", fontSize = 12.sp, color = Color.Gray.copy(alpha = 0.7f))
+                    }
+                }
+            }
+        }
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -598,13 +630,15 @@ fun TopDealsTab(
             }
 
             item {
+                LaunchedEffect(viewModel.dealList.size) {
+                    if (!viewModel.isAllLoaded && !viewModel.isPageLoading) {
+                        viewModel.loadNextPage()
+                    }
+                }
+
                 if (viewModel.isPageLoading) {
                     Box(modifier = Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                    }
-                } else if (!viewModel.isAllLoaded) {
-                    LaunchedEffect(viewModel.dealList.size) {
-                        viewModel.loadNextPage()
                     }
                 }
             }
@@ -613,17 +647,58 @@ fun TopDealsTab(
 }
 
 @Composable
-fun SettingsTab() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "⚙️", fontSize = 40.sp)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "配置中心", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-            Text(
-                text = "后台降价轮询与通知推送功能正在研发中...",
-                fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.outline
-            )
+fun SettingsTab(viewModel: MarketViewModel) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "⚙️", fontSize = 48.sp)
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "配置中心", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // 🚀 自动更新开关
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(text = "自动检查更新", fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                    Text(
+                        text = "连接 GitHub 获取最新版本推送",
+                        fontSize = 12.sp,
+                        color = Color.Gray
+                    )
+                }
+                Switch(
+                    checked = viewModel.isAutoUpdateEnabled,
+                    onCheckedChange = { viewModel.toggleAutoUpdate(it) }
+                )
+            }
         }
+
+        Spacer(modifier = Modifier.weight(1f))
+        
+        Text(
+            text = "当前版本: 1.0",
+            fontSize = 12.sp,
+            color = Color.Gray
+        )
+        Text(
+            text = "SteamPrice 开源版",
+            fontSize = 11.sp,
+            color = Color.Gray.copy(alpha = 0.7f)
+        )
     }
 }

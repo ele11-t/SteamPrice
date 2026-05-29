@@ -1,10 +1,8 @@
 package com.ele.steamprice.viewmodel
 
 import android.app.Application
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import android.util.Log
+import androidx.compose.runtime.*
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.ele.steamprice.api.SteamPriceClient
@@ -13,6 +11,7 @@ import com.ele.steamprice.data.StoreInfo
 import com.ele.steamprice.db.MonitoredGameEntity
 import com.ele.steamprice.db.SteamPriceDatabase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -27,12 +26,11 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
     // ==========================================
     // 👁️ 监控大厅核心：实时观察本地 Room 数据库的变动
     // ==========================================
-    // 将 DAO 的 Flow 转换为标准的 StateFlow，UI 层只要一调用 collectAsState() 就能实现秒级自动刷新！
     val monitoredGames: StateFlow<List<MonitoredGameEntity>> = dao.getAllMonitoredGamesFlow()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000), // 当 UI 销毁 5 秒后才停止监听，省电又安全
-            initialValue = emptyList()
+            initialValue = emptyList(),
         )
 
     // ==========================================
@@ -47,13 +45,9 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
     var isAllLoaded by mutableStateOf(false)
         private set
 
-    // 🔍 搜索控制：搜索关键字
-    var searchQuery by mutableStateOf("")
-        private set
-
     // ⚖️ 排序模式
     enum class SortMode(val apiValue: String, val desc: Int) {
-        DealRating("DealRating", 1), // 🎯 新增：官方超值推荐模式（默认）
+        DealRating("DealRating", 1), 
         PriceHighToLow("Price", 1),
         PriceLowToHigh("Price", 0)
     }
@@ -66,17 +60,17 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
         private set
 
     // 🏆 品质过滤：Steam 好评率 (0-100)
-    var minSteamRating by mutableStateOf(0)
+    var minSteamRating by mutableIntStateOf(0)
         private set
 
     // 👥 品质过滤：最小评价数量
-    var minReviewCount by mutableStateOf(0)
+    var minReviewCount by mutableIntStateOf(0)
         private set
 
     // 💰 价格区间过滤
-    var minPrice by mutableStateOf(0f)
+    var minPrice by mutableFloatStateOf(0f)
         private set
-    var maxPrice by mutableStateOf(50f)
+    var maxPrice by mutableFloatStateOf(50f)
         private set
 
     // ⭐ 超值榜单模式：只看 Deal Rating >= 9 的神价
@@ -90,19 +84,81 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
     // 💰 汇率控制：人民币模式
     var isRmbMode by mutableStateOf(false)
         private set
-    val exchangeRate = 7.23f // 🎯 这里的汇率可以写死，或者未来拉取实时汇率
+    var exchangeRate by mutableStateOf(7.23f) 
+        private set
 
-    // 🔍 搜索历史
-    var searchHistory = mutableStateListOf<String>()
+    // 🚀 更新控制
+    var isAutoUpdateEnabled by mutableStateOf(true)
+        private set
+    var latestRelease by mutableStateOf<com.ele.steamprice.api.GithubReleaseResponse?>(null)
         private set
 
     var storeList by mutableStateOf<List<StoreInfo>>(emptyList())
         private set
 
     init {
-        // App 一启动，自动拉取第 0 页的全网折扣数据
-        loadNextPage()
-        loadStores() // 预加载商店信息用于显示图标
+        // 🎯 优化：分步启动任务，且每一项都独立 try-catch，防止一个失败导致全盘空白
+        viewModelScope.launch {
+            try { loadStores() } catch (e: Exception) { Log.e("MarketViewModel", "加载商店失败", e) }
+            delay(300)
+            try { updateExchangeRate() } catch (e: Exception) { Log.e("MarketViewModel", "加载汇率失败", e) }
+            delay(300)
+            // 🚀 这是最重要的，确保主页数据最后且必定尝试拉取
+            loadNextPage()
+            delay(300)
+            try { checkAppUpdate() } catch (e: Exception) { Log.e("MarketViewModel", "检查更新失败", e) }
+        }
+    }
+
+    /**
+     * 🚀 检查 App 更新
+     */
+    private fun checkAppUpdate() {
+        if (!isAutoUpdateEnabled) return
+        
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    SteamPriceClient.githubApiService.getLatestRelease("ele11-t", "SteamPrice")
+                }
+                
+                val currentVersion = "1.0" 
+                if (response.tagName != currentVersion) {
+                    latestRelease = response
+                }
+            } catch (e: Exception) {
+                Log.e("UpdateCheck", "更新检测失败", e)
+            }
+        }
+    }
+
+    /**
+     * 🚀 切换自动更新开关
+     */
+    fun toggleAutoUpdate(enabled: Boolean) {
+        isAutoUpdateEnabled = enabled
+    }
+
+    /**
+     * 🚀 清除更新提示
+     */
+    fun dismissUpdate() {
+        latestRelease = null
+    }
+
+    private fun updateExchangeRate() {
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    SteamPriceClient.exchangeRateService.getUsdExchangeRate()
+                }
+                response.rates["CNY"]?.let { rate ->
+                    exchangeRate = rate
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     private fun loadStores() {
@@ -166,7 +222,7 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
      * 💰 设置价格区间
      */
     fun onPriceRangeChanged(min: Float, max: Float) {
-        if (minPrice == min && maxPrice == max) return
+        if ((minPrice == min) && (maxPrice == max)) return
         minPrice = min
         maxPrice = max
         resetAndReload()
@@ -188,30 +244,6 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
         isRmbMode = isRmb
     }
 
-    /**
-     * 🔍 更新搜索词并重新加载列表
-     */
-    fun onSearchQueryChanged(newQuery: String) {
-        if (searchQuery == newQuery) return
-        searchQuery = newQuery
-        
-        // 记录非空搜索词到历史记录（排重并置顶）
-        if (newQuery.isNotBlank()) {
-            searchHistory.remove(newQuery)
-            searchHistory.add(0, newQuery)
-            if (searchHistory.size > 8) searchHistory.removeAt(searchHistory.size - 1)
-        }
-        
-        resetAndReload()
-    }
-
-    /**
-     * 🗑️ 清除所有搜索历史
-     */
-    fun clearSearchHistory() {
-        searchHistory.clear()
-    }
-
     private fun resetAndReload() {
         currentPage = 0
         isAllLoaded = false
@@ -223,62 +255,36 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
      * 🚀 核心：拉取下一页折扣数据
      */
     fun loadNextPage() {
-        // 如果正在加载或者已经加载完了，直接拦截，防止重复请求
         if (isPageLoading || isAllLoaded) return
-
         isPageLoading = true
 
         viewModelScope.launch {
             try {
-                if (searchQuery.isNotBlank()) {
-                    // 🔍 模式 A：精准搜索模式 (解决搜索不准问题)
-                    val searchResults = withContext(Dispatchers.IO) {
-                        SteamPriceClient.apiService.searchGamesByTitle(searchQuery)
-                    }
-                    
-                    val dealIds = searchResults.mapNotNull { it.cheapestDealID }.joinToString(",")
-                    
-                    if (dealIds.isNotBlank()) {
-                        val fullDeals = withContext(Dispatchers.IO) {
-                            SteamPriceClient.apiService.getDealsByIds(dealIds)
-                        }
-                        // 过滤掉非 Steam 商店的（如果开启了仅看 Steam）
-                        val filteredDeals = if (isSteamOnly) {
-                            fullDeals.filter { it.storeID == "1" }
-                        } else {
-                            fullDeals
-                        }
-                        
-                        dealList.addAll(filteredDeals)
-                    }
-                    isAllLoaded = true // 搜索模式暂不支持分页
-                } else {
-                    // 🔥 模式 B：普通浏览模式 (支持分页)
-                    val response = withContext(Dispatchers.IO) {
-                        SteamPriceClient.apiService.getSteamDeals(
-                            storeID = if (isSteamOnly) "1" else null,
-                            pageNumber = currentPage,
-                            pageSize = 20,
-                            sortBy = currentSortMode.apiValue,
-                            desc = currentSortMode.desc,
-                            aaa = if (isAAAOnly) 1 else 0,
-                            lowerPrice = if (minPrice > 0) minPrice.toInt() else null,
-                            upperPrice = if (maxPrice < 50) maxPrice.toInt() else null,
-                            steamRating = if (minSteamRating > 0) minSteamRating else null,
-                            minReviewCount = if (minReviewCount > 0) minReviewCount else null,
-                            metacritic = if (isTopDealsOnly) 85 else null
-                        )
-                    }
+                // 🔥 普通浏览模式 (保持原有的品质过滤和分页)
+                val response = withContext(Dispatchers.IO) {
+                    SteamPriceClient.apiService.getSteamDeals(
+                        storeID = if (isSteamOnly) "1" else null,
+                        pageNumber = currentPage,
+                        pageSize = 20,
+                        sortBy = currentSortMode.apiValue,
+                        desc = currentSortMode.desc,
+                        aaa = if (isAAAOnly) 1 else 0,
+                        lowerPrice = if (minPrice > 0) minPrice.toInt() else null,
+                        upperPrice = if (maxPrice < 50) maxPrice.toInt() else null,
+                        steamRating = if (minSteamRating > 0) minSteamRating else null,
+                        minReviewCount = if (minReviewCount > 0) minReviewCount else null,
+                        metacritic = if (isTopDealsOnly) 85 else null
+                    )
+                }
 
-                    if (response.isNotEmpty()) {
-                        dealList.addAll(response)
-                        currentPage++
-                    } else {
-                        isAllLoaded = true
-                    }
+                if (response.isNotEmpty()) {
+                    dealList.addAll(response)
+                    currentPage++
+                } else {
+                    isAllLoaded = true
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e("MarketSearch", "数据加载失败", e)
             } finally {
                 isPageLoading = false
             }

@@ -28,16 +28,6 @@ data class DealItem(
     val discountPercent: Int get() = savings.toDoubleOrNull()?.toInt() ?: 0
 }
 
-/**
- * 🎯 游戏搜索结果模型（用于解决搜索不准的问题）
- */
-data class GameSearchResult(
-    val gameID: String,
-    val cheapestDealID: String?, // 注意：搜索库时，有些游戏可能当前没有任何 DealID
-    val external: String,
-    val thumb: String
-)
-
 // 2. 详情页数据模型
 data class GamePriceDetail(
     val info: GameInfo,
@@ -54,14 +44,32 @@ data class GameInfo(
 
 // 🎯 新增：Steam 商店详情模型
 data class SteamStoreDetail(
-    val short_description: String,
-    val detailed_description: String, // 🎯 新增：HTML 格式的详细介绍
+    val short_description: String?,
+    val detailed_description: String?, // 🎯 新增：HTML 格式的详细介绍
     val developers: List<String>?,    // 🎯 新增：开发商
     val genres: List<SteamGenre>?,    // 🎯 新增：游戏类型
     val screenshots: List<SteamScreenshot>,
     val pc_requirements: SteamRequirements?, // 🎯 新增：PC 配置要求
     val supported_languages: String?,         // 🎯 新增：支持语言（HTML 格式）
-    val categories: List<SteamCategory>?     // 🎯 新增：游戏特性（单人、成就、云存档等）
+    val categories: List<SteamCategory>?,     // 🎯 新增：游戏特性（单人、成就、云存档等）
+    val release_date: SteamReleaseDate?,     // 🎯 新增：发行日期
+    val metacritic: SteamMetacritic?,        // 🎯 新增：媒体评分与链接
+    val dlc: List<Int>?,                     // 🎯 新增：DLC AppID 列表
+    val recommendations: SteamRecommendationsCount? // 🎯 新增：推荐人数
+)
+
+data class SteamReleaseDate(
+    val coming_soon: Boolean,
+    val date: String
+)
+
+data class SteamMetacritic(
+    val score: Int,
+    val url: String
+)
+
+data class SteamRecommendationsCount(
+    val total: Int
 )
 
 data class SteamCategory(

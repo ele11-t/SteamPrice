@@ -3,10 +3,13 @@ package com.ele.steamprice.api
 import com.ele.steamprice.data.DealItem
 import com.ele.steamprice.data.GamePriceDetail
 import com.ele.steamprice.data.StoreInfo
-import com.ele.steamprice.data.GameSearchResult
+import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
+import com.google.gson.reflect.TypeToken
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CheapSharkApiService {
@@ -53,24 +56,17 @@ interface CheapSharkApiService {
      */
     @GET("stores")
     suspend fun getStoreList(): List<StoreInfo>
-
-    /**
-     * 🎯 核心搜索：按标题精准搜索游戏库（用于解决搜索不准的问题）
-     */
-    @GET("games")
-    suspend fun searchGamesByTitle(
-        @Query("title") title: String,
-        @Query("limit") limit: Int = 20
-    ): List<GameSearchResult>
-
-    /**
-     * 📦 批量获取：通过多个 DealID 一次性拉取详细折扣信息
-     */
-    @GET("deals")
-    suspend fun getDealsByIds(
-        @Query("ids") ids: String
-    ): List<DealItem>
 }
+
+// 🎯 新增：汇率接口
+interface ExchangeRateApiService {
+    @GET("v6/latest/USD")
+    suspend fun getUsdExchangeRate(): ExchangeRateResponse
+}
+
+data class ExchangeRateResponse(
+    val rates: Map<String, Float>
+)
 
 // 🎯 新增：Steam 商店接口，用于抓取截图和简介
 interface SteamStoreApiService {
@@ -86,10 +82,27 @@ data class SteamStoreResponse(
     val data: com.ele.steamprice.data.SteamStoreDetail?
 )
 
+// 🎯 新增：GitHub 更新检测接口
+interface GithubApiService {
+    @GET("repos/{owner}/{repo}/releases/latest")
+    suspend fun getLatestRelease(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): GithubReleaseResponse
+}
+
+data class GithubReleaseResponse(
+    @SerializedName("tag_name") val tagName: String,
+    @SerializedName("body") val body: String, // 更新日志
+    @SerializedName("html_url") val htmlUrl: String // 下载页面
+)
+
 // 🚀 单例客户端
 object SteamPriceClient {
     private const val BASE_URL = "https://www.cheapshark.com/api/1.0/"
     private const val STEAM_STORE_URL = "https://store.steampowered.com/"
+    private const val EXCHANGE_RATE_URL = "https://open.er-api.com/"
+    private const val GITHUB_API_URL = "https://api.github.com/"
 
     val apiService: CheapSharkApiService by lazy {
         Retrofit.Builder()
@@ -105,5 +118,21 @@ object SteamPriceClient {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(SteamStoreApiService::class.java)
+    }
+
+    val exchangeRateService: ExchangeRateApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(EXCHANGE_RATE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ExchangeRateApiService::class.java)
+    }
+
+    val githubApiService: GithubApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(GITHUB_API_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(GithubApiService::class.java)
     }
 }

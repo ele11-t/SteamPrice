@@ -6,8 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [MonitoredGameEntity::class, PriceHistoryEntity::class],
-    version = 1,
+    entities = [
+        MonitoredGameEntity::class,
+        PriceHistoryEntity::class,
+        GameDetailCacheEntity::class
+    ],
+    version = 2, // 🎯 升级版本号
     exportSchema = false
 )
 abstract class SteamPriceDatabase : RoomDatabase() {

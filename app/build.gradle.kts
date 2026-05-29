@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
+    implementation("com.google.code.gson:gson:2.11.0") // 🎯 新增：用于 JSON 序列化缓存
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     implementation("androidx.work:work-runtime-ktx:2.10.0") // 🎯 新增：WorkManager 依赖用于后台同步
