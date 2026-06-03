@@ -84,7 +84,11 @@ fun WatchlistScreen(viewModel: MarketViewModel) {
                     },
                     enableDismissFromStartToEnd = false
                 ) {
-                    MonitoredGameCard(game = game)
+                    MonitoredGameCard(
+                        game = game,
+                        isRmbMode = viewModel.isRmbMode,
+                        exchangeRate = viewModel.exchangeRate
+                    )
                 }
             }
         }
@@ -92,7 +96,19 @@ fun WatchlistScreen(viewModel: MarketViewModel) {
 }
 
 @Composable
-fun MonitoredGameCard(game: MonitoredGameEntity) {
+fun MonitoredGameCard(
+    game: MonitoredGameEntity,
+    isRmbMode: Boolean = false,
+    exchangeRate: Float = 1.0f
+) {
+    val formatPrice = { price: Double ->
+        if (isRmbMode) {
+            "¥${String.format(Locale.US, "%.2f", price * exchangeRate)}"
+        } else {
+            "$${String.format(Locale.US, "%.2f", price)}"
+        }
+    }
+
     Card(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
@@ -115,9 +131,9 @@ fun MonitoredGameCard(game: MonitoredGameEntity) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
-                    Text(text = "监控时价格: $${game.addedPrice}", fontSize = 12.sp, color = Color.Gray)
+                    Text(text = "监控时价格: ${formatPrice(game.addedPrice)}", fontSize = 12.sp, color = Color.Gray)
                     Text(
-                        text = "当前价格: $${game.currentPrice}",
+                        text = "当前价格: ${formatPrice(game.currentPrice)}",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.primary
@@ -131,7 +147,7 @@ fun MonitoredGameCard(game: MonitoredGameEntity) {
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = "目标价: $${String.format(Locale.US, "%.2f", game.targetPrice)}",
+                        text = "目标价: ${formatPrice(game.targetPrice)}",
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onErrorContainer,
                         fontWeight = FontWeight.Bold

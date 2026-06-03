@@ -55,7 +55,17 @@ data class SteamStoreDetail(
     val release_date: SteamReleaseDate?,     // 🎯 新增：发行日期
     val metacritic: SteamMetacritic?,        // 🎯 新增：媒体评分与链接
     val dlc: List<Int>?,                     // 🎯 新增：DLC AppID 列表
-    val recommendations: SteamRecommendationsCount? // 🎯 新增：推荐人数
+    val recommendations: SteamRecommendationsCount?, // 🎯 新增：推荐人数
+    val price_overview: SteamPriceOverview? // 🎯 新增：国区定价信息
+)
+
+data class SteamPriceOverview(
+    val currency: String,
+    val initial: Long,
+    val final: Long,
+    val discount_percent: Int,
+    val initial_formatted: String,
+    val final_formatted: String
 )
 
 data class SteamReleaseDate(

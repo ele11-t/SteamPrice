@@ -72,8 +72,10 @@ data class ExchangeRateResponse(
 interface SteamStoreApiService {
     @GET("api/appdetails")
     suspend fun getAppDetails(
-        @Query("appids") appid: String,
-        @Query("l") language: String = "schinese" // 默认抓取简体中文
+        @Query(value = "appids", encoded = true) appid: String, // 🎯 关键：使用 encoded = true 防止逗号被转义，Steam API 要求逗号分隔
+        @Query("l") language: String = "schinese",
+        @Query("cc") country: String = "cn",
+        @Query("filters") filters: String? = null // 🎯 新增：支持过滤字段，减少数据量
     ): Map<String, SteamStoreResponse>
 }
 

@@ -47,7 +47,7 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
 
     // ⚖️ 排序模式
     enum class SortMode(val apiValue: String, val desc: Int) {
-        DealRating("DealRating", 1), 
+        DealRating("ReviewCount", 1),
         PriceHighToLow("Price", 1),
         PriceLowToHigh("Price", 0)
     }
@@ -81,8 +81,8 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
     var isSteamOnly by mutableStateOf(true)
         private set
 
-    // 💰 汇率控制：人民币模式
-    var isRmbMode by mutableStateOf(false)
+    // 💰 汇率控制：人民币模式 (🎯 默认开启)
+    var isRmbMode by mutableStateOf(true)
         private set
     var exchangeRate by mutableFloatStateOf(7.23f) 
         private set
@@ -95,6 +95,9 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
 
     var storeList by mutableStateOf<List<StoreInfo>>(emptyList())
         private set
+
+    // 🎯 新增：存储 Steam 官方国区价格映射 (AppID -> PriceOverview)
+    val steamPriceMap = mutableStateMapOf<String, com.ele.steamprice.data.SteamPriceOverview>()
 
     init {
         // 🎯 优化：分步启动任务，且每一项都独立 try-catch，防止一个失败导致全盘空白
@@ -280,6 +283,8 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
                 if (response.isNotEmpty()) {
                     dealList.addAll(response)
                     currentPage++
+                    // 🎯 核心：异步批量拉取这些游戏的 Steam 官方国区价格
+                    fetchOfficialSteamPrices(response)
                 } else {
                     isAllLoaded = true
                 }
@@ -287,6 +292,44 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
                 Log.e("MarketSearch", "数据加载失败", e)
             } finally {
                 isPageLoading = false
+            }
+        }
+    }
+
+    /**
+     * 🚀 批量从 Steam 官方 API 获取国区价格
+     * 优化点：分块请求、防止编码转义、减少冗余数据
+     */
+    private fun fetchOfficialSteamPrices(deals: List<DealItem>) {
+        val appIds = deals.mapNotNull { it.steamAppID }
+            .filter { it.isNotEmpty() && it != "0" }
+            .distinct()
+        
+        if (appIds.isEmpty()) return
+
+        // 🎯 优化：分块请求（每组 10 个），Steam API 对大批量 ID 请求不太稳定且有长度限制
+        appIds.chunked(10).forEach { chunk ->
+            viewModelScope.launch {
+                try {
+                    val idString = chunk.joinToString(",")
+                    val response = withContext(Dispatchers.IO) {
+                        SteamPriceClient.steamApiService.getAppDetails(
+                            appid = idString,
+                            filters = "price_overview" // 🎯 只取价格，极大减少流量和解析开销
+                        )
+                    }
+                    
+                    withContext(Dispatchers.Main) {
+                        response.forEach { (appId, result) ->
+                            if (result.success && result.data?.price_overview != null) {
+                                val cleanId = appId.trim()
+                                steamPriceMap[cleanId] = result.data.price_overview
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("MarketViewModel", "批量获取 Steam 价格失败 (${chunk.firstOrNull()}...): ${e.message}")
+                }
             }
         }
     }

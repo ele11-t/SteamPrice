@@ -40,7 +40,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -55,7 +54,6 @@ import com.ele.steamprice.viewmodel.MarketViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 🎯 优化 1: 开启全屏边到边适配（Android 15+ 强制要求）
         enableEdgeToEdge()
 
         setContent {
@@ -79,12 +77,9 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
     var selectedDeal by remember { mutableStateOf<DealItem?>(null) }
     var showFilterSheet by remember { mutableStateOf(false) }
 
-    // 🎯 优化 2: 动态申请通知权限（适配 Android 13-16）
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
-    ) { _ ->
-        // 可以在这里处理权限被拒绝后的逻辑（如提示用户去设置开启）
-    }
+    ) { _ -> }
 
     LaunchedEffect(Unit) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -111,7 +106,6 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
             }
         }
     ) { innerPadding ->
-        // 🏆 品质过滤 BottomSheet
         if (showFilterSheet) {
             ModalBottomSheet(
                 onDismissRequest = { showFilterSheet = false },
@@ -127,7 +121,6 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // 1. Steam 好评率过滤
                     Text(text = "最小 Steam 好评率: ${marketViewModel.minSteamRating}%", fontSize = 14.sp, fontWeight = FontWeight.Medium)
                     Slider(
                         value = marketViewModel.minSteamRating.toFloat(),
@@ -138,7 +131,6 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // 2. 最小评价数过滤
                     Text(text = "最小玩家评价数: ${marketViewModel.minReviewCount}", fontSize = 14.sp, fontWeight = FontWeight.Medium)
                     Slider(
                         value = marketViewModel.minReviewCount.toFloat(),
@@ -149,7 +141,6 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // 3. 价格区间过滤
                     Text(
                         text = "价格区间: $${marketViewModel.minPrice.toInt()} - $${if (marketViewModel.maxPrice >= 50f) "不限" else marketViewModel.maxPrice.toInt()}",
                         fontSize = 14.sp,
@@ -164,7 +155,6 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // 4. 汇率换算开关
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
@@ -197,23 +187,21 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
         Box {
             when (currentScreen) {
                 Screen.Market -> {
-                    // 进入大厅，确保关闭超值模式
                     LaunchedEffect(Unit) { marketViewModel.setTopDealsMode(false) }
                     MarketTab(
                         viewModel = marketViewModel,
                         onToggleFilter = { showFilterSheet = it },
                         onGameClick = { selectedDeal = it },
-                        outerPadding = innerPadding // 🎯 传入外层 Scaffold 的 Padding
+                        outerPadding = innerPadding
                     )
                 }
                 Screen.TopDeals -> {
-                    // 进入榜单，开启超值模式
                     LaunchedEffect(Unit) { marketViewModel.setTopDealsMode(true) }
                     TopDealsTab(
                         viewModel = marketViewModel,
                         onToggleFilter = { showFilterSheet = it },
                         onGameClick = { selectedDeal = it },
-                        outerPadding = innerPadding // 🎯 传入外层 Scaffold 的 Padding
+                        outerPadding = innerPadding
                     )
                 }
                 Screen.Watchlist -> {
@@ -229,7 +217,6 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
             }
         }
 
-        // 🎯 优化 3: 全局版本更新弹窗
         marketViewModel.latestRelease?.let { release ->
             AlertDialog(
                 onDismissRequest = { marketViewModel.dismissUpdate() },
@@ -256,7 +243,6 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
         }
     }
 
-    // 详情弹窗控制
     selectedDeal?.let { deal ->
         GameDetailDialog(
             deal = deal,
@@ -273,7 +259,7 @@ fun MarketTab(
     viewModel: MarketViewModel,
     onToggleFilter: (Boolean) -> Unit,
     onGameClick: (DealItem) -> Unit,
-    outerPadding: PaddingValues // 🎯 新增：接收外层 Padding
+    outerPadding: PaddingValues
 ) {
     Scaffold(
         topBar = {
@@ -295,7 +281,6 @@ fun MarketTab(
                     )
                 }
 
-                // 🎮 顶层控制区：品质过滤 + 商店切换 + AAA 开关
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -303,7 +288,6 @@ fun MarketTab(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.End
                 ) {
-                    // 🏆 更多过滤按钮
                     IconButton(onClick = { onToggleFilter(true) }) {
                         Icon(
                             Icons.Default.FilterList,
@@ -314,7 +298,6 @@ fun MarketTab(
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    // 🏪 商店切换开关
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Switch(
                             checked = !viewModel.isSteamOnly,
@@ -335,7 +318,6 @@ fun MarketTab(
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    // 🎮 AAA 过滤开关
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Switch(
                             checked = viewModel.isAAAOnly,
@@ -355,7 +337,6 @@ fun MarketTab(
                     }
                 }
 
-                // 📊 排序子 Tab
                 TabRow(
                     selectedTabIndex = viewModel.currentSortMode.ordinal,
                     containerColor = Color.Transparent,
@@ -405,28 +386,28 @@ fun MarketTab(
                 .fillMaxSize()
                 .padding(
                     top = innerPadding.calculateTopPadding(),
-                    bottom = outerPadding.calculateBottomPadding() // 🎯 关键修复：使用外层的底部 Padding，确保不被导航栏遮挡，且不产生白条
+                    bottom = outerPadding.calculateBottomPadding()
                 )
         ) {
             items(
                 items = viewModel.dealList,
-                key = { it.dealID } // 🚀 优化 1: 添加唯一 key，防止列表项重组导致卡顿
+                key = { it.dealID }
             ) { deal ->
-                // 🚀 优化 2: 将单个条目提取为独立的 Composable 并使用 remember，减少主列表重组压力
-                val dealItem = remember(deal) { deal }
                 val store = viewModel.storeList.find { it.storeID == deal.storeID }
+                val steamAppId = deal.steamAppID?.trim() ?: ""
+                val officialPrice = if (steamAppId.isNotEmpty()) viewModel.steamPriceMap[steamAppId] else null
+                
                 GameDealCard(
-                    deal = dealItem,
+                    deal = deal,
                     storeInfo = store,
+                    officialPrice = officialPrice,
                     isRmbMode = viewModel.isRmbMode,
                     exchangeRate = viewModel.exchangeRate,
-                    onClick = { onGameClick(dealItem) }
+                    onClick = { onGameClick(deal) }
                 )
             }
 
-            // 无限下拉分页触发器
             item {
-                // 🎯 修复死循环：常驻触发器，由内部逻辑控制是否发送请求
                 LaunchedEffect(viewModel.dealList.size) {
                     if (!viewModel.isAllLoaded && !viewModel.isPageLoading) {
                         viewModel.loadNextPage()
@@ -450,6 +431,7 @@ fun MarketTab(
 fun GameDealCard(
     deal: DealItem,
     storeInfo: StoreInfo? = null,
+    officialPrice: com.ele.steamprice.data.SteamPriceOverview? = null,
     isRmbMode: Boolean = false,
     exchangeRate: Float = 1.0f,
     onClick: () -> Unit
@@ -481,7 +463,7 @@ fun GameDealCard(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(deal.hdCapsuleUrl)
                         .crossfade(true)
-                        .diskCacheKey(deal.hdCapsuleUrl) // 强制使用 URL 作为磁盘缓存 Key
+                        .diskCacheKey(deal.hdCapsuleUrl)
                         .build(),
                     contentDescription = "游戏封面",
                     placeholder = rememberVectorPainter(Icons.Default.Image),
@@ -493,7 +475,6 @@ fun GameDealCard(
                     contentScale = ContentScale.Crop
                 )
 
-                // 🎯 优化：如果是全网模式，在封面图右下角显示商店小图标
                 storeInfo?.let {
                     Surface(
                         modifier = Modifier.padding(2.dp).size(14.dp),
@@ -520,7 +501,7 @@ fun GameDealCard(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "评分: ${deal.metacriticScore} | 好评: ${deal.steamRatingPercent ?: "0"}% (${deal.steamRatingCount ?: "0"}人评价)",
+                    text = "好评: ${deal.steamRatingPercent ?: "0"}% (${deal.steamRatingCount ?: "0"}人评价)",
                     fontSize = 11.sp,
                     color = MaterialTheme.colorScheme.outline
                 )
@@ -529,26 +510,53 @@ fun GameDealCard(
             Spacer(modifier = Modifier.width(8.dp))
 
             Column(horizontalAlignment = Alignment.End) {
-                Text(
-                    text = formatPrice(deal.normalPrice),
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.outline,
-                    textDecoration = TextDecoration.LineThrough
-                )
-                Text(
-                    text = formatPrice(deal.salePrice),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = MaterialTheme.colorScheme.error
-                )
+                if (officialPrice != null) {
+                    if (officialPrice.discount_percent > 0) {
+                        Text(
+                            text = officialPrice.initial_formatted,
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.outline,
+                            textDecoration = TextDecoration.LineThrough
+                        )
+                    }
+                    Text(
+                        text = officialPrice.final_formatted,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                    if (officialPrice.discount_percent > 0) {
+                        Text(
+                            text = "-${officialPrice.discount_percent}%",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                } else {
+                    // 核心兜底逻辑：在 Steam 官方价格异步加载完成前，显示基于汇率转换的人民币/美元参考价
+                    // 这样可以避免一直显示“获取中...”，确保用户随时进入都能看到价格
+                    Text(
+                        text = formatPrice(deal.normalPrice),
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.outline,
+                        textDecoration = TextDecoration.LineThrough
+                    )
+                    Text(
+                        text = formatPrice(deal.salePrice),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.error
+                    )
 
-                val savingsPercent = deal.savings.toDoubleOrNull()?.toInt() ?: 0
-                Text(
-                    text = "-$savingsPercent%",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.error
-                )
+                    val savingsPercent = deal.savings.toDoubleOrNull()?.toInt() ?: 0
+                    Text(
+                        text = "-$savingsPercent%",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
             }
         }
     }
@@ -559,7 +567,7 @@ fun TopDealsTab(
     viewModel: MarketViewModel,
     onToggleFilter: (Boolean) -> Unit,
     onGameClick: (DealItem) -> Unit,
-    outerPadding: PaddingValues // 🎯 新增
+    outerPadding: PaddingValues
 ) {
     Scaffold(
         topBar = {
@@ -576,7 +584,6 @@ fun TopDealsTab(
                     color = MaterialTheme.colorScheme.primary
                 )
                 
-                // 🏆 更多过滤按钮 (TopDeals 也可以支持品质过滤)
                 IconButton(
                     modifier = Modifier.align(Alignment.CenterEnd).padding(end = 16.dp),
                     onClick = { onToggleFilter(true) }
@@ -608,7 +615,7 @@ fun TopDealsTab(
                 .fillMaxSize()
                 .padding(
                     top = innerPadding.calculateTopPadding(),
-                    bottom = outerPadding.calculateBottomPadding() // 🎯 关键修复：使用外层的底部 Padding，确保不被导航栏遮挡，且不产生白条
+                    bottom = outerPadding.calculateBottomPadding()
                 )
         ) {
             items(
@@ -616,9 +623,13 @@ fun TopDealsTab(
                 key = { it.dealID }
             ) { deal ->
                 val store = viewModel.storeList.find { it.storeID == deal.storeID }
+                val steamAppId = deal.steamAppID?.trim() ?: ""
+                val officialPrice = if (steamAppId.isNotEmpty()) viewModel.steamPriceMap[steamAppId] else null
+
                 GameDealCard(
                     deal = deal,
                     storeInfo = store,
+                    officialPrice = officialPrice,
                     isRmbMode = viewModel.isRmbMode,
                     exchangeRate = viewModel.exchangeRate,
                     onClick = { onGameClick(deal) }
@@ -656,7 +667,6 @@ fun SettingsTab(viewModel: MarketViewModel) {
         
         Spacer(modifier = Modifier.height(32.dp))
 
-        // 🚀 自动更新开关
         Surface(
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
             shape = RoundedCornerShape(12.dp),

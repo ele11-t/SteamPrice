@@ -42,8 +42,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.ele.steamprice.data.DealItem
-import com.ele.steamprice.data.GameDealDetail
-import com.ele.steamprice.data.StoreInfo
 import com.ele.steamprice.db.PriceHistoryEntity
 import com.ele.steamprice.viewmodel.DetailViewModel
 import androidx.compose.foundation.Canvas
@@ -99,7 +97,6 @@ fun GameDetailDialog(
                         .verticalScroll(scrollState),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // 1. 顶部游戏封面
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(deal.hdCapsuleUrl)
@@ -119,7 +116,6 @@ fun GameDetailDialog(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // 2. 标题和史低信息
                     Text(
                         text = deal.title,
                         fontSize = 18.sp,
@@ -136,31 +132,36 @@ fun GameDetailDialog(
                         if (viewModel.isLoadingDetail) {
                             CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
                         } else {
-                            viewModel.priceDetail?.cheapestPriceEver?.let { cheapest ->
-                                Text(
-                                    text = "🏆 历史最低价：${formatPrice(cheapest.price)}",
-                                    fontSize = 13.sp,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            }
-                            Spacer(modifier = Modifier.weight(1f))
-                            deal.steamRatingText?.let { rating ->
-                                Text(
-                                    text = "$rating (${deal.steamRatingCount ?: "0"} reviews)",
-                                    fontSize = 11.sp,
-                                    color = Color.Gray
-                                )
+                            Column {
+                                viewModel.priceDetail?.steamDetail?.price_overview?.let { steamPrice ->
+                                    Text(
+                                        text = "🇨🇳 Steam 国区现价：${steamPrice.final_formatted}",
+                                        fontSize = 14.sp,
+                                        color = Color(0xFF2E7D32),
+                                        fontWeight = FontWeight.ExtraBold,
+                                        modifier = Modifier.clickable {
+                                            deal.steamAppID?.let { appId ->
+                                                uriHandler.openUri("https://store.steampowered.com/app/$appId/")
+                                            }
+                                        }
+                                    )
+                                }
+                                viewModel.priceDetail?.cheapestPriceEver?.let { cheapest ->
+                                    Text(
+                                        text = "🏆 全网历史最低：${formatPrice(cheapest.price)}",
+                                        fontSize = 13.sp,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                }
                             }
                         }
                     }
 
-                    // 🎮 游戏简介与截图（从 Steam 官网抓取）
                     viewModel.priceDetail?.steamDetail?.let { steam ->
                         var isExpanded by remember { mutableStateOf(false) }
 
                         Column(modifier = Modifier.fillMaxWidth()) {
-                            // 1. 类型标签
                             steam.genres?.let { genres ->
                                 LazyRow(
                                     horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -183,7 +184,6 @@ fun GameDetailDialog(
                                 }
                             }
 
-                            // 1.5 游戏特性标签 (单人、成就等)
                             steam.categories?.let { cats ->
                                 LazyRow(
                                     horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -206,7 +206,6 @@ fun GameDetailDialog(
                                 }
                             }
 
-                            // 2. 截图轮播
                             LazyRow(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 contentPadding = PaddingValues(vertical = 4.dp),
@@ -233,7 +232,6 @@ fun GameDetailDialog(
                                 }
                             }
 
-                            // 3. 详细介绍 (带展开收起)
                             val fullDescription = remember(steam.detailed_description) {
                                 HtmlCompat.fromHtml(
                                     steam.detailed_description ?: "",
@@ -266,7 +264,6 @@ fun GameDetailDialog(
                                 )
 
                                 if (isExpanded) {
-                                    // 🌐 语言支持
                                     steam.supported_languages?.let { langs ->
                                         val languages = remember(langs) {
                                             HtmlCompat.fromHtml(langs, HtmlCompat.FROM_HTML_MODE_COMPACT).toString().trim()
@@ -277,7 +274,6 @@ fun GameDetailDialog(
                                         }
                                     }
 
-                                    // 💻 系统要求
                                     steam.pc_requirements?.let { reqs ->
                                         Column(modifier = Modifier.padding(top = 12.dp)) {
                                             Text(text = "💻 系统要求", fontSize = 13.sp, fontWeight = FontWeight.Bold)
@@ -298,7 +294,6 @@ fun GameDetailDialog(
                                 }
                             }
 
-                            // 4. 开发商信息
                             steam.developers?.let { devs ->
                                 Text(
                                     text = "开发商: ${devs.joinToString(", ")}",
@@ -308,7 +303,6 @@ fun GameDetailDialog(
                                 )
                             }
 
-                            // 5. 发行日期与媒体评分
                             Row(
                                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -337,7 +331,6 @@ fun GameDetailDialog(
                                 }
                             }
 
-                            // 6. DLC 信息
                             steam.dlc?.let { dlcList ->
                                 Text(
                                     text = "📦 包含 ${dlcList.size} 个可选 DLC",
@@ -347,7 +340,6 @@ fun GameDetailDialog(
                                 )
                             }
 
-                            // 7. 玩家推荐
                             steam.recommendations?.let { recs ->
                                 Text(
                                     text = "👍 Steam 共有 ${recs.total} 位玩家推荐",
@@ -361,7 +353,6 @@ fun GameDetailDialog(
 
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
-                // 📈 价格趋势图
                 val history by viewModel.priceHistory.collectAsState()
                 if (history.isNotEmpty()) {
                     Text(
@@ -374,37 +365,10 @@ fun GameDetailDialog(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                // 3. 核心：全网比价列表
-                    Text(
-                        text = "🌐 全网实时比价 (PC端)",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .align(Alignment.Start)
-                            .padding(bottom = 8.dp)
-                    )
 
-                    if (viewModel.isLoadingDetail) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(100.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text("正在同步全网报价...", color = Color.Gray, fontSize = 12.sp)
-                        }
-                    } else {
-                        val deals = viewModel.priceDetail?.deals ?: emptyList()
-                        deals.forEach { dealDetail ->
-                            val store = viewModel.storeList.find { it.storeID == dealDetail.storeID }
-                            ComparisonRow(dealDetail, store, isRmbMode, exchangeRate)
-                            Spacer(modifier = Modifier.height(8.dp))
-                        }
-                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // 4. 操作按钮区
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -419,7 +383,10 @@ fun GameDetailDialog(
 
                         Button(
                             onClick = {
-                                val priceInDouble = deal.salePrice.toDoubleOrNull() ?: 0.0
+                                // 优先引用 Steam 官方国区价格作为监控基准，如果获取不到则回退到 Deal 价格
+                                val steamPrice = viewModel.priceDetail?.steamDetail?.price_overview?.final?.toDouble()?.let { it / 100.0 }
+                                val priceInDouble = steamPrice ?: (deal.salePrice.toDoubleOrNull() ?: 0.0)
+
                                 viewModel.toggleMonitor(
                                     gameId = deal.gameID,
                                     title = deal.title,
@@ -439,7 +406,6 @@ fun GameDetailDialog(
                 }
             }
 
-            // 5. 大图查看器
             AnimatedVisibility(
                 visible = selectedImageUrl != null,
                 enter = fadeIn(),
@@ -449,7 +415,6 @@ fun GameDetailDialog(
                 var scale by remember { mutableFloatStateOf(1f) }
                 var offset by remember { mutableStateOf(Offset.Zero) }
 
-                // 当切换图片时重置缩放和位移
                 LaunchedEffect(selectedImageUrl) {
                     scale = 1f
                     offset = Offset.Zero
@@ -538,7 +503,6 @@ fun PriceTrendChart(history: List<PriceHistoryEntity>) {
                     Offset(x, y)
                 }
 
-                // 绘制背景参考线
                 drawLine(
                     color = outlineColor,
                     start = Offset(0f, size.height),
@@ -546,7 +510,6 @@ fun PriceTrendChart(history: List<PriceHistoryEntity>) {
                     strokeWidth = 1.dp.toPx()
                 )
 
-                // 绘制折线
                 val path = Path().apply {
                     moveTo(points.first().x, points.first().y)
                     points.forEach { lineTo(it.x, it.y) }
@@ -558,7 +521,6 @@ fun PriceTrendChart(history: List<PriceHistoryEntity>) {
                     style = Stroke(width = 2.dp.toPx(), cap = StrokeCap.Round)
                 )
 
-                // 绘制数据点
                 points.forEach { point ->
                     drawCircle(
                         color = primaryColor,
@@ -581,69 +543,4 @@ fun PriceTrendChart(history: List<PriceHistoryEntity>) {
     }
 }
 
-@Composable
-fun ComparisonRow(
-    deal: GameDealDetail,
-    store: StoreInfo?,
-    isRmbMode: Boolean = false,
-    exchangeRate: Float = 1.0f
-) {
-    val formatPrice = { priceStr: String ->
-        val price = priceStr.toDoubleOrNull() ?: 0.0
-        if (isRmbMode) {
-            "¥${String.format(Locale.US, "%.2f", price * exchangeRate)}"
-        } else {
-            "$$priceStr"
-        }
-    }
 
-    Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-        shape = RoundedCornerShape(8.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // 商店图标
-            AsyncImage(
-                model = store?.images?.fullIconUrl,
-                contentDescription = null,
-                modifier = Modifier.size(20.dp)
-            )
-
-            Spacer(modifier = Modifier.width(10.dp))
-
-            // 商店名称
-            Text(
-                text = store?.storeName ?: "未知商店",
-                fontSize = 13.sp,
-                modifier = Modifier.weight(1f),
-                fontWeight = FontWeight.Medium
-            )
-
-            // 价格比对
-            Column(horizontalAlignment = Alignment.End) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    if ((deal.savings.toDoubleOrNull() ?: 0.0) > 0) {
-                        Text(
-                            text = formatPrice(deal.retailPrice),
-                            fontSize = 11.sp,
-                            color = Color.Gray,
-                            textDecoration = TextDecoration.LineThrough
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                    }
-                    Text(
-                        text = formatPrice(deal.price),
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = if ((deal.savings.toDoubleOrNull() ?: 0.0) > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
-        }
-    }
-}
