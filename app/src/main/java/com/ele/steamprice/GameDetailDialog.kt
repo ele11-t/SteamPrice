@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -79,13 +80,18 @@ fun GameDetailDialog(
         onDismissRequest = onDismiss,
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable { onDismiss() },
+            contentAlignment = Alignment.Center
+        ) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
                     .fillMaxHeight(0.85f)
-                    .align(Alignment.Center),
+                    .clickable(enabled = false) { }, // 拦截点击事件，防止点击卡片内部也关闭弹窗
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
@@ -132,27 +138,89 @@ fun GameDetailDialog(
                         if (viewModel.isLoadingDetail) {
                             CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
                         } else {
-                            Column {
+                            Column(modifier = Modifier.fillMaxWidth()) {
                                 viewModel.priceDetail?.steamDetail?.price_overview?.let { steamPrice ->
-                                    Text(
-                                        text = "🇨🇳 Steam 国区现价：${steamPrice.final_formatted}",
-                                        fontSize = 14.sp,
-                                        color = Color(0xFF2E7D32),
-                                        fontWeight = FontWeight.ExtraBold,
-                                        modifier = Modifier.clickable {
-                                            deal.steamAppID?.let { appId ->
-                                                uriHandler.openUri("https://store.steampowered.com/app/$appId/")
+                                    Card(
+                                        colors = CardDefaults.cardColors(
+                                            containerColor = Color(0xFF2E7D32).copy(alpha = 0.08f)
+                                        ),
+                                        shape = RoundedCornerShape(12.dp),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(bottom = 8.dp)
+                                            .clickable {
+                                                deal.steamAppID?.let { appId ->
+                                                    uriHandler.openUri("https://store.steampowered.com/app/$appId/")
+                                                }
+                                            }
+                                    ) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(horizontal = 12.dp, vertical = 10.dp),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Text(
+                                                    text = "🇨🇳",
+                                                    fontSize = 20.sp
+                                                )
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                                Column {
+                                                    Text(
+                                                        text = "Steam 国区当前定价",
+                                                        fontSize = 11.sp,
+                                                        color = Color(0xFF2E7D32).copy(alpha = 0.7f),
+                                                        fontWeight = FontWeight.Bold
+                                                    )
+                                                    Text(
+                                                        text = steamPrice.final_formatted,
+                                                        fontSize = 18.sp,
+                                                        color = Color(0xFF2E7D32),
+                                                        fontWeight = FontWeight.ExtraBold
+                                                    )
+                                                }
+                                            }
+
+                                            Surface(
+                                                color = Color(0xFF2E7D32),
+                                                shape = RoundedCornerShape(20.dp)
+                                            ) {
+                                                Row(
+                                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                                                    verticalAlignment = Alignment.CenterVertically
+                                                ) {
+                                                    Text(
+                                                        text = "去商店",
+                                                        color = Color.White,
+                                                        fontSize = 11.sp,
+                                                        fontWeight = FontWeight.Bold
+                                                    )
+                                                    Text(
+                                                        text = " ➔",
+                                                        color = Color.White,
+                                                        fontSize = 10.sp
+                                                    )
+                                                }
                                             }
                                         }
-                                    )
+                                    }
                                 }
                                 viewModel.priceDetail?.cheapestPriceEver?.let { cheapest ->
-                                    Text(
-                                        text = "🏆 全网历史最低：${formatPrice(cheapest.price)}",
-                                        fontSize = 13.sp,
-                                        color = MaterialTheme.colorScheme.primary,
-                                        fontWeight = FontWeight.SemiBold
-                                    )
+                                    Surface(
+                                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
+                                        shape = RoundedCornerShape(8.dp),
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
+                                        Text(
+                                            text = "🏆 全网历史最低参考价：${formatPrice(cheapest.price)}",
+                                            fontSize = 13.sp,
+                                            color = MaterialTheme.colorScheme.primary,
+                                            fontWeight = FontWeight.Bold,
+                                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -368,42 +436,22 @@ fun GameDetailDialog(
 
 
                     Spacer(modifier = Modifier.height(16.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        OutlinedButton(
-                            onClick = onDismiss,
-                            modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(10.dp)
-                        ) {
-                            Text("返回")
-                        }
-
-                        Button(
-                            onClick = {
-                                // 优先引用 Steam 官方国区价格作为监控基准，如果获取不到则回退到 Deal 价格
-                                val steamPrice = viewModel.priceDetail?.steamDetail?.price_overview?.final?.toDouble()?.let { it / 100.0 }
-                                val priceInDouble = steamPrice ?: (deal.salePrice.toDoubleOrNull() ?: 0.0)
-
-                                viewModel.toggleMonitor(
-                                    gameId = deal.gameID,
-                                    title = deal.title,
-                                    appId = deal.steamAppID ?: "",
-                                    currentPrice = priceInDouble
-                                )
-                            },
-                            modifier = Modifier.weight(1.5f),
-                            shape = RoundedCornerShape(10.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (viewModel.isMonitored) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
-                            )
-                        ) {
-                            Text(if (viewModel.isMonitored) "❌ 取消监控" else "🔔 开启降价提醒")
-                        }
-                    }
                 }
+            }
+
+            // 右上角关闭按钮
+            IconButton(
+                onClick = onDismiss,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(top = 40.dp, end = 32.dp)
+                    .background(Color.Black.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "关闭",
+                    tint = Color.White
+                )
             }
 
             AnimatedVisibility(

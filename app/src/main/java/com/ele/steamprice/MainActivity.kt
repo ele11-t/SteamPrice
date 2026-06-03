@@ -6,8 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -27,6 +29,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -204,16 +207,7 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
                         outerPadding = innerPadding
                     )
                 }
-                Screen.Watchlist -> {
-                    Box(modifier = Modifier.padding(innerPadding)) {
-                        WatchlistScreen(viewModel = marketViewModel)
-                    }
-                }
-                Screen.Settings -> {
-                    Box(modifier = Modifier.padding(innerPadding)) {
-                        SettingsTab(viewModel = marketViewModel)
-                    }
-                }
+                else -> {}
             }
         }
 
@@ -263,106 +257,65 @@ fun MarketTab(
 ) {
     Scaffold(
         topBar = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface)
+            Surface(
+                tonalElevation = 4.dp,
+                shadowElevation = 8.dp,
+                color = MaterialTheme.colorScheme.surface
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp, bottom = 4.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = if (viewModel.isSteamOnly) "🎮 Steam 史低雷达" else "🌐 全网折扣雷达",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    IconButton(onClick = { onToggleFilter(true) }) {
-                        Icon(
-                            Icons.Default.FilterList,
-                            contentDescription = "品质过滤",
-                            tint = if (viewModel.minSteamRating > 0 || viewModel.minReviewCount > 0) MaterialTheme.colorScheme.primary else Color.Gray
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Switch(
-                            checked = !viewModel.isSteamOnly,
-                            onCheckedChange = { viewModel.toggleStoreMode(!it) },
-                            modifier = Modifier.scale(0.7f),
-                            colors = SwitchDefaults.colors(
-                                checkedThumbColor = MaterialTheme.colorScheme.secondary,
-                                checkedTrackColor = MaterialTheme.colorScheme.secondaryContainer
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    CenterAlignedTopAppBar(
+                        title = {
+                            Text(
+                                text = if (viewModel.isSteamOnly) "🎮 Steam 史低雷达" else "🌐 全网折扣雷达",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = MaterialTheme.colorScheme.primary
                             )
-                        )
-                        Text(
-                            text = "全网模式",
-                            fontSize = 9.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = if (!viewModel.isSteamOnly) MaterialTheme.colorScheme.secondary else Color.Gray
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Switch(
-                            checked = viewModel.isAAAOnly,
-                            onCheckedChange = { viewModel.toggleAAAOnly(it) },
-                            modifier = Modifier.scale(0.7f),
-                            colors = SwitchDefaults.colors(
-                                checkedThumbColor = MaterialTheme.colorScheme.primary,
-                                checkedTrackColor = MaterialTheme.colorScheme.primaryContainer
-                            )
-                        )
-                        Text(
-                            text = "只看大作",
-                            fontSize = 9.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = if (viewModel.isAAAOnly) MaterialTheme.colorScheme.primary else Color.Gray
-                        )
-                    }
-                }
-
-                TabRow(
-                    selectedTabIndex = viewModel.currentSortMode.ordinal,
-                    containerColor = Color.Transparent,
-                    divider = {},
-                    indicator = { tabPositions ->
-                        SecondaryIndicator(
-                            Modifier.tabIndicatorOffset(tabPositions[viewModel.currentSortMode.ordinal]),
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                ) {
-                    MarketViewModel.SortMode.entries.forEach { mode ->
-                        Tab(
-                            selected = viewModel.currentSortMode == mode,
-                            onClick = { viewModel.onSortModeChanged(mode) },
-                            text = {
-                                Text(
-                                    text = when (mode) {
-                                        MarketViewModel.SortMode.DealRating -> "推荐"
-                                        MarketViewModel.SortMode.PriceHighToLow -> "价格: 高 → 低"
-                                        MarketViewModel.SortMode.PriceLowToHigh -> "价格: 低 → 高"
-                                    },
-                                    fontSize = 12.sp
+                        },
+                        actions = {
+                            IconButton(onClick = { onToggleFilter(true) }) {
+                                Icon(
+                                    Icons.Default.FilterList,
+                                    contentDescription = "品质过滤",
+                                    tint = if (viewModel.minSteamRating > 0 || viewModel.minReviewCount > 0)
+                                        MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
+                        },
+                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                            containerColor = Color.Transparent
                         )
+                    )
+
+                    TabRow(
+                        selectedTabIndex = viewModel.currentSortMode.ordinal,
+                        containerColor = Color.Transparent,
+                        divider = {},
+                        indicator = { tabPositions ->
+                            SecondaryIndicator(
+                                Modifier.tabIndicatorOffset(tabPositions[viewModel.currentSortMode.ordinal]),
+                                color = MaterialTheme.colorScheme.primary,
+                                height = 3.dp
+                            )
+                        }
+                    ) {
+                        MarketViewModel.SortMode.entries.forEach { mode ->
+                            Tab(
+                                selected = viewModel.currentSortMode == mode,
+                                onClick = { viewModel.onSortModeChanged(mode) },
+                                text = {
+                                    Text(
+                                        text = when (mode) {
+                                            MarketViewModel.SortMode.DealRating -> "热门推荐"
+                                            MarketViewModel.SortMode.PriceHighToLow -> "价格降序"
+                                            MarketViewModel.SortMode.PriceLowToHigh -> "价格升序"
+                                        },
+                                        fontSize = 13.sp,
+                                        fontWeight = if (viewModel.currentSortMode == mode) FontWeight.Bold else FontWeight.Normal
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -381,13 +334,17 @@ fun MarketTab(
             }
         }
 
-        LazyColumn(
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
                     top = innerPadding.calculateTopPadding(),
                     bottom = outerPadding.calculateBottomPadding()
-                )
+                ),
+            contentPadding = PaddingValues(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(
                 items = viewModel.dealList,
@@ -407,7 +364,7 @@ fun MarketTab(
                 )
             }
 
-            item {
+            item(span = { GridItemSpan(2) }) {
                 LaunchedEffect(viewModel.dealList.size) {
                     if (!viewModel.isAllLoaded && !viewModel.isPageLoading) {
                         viewModel.loadNextPage()
@@ -448,16 +405,12 @@ fun GameDealCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 6.dp)
             .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Column {
             Box(contentAlignment = Alignment.BottomEnd) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
@@ -469,93 +422,116 @@ fun GameDealCard(
                     placeholder = rememberVectorPainter(Icons.Default.Image),
                     error = rememberVectorPainter(Icons.Default.Image),
                     modifier = Modifier
-                        .size(width = 110.dp, height = 50.dp)
-                        .clip(RoundedCornerShape(6.dp))
+                        .fillMaxWidth()
+                        .aspectRatio(460f / 215f) // 使用更接近 Steam 官方比例的尺寸，减少留白
                         .background(MaterialTheme.colorScheme.surfaceVariant),
                     contentScale = ContentScale.Crop
                 )
 
                 storeInfo?.let {
                     Surface(
-                        modifier = Modifier.padding(2.dp).size(14.dp),
-                        shape = RoundedCornerShape(2.dp),
-                        color = Color.White.copy(alpha = 0.8f)
+                        modifier = Modifier.padding(6.dp).size(18.dp),
+                        shape = RoundedCornerShape(4.dp),
+                        color = Color.White.copy(alpha = 0.9f)
                     ) {
                         AsyncImage(
                             model = it.images.fullIconUrl,
                             contentDescription = null,
-                            modifier = Modifier.padding(1.dp)
+                            modifier = Modifier.padding(2.dp)
+                        )
+                    }
+                }
+
+                val savings = officialPrice?.discount_percent ?: deal.savings.toDoubleOrNull()?.toInt() ?: 0
+                if (savings > 0) {
+                    Surface(
+                        color = MaterialTheme.colorScheme.error,
+                        shape = RoundedCornerShape(bottomEnd = 8.dp),
+                        modifier = Modifier.align(Alignment.TopStart)
+                    ) {
+                        Text(
+                            text = "-$savings%",
+                            color = Color.White,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.padding(10.dp)) {
                 Text(
                     text = deal.title,
-                    fontSize = 15.sp,
+                    fontSize = 15.sp, // 增大标题字体
                     fontWeight = FontWeight.Bold,
-                    maxLines = 1
+                    maxLines = 1, // 改为单行以留出更多空间给价格，或保持两行但优化高度
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "好评: ${deal.steamRatingPercent ?: "0"}% (${deal.steamRatingCount ?: "0"}人评价)",
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.outline
-                )
-            }
 
-            Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
-            Column(horizontalAlignment = Alignment.End) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "👍 ${deal.steamRatingPercent ?: "0"}%",
+                        fontSize = 11.sp,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "${deal.steamRatingCount ?: "0"} 评价",
+                        fontSize = 11.sp,
+                        color = MaterialTheme.colorScheme.outline
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
                 if (officialPrice != null) {
-                    if (officialPrice.discount_percent > 0) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.Bottom,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
                         Text(
-                            text = officialPrice.initial_formatted,
+                            text = officialPrice.final_formatted,
+                            fontSize = 18.sp, // 增大价格字体
+                            fontWeight = FontWeight.ExtraBold,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                        if (officialPrice.discount_percent > 0) {
+                            Text(
+                                text = officialPrice.initial_formatted,
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.outline,
+                                textDecoration = TextDecoration.LineThrough
+                            )
+                        }
+                    }
+                } else {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.Bottom,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = formatPrice(deal.salePrice),
+                            fontSize = 18.sp, // 增大价格字体
+                            fontWeight = FontWeight.ExtraBold,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                        Text(
+                            text = formatPrice(deal.normalPrice),
                             fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.outline,
                             textDecoration = TextDecoration.LineThrough
                         )
                     }
-                    Text(
-                        text = officialPrice.final_formatted,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                    if (officialPrice.discount_percent > 0) {
-                        Text(
-                            text = "-${officialPrice.discount_percent}%",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-                } else {
-                    // 核心兜底逻辑：在 Steam 官方价格异步加载完成前，显示基于汇率转换的人民币/美元参考价
-                    // 这样可以避免一直显示“获取中...”，确保用户随时进入都能看到价格
-                    Text(
-                        text = formatPrice(deal.normalPrice),
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.outline,
-                        textDecoration = TextDecoration.LineThrough
-                    )
-                    Text(
-                        text = formatPrice(deal.salePrice),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = MaterialTheme.colorScheme.error
-                    )
-
-                    val savingsPercent = deal.savings.toDoubleOrNull()?.toInt() ?: 0
-                    Text(
-                        text = "-$savingsPercent%",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.error
-                    )
                 }
             }
         }
@@ -610,13 +586,17 @@ fun TopDealsTab(
             }
         }
 
-        LazyColumn(
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
                     top = innerPadding.calculateTopPadding(),
                     bottom = outerPadding.calculateBottomPadding()
-                )
+                ),
+            contentPadding = PaddingValues(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(
                 items = viewModel.dealList,
@@ -636,7 +616,7 @@ fun TopDealsTab(
                 )
             }
 
-            item {
+            item(span = { GridItemSpan(2) }) {
                 LaunchedEffect(viewModel.dealList.size) {
                     if (!viewModel.isAllLoaded && !viewModel.isPageLoading) {
                         viewModel.loadNextPage()
