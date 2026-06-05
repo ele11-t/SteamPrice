@@ -23,6 +23,11 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
     // 🎯 初始化数据库 DAO 访问层
     private val dao = SteamPriceDatabase.getDatabase(application).steamPriceDao()
 
+    // 🚀 核心优化：限制并发数为 3，防止瞬间并发网络请求过多
+    private val fetchDispatcher = Dispatchers.IO.limitedParallelism(3)
+    // 🚀 核心优化：记录正在获取中的 ID，防止重复请求
+    private val fetchingIds = mutableSetOf<String>()
+
     // ==========================================
     // 👁️ 监控大厅核心：实时观察本地 Room 数据库的变动
     // ==========================================
@@ -98,6 +103,8 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
 
     // 🎯 新增：存储 Steam 官方国区价格映射 (AppID -> PriceOverview)
     val steamPriceMap = mutableStateMapOf<String, com.ele.steamprice.data.SteamPriceOverview>()
+    // 🚀 新增：存储哪些 ID 是 Package (SubID)，用于 UI 切换图片路径
+    val packageIdSet = mutableStateListOf<String>()
 
     init {
         // 🎯 优化：分步启动任务，且每一项都独立 try-catch，防止一个失败导致全盘空白
@@ -298,36 +305,79 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
 
     /**
      * 🚀 批量从 Steam 官方 API 获取国区价格
-     * 优化点：分块请求、防止编码转义、减少冗余数据
+     * 优化点：并发限制、请求去重、分块请求
      */
     private fun fetchOfficialSteamPrices(deals: List<DealItem>) {
         val appIds = deals.mapNotNull { it.steamAppID }
-            .filter { it.isNotEmpty() && it != "0" }
+            .filter { id ->
+                id.isNotEmpty() && 
+                id != "0" && 
+                !steamPriceMap.containsKey(id) && // 不在已成功的 Map 里
+                !fetchingIds.contains(id)         // 也不在正在获取的队列里
+            }
             .distinct()
         
         if (appIds.isEmpty()) return
 
-        // 🎯 优化：分块请求（每组 10 个），Steam API 对大批量 ID 请求不太稳定且有长度限制
+        // 标记为正在获取
+        fetchingIds.addAll(appIds)
+
         appIds.chunked(10).forEach { chunk ->
-            viewModelScope.launch {
+            // 🚀 使用 fetchDispatcher 限制并发数
+            viewModelScope.launch(fetchDispatcher) {
                 try {
                     val idString = chunk.joinToString(",")
+                    // 1. 尝试按 AppID 获取
                     val response = withContext(Dispatchers.IO) {
                         SteamPriceClient.steamApiService.getAppDetails(
                             appid = idString,
-                            filters = "price_overview" // 🎯 只取价格，极大减少流量和解析开销
+                            filters = "price_overview"
                         )
                     }
                     
+                    val failedIds = mutableListOf<String>()
+
                     withContext(Dispatchers.Main) {
-                        response.forEach { (appId, result) ->
-                            if (result.success && result.data?.price_overview != null) {
-                                val cleanId = appId.trim()
-                                steamPriceMap[cleanId] = result.data.price_overview
+                        chunk.forEach { id ->
+                            val result = response[id]
+                            if (result?.success == true && result.data?.price_overview != null) {
+                                steamPriceMap[id.trim()] = result.data.price_overview
+                                fetchingIds.remove(id) // 成功后从队列移除
+                            } else {
+                                failedIds.add(id)
+                            }
+                        }
+                    }
+
+                    // 2. 对失败的 ID 尝试按 PackageID 获取
+                    if (failedIds.isNotEmpty()) {
+                        failedIds.forEach { pkgId ->
+                            try {
+                                val pkgResponse = withContext(Dispatchers.IO) {
+                                    SteamPriceClient.steamApiService.getPackageDetails(pkgId)
+                                }
+                                val pkgResult = pkgResponse[pkgId]
+                                if (pkgResult?.success == true && pkgResult.data?.price_overview != null) {
+                                    withContext(Dispatchers.Main) {
+                                        steamPriceMap[pkgId.trim()] = pkgResult.data.price_overview
+                                        if (!packageIdSet.contains(pkgId)) {
+                                            packageIdSet.add(pkgId)
+                                        }
+                                        fetchingIds.remove(pkgId)
+                                    }
+                                } else {
+                                    // 彻底失败也需要移除，否则该 ID 永远不会再被请求
+                                    withContext(Dispatchers.Main) { fetchingIds.remove(pkgId) }
+                                }
+                            } catch (e: Exception) {
+                                withContext(Dispatchers.Main) { fetchingIds.remove(pkgId) }
+                                Log.e("MarketViewModel", "Package 价格拉取失败: $pkgId")
                             }
                         }
                     }
                 } catch (e: Exception) {
+                    // 发生网络异常，清理这些 ID 状态，允许后续重试
+                    withContext(Dispatchers.Main) { fetchingIds.removeAll(chunk.toSet()) }
                     Log.e("MarketViewModel", "批量获取 Steam 价格失败 (${chunk.firstOrNull()}...): ${e.message}")
                 }
             }

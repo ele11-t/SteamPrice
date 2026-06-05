@@ -77,11 +77,23 @@ interface SteamStoreApiService {
         @Query("cc") country: String = "cn",
         @Query("filters") filters: String? = null // 🎯 新增：支持过滤字段，减少数据量
     ): Map<String, SteamStoreResponse>
+
+    @GET("api/packagedetails")
+    suspend fun getPackageDetails(
+        @Query("packageids") packageid: String,
+        @Query("l") language: String = "schinese",
+        @Query("cc") country: String = "cn"
+    ): Map<String, SteamPackageResponse>
 }
 
 data class SteamStoreResponse(
     val success: Boolean,
     val data: com.ele.steamprice.data.SteamStoreDetail?
+)
+
+data class SteamPackageResponse(
+    val success: Boolean,
+    val data: com.ele.steamprice.data.SteamPackageDetail?
 )
 
 // 🎯 新增：GitHub 更新检测接口

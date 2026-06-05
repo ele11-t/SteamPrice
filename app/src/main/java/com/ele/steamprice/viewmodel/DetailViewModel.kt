@@ -39,6 +39,9 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
     var isMonitored by mutableStateOf(false)
         private set
 
+    var isPackage by mutableStateOf(false)
+        private set
+
     private val gson = Gson()
 
     private val _priceHistory = MutableStateFlow<List<PriceHistoryEntity>>(emptyList())
@@ -69,14 +72,19 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
 
                 var tempSteamDetail: SteamStoreDetail? = null
                 var isFullCache = false
-                
+                val CACHE_EXPIRATION_MS = 24 * 60 * 60 * 1000L // 24小时
+
                 if (cachedDetail != null) {
                     try {
                         tempSteamDetail = gson.fromJson(cachedDetail.detailJson, SteamStoreDetail::class.java)
                         if (!tempSteamDetail?.detailed_description.isNullOrBlank()) {
-                            isFullCache = true
+                            // 检查是否过期
+                            val isExpired = System.currentTimeMillis() - cachedDetail.lastCachedTime > CACHE_EXPIRATION_MS
+                            if (!isExpired) {
+                                isFullCache = true
+                            }
                             priceDetail = priceDetail?.copy(steamDetail = tempSteamDetail)
-                            Log.d("DetailViewModel", "从本地加载了完整详情: $gameId")
+                            Log.d("DetailViewModel", "从本地加载了详情: $gameId (过期: $isExpired)")
                         }
                     } catch (e: Exception) {
                         Log.e("DetailViewModel", "缓存解析失败", e)
@@ -88,31 +96,32 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
                     val appId = detailDeferred.info.steamAppID
                     if (!appId.isNullOrBlank()) {
                         try {
-                            Log.d("DetailViewModel", "尝试从网络补全详情: $appId")
+                            Log.d("DetailViewModel", "尝试从网络补全详情 (AppID): $appId")
                             val steamResponse = withContext(Dispatchers.IO) {
                                 SteamPriceClient.steamApiService.getAppDetails(appId)
                             }
                             val gameData = steamResponse[appId]
-                            if ((gameData?.success == true) && (gameData.data != null)) {
+                            
+                            if (gameData?.success == true && gameData.data != null) {
+                                isPackage = false
                                 val freshDetail = gameData.data
                                 priceDetail = priceDetail?.copy(steamDetail = freshDetail)
-                                
-                                // 💾 更新本地缓存
-                                withContext(Dispatchers.IO) {
-                                    dao.insertDetailCache(
-                                        GameDetailCacheEntity(
-                                            gameId = gameId,
-                                            steamAppId = appId,
-                                            detailJson = gson.toJson(freshDetail),
-                                            lastCachedTime = System.currentTimeMillis(),
-                                        )
-                                    )
+                                saveCache(gameId, appId, freshDetail)
+                                Log.d("DetailViewModel", "App 详情联网更新成功")
+                            } else {
+                                // 🚀 关键回退：如果 AppID 模式失败，尝试 Package (SubID) 模式
+                                Log.i("DetailViewModel", "AppID 模式无效，尝试 PackageID 模式: $appId")
+                                val pkgResponse = withContext(Dispatchers.IO) {
+                                    SteamPriceClient.steamApiService.getPackageDetails(appId)
                                 }
-                                Log.d("DetailViewModel", "详情联网更新成功")
-                            } else if (tempSteamDetail != null) {
-                                // 💡 关键：如果联网失败/返回无效，但有旧缓存，则强行使用旧缓存
-                                priceDetail = priceDetail?.copy(steamDetail = tempSteamDetail)
-                                Log.w("DetailViewModel", "网络数据无效，退而求其次使用旧版缓存")
+                                val pkgData = pkgResponse[appId]
+                                if (pkgData?.success == true && pkgData.data != null) {
+                                    isPackage = true
+                                    val mappedDetail = pkgData.data.toStoreDetail()
+                                    priceDetail = priceDetail?.copy(steamDetail = mappedDetail)
+                                    saveCache(gameId, appId, mappedDetail)
+                                    Log.d("DetailViewModel", "Package 详情联网更新成功")
+                                }
                             }
                         } catch (e: Exception) {
                             Log.e("DetailViewModel", "联网拉取失败", e)
@@ -144,6 +153,19 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
             } finally {
                 isLoadingDetail = false
             }
+        }
+    }
+
+    private suspend fun saveCache(gameId: String, appId: String, detail: SteamStoreDetail) {
+        withContext(Dispatchers.IO) {
+            dao.insertDetailCache(
+                GameDetailCacheEntity(
+                    gameId = gameId,
+                    steamAppId = appId,
+                    detailJson = gson.toJson(detail),
+                    lastCachedTime = System.currentTimeMillis(),
+                )
+            )
         }
     }
 

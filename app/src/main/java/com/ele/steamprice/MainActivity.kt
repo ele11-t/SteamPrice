@@ -48,11 +48,56 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.ImeAction
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.net.toUri
 import com.ele.steamprice.data.DealItem
 import com.ele.steamprice.data.StoreInfo
 import java.util.Locale
 import com.ele.steamprice.viewmodel.MarketViewModel
+import androidx.compose.animation.core.*
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+
+@Composable
+fun shimmerBrush(showShimmer: Boolean = true, targetValue: Float = 1000f): Brush {
+    return if (showShimmer) {
+        val shimmerColors = listOf(
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f),
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+        )
+
+        val transition = rememberInfiniteTransition(label = "shimmer")
+        val translateAnimation = transition.animateFloat(
+            initialValue = 0f,
+            targetValue = targetValue,
+            animationSpec = infiniteRepeatable(
+                animation = tween(800, easing = LinearEasing),
+                repeatMode = RepeatMode.Restart
+            ),
+            label = "shimmer"
+        )
+
+        Brush.linearGradient(
+            colors = shimmerColors,
+            start = Offset.Zero,
+            end = Offset(x = translateAnimation.value, y = translateAnimation.value)
+        )
+    } else {
+        Brush.linearGradient(
+            colors = listOf(Color.Transparent, Color.Transparent),
+            start = Offset.Zero,
+            end = Offset.Zero
+        )
+    }
+}
+
+// 🎯 语义化颜色定义，适配深色模式
+object SteamPriceColors {
+    val SteamGreen @Composable get() = if (isSystemInDarkTheme()) Color(0xFF4CAF50) else Color(0xFF2E7D32)
+    val SteamGreenContainer @Composable get() = SteamGreen.copy(alpha = 0.1f)
+    val RatingGold @Composable get() = Color(0xFFFFB300)
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -360,6 +405,7 @@ fun MarketTab(
                     officialPrice = officialPrice,
                     isRmbMode = viewModel.isRmbMode,
                     exchangeRate = viewModel.exchangeRate,
+                    isPackage = deal.steamAppID?.let { viewModel.packageIdSet.contains(it) } ?: false,
                     onClick = { onGameClick(deal) }
                 )
             }
@@ -391,6 +437,7 @@ fun GameDealCard(
     officialPrice: com.ele.steamprice.data.SteamPriceOverview? = null,
     isRmbMode: Boolean = false,
     exchangeRate: Float = 1.0f,
+    isPackage: Boolean = false,
     onClick: () -> Unit
 ) {
     val formatPrice = { priceStr: String ->
@@ -401,6 +448,8 @@ fun GameDealCard(
             "$$priceStr"
         }
     }
+
+    var isImageLoading by remember { mutableStateOf(true) }
 
     Card(
         modifier = Modifier
@@ -414,23 +463,28 @@ fun GameDealCard(
             Box(contentAlignment = Alignment.BottomEnd) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(deal.hdCapsuleUrl)
+                        .data(deal.getHdCapsuleUrl(isPackage, size = "small"))
                         .crossfade(true)
-                        .diskCacheKey(deal.hdCapsuleUrl)
+                        .diskCacheKey(deal.getHdCapsuleUrl(isPackage, size = "small"))
                         .build(),
                     contentDescription = "游戏封面",
+                    onLoading = { isImageLoading = true },
+                    onSuccess = { isImageLoading = false },
+                    onError = { isImageLoading = false },
                     placeholder = rememberVectorPainter(Icons.Default.Image),
                     error = rememberVectorPainter(Icons.Default.Image),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(460f / 215f) // 使用更接近 Steam 官方比例的尺寸，减少留白
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                        .aspectRatio(460f / 215f)
+                        .background(shimmerBrush(isImageLoading)),
                     contentScale = ContentScale.Crop
                 )
 
                 storeInfo?.let {
                     Surface(
-                        modifier = Modifier.padding(6.dp).size(18.dp),
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .size(18.dp),
                         shape = RoundedCornerShape(4.dp),
                         color = Color.White.copy(alpha = 0.9f)
                     ) {
@@ -463,11 +517,14 @@ fun GameDealCard(
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(
                     text = deal.title,
-                    fontSize = 15.sp, // 增大标题字体
+                    fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
-                    maxLines = 1, // 改为单行以留出更多空间给价格，或保持两行但优化高度
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = if (deal.title.isEmpty()) Modifier
+                        .fillMaxWidth()
+                        .background(shimmerBrush()) else Modifier
                 )
 
                 Spacer(modifier = Modifier.height(6.dp))
@@ -500,7 +557,7 @@ fun GameDealCard(
                     ) {
                         Text(
                             text = officialPrice.final_formatted,
-                            fontSize = 18.sp, // 增大价格字体
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.ExtraBold,
                             color = MaterialTheme.colorScheme.error
                         )
@@ -521,7 +578,7 @@ fun GameDealCard(
                     ) {
                         Text(
                             text = formatPrice(deal.salePrice),
-                            fontSize = 18.sp, // 增大价格字体
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.ExtraBold,
                             color = MaterialTheme.colorScheme.error
                         )
@@ -612,6 +669,7 @@ fun TopDealsTab(
                     officialPrice = officialPrice,
                     isRmbMode = viewModel.isRmbMode,
                     exchangeRate = viewModel.exchangeRate,
+                    isPackage = deal.steamAppID?.let { viewModel.packageIdSet.contains(it) } ?: false,
                     onClick = { onGameClick(deal) }
                 )
             }

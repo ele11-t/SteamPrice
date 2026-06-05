@@ -17,12 +17,22 @@ data class DealItem(
     val steamAppID: String?,      // 🚨 最核心：Steam官方的AppID，用于拼接高清封面图
     val thumb: String             // 缩略图
 ) {
-    // 💡 这是一个黑科技属性：CheapShark 自带的图太小，我们直接用 steamAppID 动态拼接 Steam 官方的高清大图！
-    val hdCapsuleUrl: String get() = if (!steamAppID.isNullOrBlank()) {
-        "https://cdn.akamai.steamstatic.com/steam/apps/$steamAppID/header.jpg"
-    } else {
-        thumb
+    // 💡 阶梯加载：根据不同场景返回不同尺寸的 Steam 官方高清图
+    fun getHdCapsuleUrl(isPackage: Boolean = false, size: String = "header"): String {
+        return if (!steamAppID.isNullOrBlank()) {
+            val type = if (isPackage) "subs" else "apps"
+            val fileName = when (size) {
+                "small" -> "capsule_231x87.jpg"
+                "large" -> "capsule_616x353.jpg"
+                else -> "header.jpg"
+            }
+            "https://cdn.akamai.steamstatic.com/steam/$type/$steamAppID/$fileName"
+        } else {
+            thumb
+        }
     }
+
+    val hdCapsuleUrl: String get() = getHdCapsuleUrl(size = "header")
 
     // 💡 把字符串价格转成浮点数，方便后续我们在UI里算折扣
     val discountPercent: Int get() = savings.toDoubleOrNull()?.toInt() ?: 0
@@ -102,6 +112,36 @@ data class SteamScreenshot(
     val path_thumbnail: String,
     val path_full: String
 )
+
+// 🚀 新增：Package (SubID) 专属详情
+data class SteamPackageDetail(
+    val name: String?,
+    val page_content: String?, // 对应 detailed_description
+    val small_description: String?, // 对应 short_description
+    val header_image: String?,
+    val price_overview: SteamPriceOverview?,
+    val controller_support: String?,
+    val release_date: SteamReleaseDate?
+) {
+    // 💡 关键：将 Package 数据转换为通用的 SteamStoreDetail，适配现有 UI
+    fun toStoreDetail(): SteamStoreDetail {
+        return SteamStoreDetail(
+            short_description = small_description,
+            detailed_description = page_content,
+            developers = null,
+            genres = null,
+            screenshots = emptyList(),
+            pc_requirements = null,
+            supported_languages = null,
+            categories = null,
+            release_date = release_date,
+            metacritic = null,
+            dlc = null,
+            recommendations = null,
+            price_overview = price_overview
+        )
+    }
+}
 
 data class CheapestPriceEver(
     val price: String, // 史低价格
