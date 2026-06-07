@@ -22,9 +22,25 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            val keystoreBase64 = System.getenv("SIGNING_KEY")
+            if (!keystoreBase64.isNullOrEmpty()) {
+                val keystoreFile = file("release.jks")
+                keystoreFile.writeBytes(java.util.Base64.getDecoder().decode(keystoreBase64.trim()))
+                
+                storeFile = keystoreFile
+                storePassword = System.getenv("STORE_PASSWORD")
+                keyAlias = System.getenv("KEY_ALIAS")
+                keyPassword = System.getenv("KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -40,7 +56,6 @@ android {
     }
 }
 
-// 🎯 针对现代 Kotlin 插件最标准的兼容性写法
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     compilerOptions {
         jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
@@ -61,10 +76,10 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
-    implementation("com.google.code.gson:gson:2.11.0") // 🎯 新增：用于 JSON 序列化缓存
+    implementation("com.google.code.gson:gson:2.11.0") 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    implementation("androidx.work:work-runtime-ktx:2.10.0") // 🎯 新增：WorkManager 依赖用于后台同步
+    implementation("androidx.work:work-runtime-ktx:2.10.0") 
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
