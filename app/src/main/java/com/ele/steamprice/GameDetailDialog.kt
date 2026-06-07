@@ -21,6 +21,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.graphics.Color
@@ -225,7 +226,7 @@ fun GameDetailDialog(
                                                     Spacer(modifier = Modifier.width(8.dp))
                                                     Column {
                                                         Text(
-                                                            text = "Steam 国区当前定价",
+                                                            text = stringResource(R.string.steam_cn_price),
                                                             fontSize = 11.sp,
                                                             color = SteamPriceColors.SteamGreen.copy(alpha = 0.7f),
                                                             fontWeight = FontWeight.Bold
@@ -248,7 +249,7 @@ fun GameDetailDialog(
                                                         verticalAlignment = Alignment.CenterVertically
                                                     ) {
                                                         Text(
-                                                            text = "去商店",
+                                                            text = stringResource(R.string.go_to_store),
                                                             color = Color.White,
                                                             fontSize = 11.sp,
                                                             fontWeight = FontWeight.Bold
@@ -270,7 +271,7 @@ fun GameDetailDialog(
                                             modifier = Modifier.fillMaxWidth()
                                         ) {
                                             Text(
-                                                text = "🏆 全网历史最低参考价：${formatPrice(cheapest.price)}",
+                                                text = stringResource(R.string.lowest_ever_ref, formatPrice(cheapest.price)),
                                                 fontSize = 13.sp,
                                                 color = MaterialTheme.colorScheme.primary,
                                                 fontWeight = FontWeight.Bold,
@@ -383,7 +384,7 @@ fun GameDetailDialog(
                                     }
 
                                     Text(
-                                        text = if (isExpanded) "收起详情 ↑" else "展开查看完整剧情与介绍 ↓",
+                                        text = if (isExpanded) stringResource(R.string.collapse_description) else stringResource(R.string.expand_description),
                                         fontSize = 11.sp,
                                         color = MaterialTheme.colorScheme.primary,
                                         fontWeight = FontWeight.Bold,
@@ -397,25 +398,25 @@ fun GameDetailDialog(
                                                 HtmlCompat.fromHtml(langs, HtmlCompat.FROM_HTML_MODE_COMPACT).toString().trim()
                                             }
                                             Column(modifier = Modifier.padding(top = 12.dp)) {
-                                                Text(text = "🌐 支持语言", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                                Text(text = stringResource(R.string.supported_languages), fontSize = 13.sp, fontWeight = FontWeight.Bold)
                                                 Text(text = languages, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                             }
                                         }
 
                                         steam.pc_requirements?.let { reqs ->
                                             Column(modifier = Modifier.padding(top = 12.dp)) {
-                                                Text(text = "💻 系统要求", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                                Text(text = stringResource(R.string.pc_requirements), fontSize = 13.sp, fontWeight = FontWeight.Bold)
                                                 reqs.minimum?.let { min ->
                                                     val minReq = remember(min) {
                                                         HtmlCompat.fromHtml(min, HtmlCompat.FROM_HTML_MODE_COMPACT).toString().trim()
                                                     }
-                                                    Text(text = "【最低配置】\n$minReq", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                                    Text(text = stringResource(R.string.min_requirements) + "\n$minReq", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                                 }
                                                 reqs.recommended?.let { rec ->
                                                     val recReq = remember(rec) {
                                                         HtmlCompat.fromHtml(rec, HtmlCompat.FROM_HTML_MODE_COMPACT).toString().trim()
                                                     }
-                                                    Text(text = "\n【推荐配置】\n$recReq", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                                    Text(text = "\n" + stringResource(R.string.rec_requirements) + "\n$recReq", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                                 }
                                             }
                                         }
@@ -424,7 +425,7 @@ fun GameDetailDialog(
 
                                 steam.developers?.let { devs ->
                                     Text(
-                                        text = "开发商: ${devs.joinToString(", ")}",
+                                        text = stringResource(R.string.developers_label, devs.joinToString(", ")),
                                         fontSize = 11.sp,
                                         color = Color.Gray,
                                         modifier = Modifier.padding(top = 4.dp)
@@ -437,14 +438,14 @@ fun GameDetailDialog(
                                 ) {
                                     steam.release_date?.let { release ->
                                         Column(modifier = Modifier.weight(1f)) {
-                                            Text(text = "📅 发行日期", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                                            Text(text = if (release.coming_soon) "即将推出" else release.date, fontSize = 11.sp, color = Color.Gray)
+                                            Text(text = stringResource(R.string.release_date_label), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                            Text(text = if (release.coming_soon) stringResource(R.string.coming_soon) else release.date, fontSize = 11.sp, color = Color.Gray)
                                         }
                                     }
 
                                     steam.metacritic?.let { meta ->
                                         Column(modifier = Modifier.weight(1f)) {
-                                            Text(text = "⭐ 媒体评分", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                            Text(text = stringResource(R.string.metacritic_label), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                                             Text(
                                                 text = "${meta.score} / 100",
                                                 fontSize = 11.sp,
@@ -461,7 +462,7 @@ fun GameDetailDialog(
 
                                 steam.dlc?.let { dlcList ->
                                     Text(
-                                        text = "📦 包含 ${dlcList.size} 个可选 DLC",
+                                        text = stringResource(R.string.dlc_count_label, dlcList.size),
                                         fontSize = 11.sp,
                                         color = MaterialTheme.colorScheme.secondary,
                                         modifier = Modifier.padding(top = 8.dp)
@@ -470,7 +471,7 @@ fun GameDetailDialog(
 
                                 steam.recommendations?.let { recs ->
                                     Text(
-                                        text = "👍 Steam 共有 ${recs.total} 位玩家推荐",
+                                        text = stringResource(R.string.recommendations_label, recs.total),
                                         fontSize = 11.sp,
                                         color = Color.Gray,
                                         modifier = Modifier.padding(top = 4.dp)
@@ -484,7 +485,7 @@ fun GameDetailDialog(
                         val history by viewModel.priceHistory.collectAsState()
                         if (history.isNotEmpty()) {
                             Text(
-                                text = "📈 价格波动趋势 (监控中)",
+                                text = stringResource(R.string.price_trend_title),
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.align(Alignment.Start).padding(bottom = 8.dp)
@@ -507,7 +508,7 @@ fun GameDetailDialog(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "关闭",
+                        contentDescription = stringResource(R.string.close),
                         tint = Color.White
                     )
                 }
@@ -548,7 +549,7 @@ fun GameDetailDialog(
                                 .data(selectedImageUrl)
                                 .crossfade(enable = true)
                                 .build(),
-                            contentDescription = "大图预览",
+                            contentDescription = stringResource(R.string.image_preview),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp)
@@ -563,7 +564,7 @@ fun GameDetailDialog(
 
                         if (scale == 1f) {
                             Text(
-                                text = "双指缩放查看细节 · 点击返回",
+                                text = stringResource(R.string.image_preview_hint),
                                 color = Color.White.copy(alpha = 0.7f),
                                 fontSize = 12.sp,
                                 modifier = Modifier
@@ -592,7 +593,7 @@ fun PriceTrendChart(history: List<PriceHistoryEntity>) {
     ) {
         if (history.size < 2) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("正在积累价格数据...", fontSize = 12.sp, color = Color.Gray)
+                Text(stringResource(R.string.accumulating_data), fontSize = 12.sp, color = Color.Gray)
             }
         } else {
             Canvas(modifier = Modifier.fillMaxSize()) {
@@ -643,7 +644,7 @@ fun PriceTrendChart(history: List<PriceHistoryEntity>) {
             ) {
                 val sdf = SimpleDateFormat("MM-dd", Locale.getDefault())
                 Text(text = sdf.format(Date(history.first().recordTime)), fontSize = 9.sp, color = Color.Gray)
-                Text(text = "最近价格波动", fontSize = 9.sp, color = Color.Gray)
+                Text(text = stringResource(R.string.recent_price_fluctuation), fontSize = 9.sp, color = Color.Gray)
                 Text(text = sdf.format(Date(history.last().recordTime)), fontSize = 9.sp, color = Color.Gray)
             }
         }

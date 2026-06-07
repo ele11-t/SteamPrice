@@ -1,3 +1,57 @@
 <resources>
     <string name="app_name">SteamPrice</string>
+
+    <!-- MainActivity -->
+    <string name="filter_title">🛡️ 游戏品质硬核过滤</string>
+    <string name="filter_subtitle">设置门槛，帮你过滤掉杂鱼和冷门作品</string>
+    <string name="min_steam_rating">最小 Steam 好评率: %1$d%%</string>
+    <string name="min_review_count">最小玩家评价数: %1$d</string>
+    <string name="price_range">价格区间: $%1$s - %2$s</string>
+    <string name="price_unlimited">不限</string>
+    <string name="currency_conversion">💰 人民币价格换算</string>
+    <string name="exchange_rate_ref">当前汇率参考: 1 USD ≈ %1$s CNY</string>
+    <string name="confirm">确定</string>
+    <string name="tab_steam_radar">🎮 Steam 史低雷达</string>
+    <string name="tab_global_radar">🌐 全网折扣雷达</string>
+    <string name="sort_recommend">热门推荐</string>
+    <string name="sort_price_desc">价格降序</string>
+    <string name="sort_price_asc">价格升序</string>
+    <string name="no_deals_found">未找到相关折扣游戏</string>
+    <string name="no_deals_hint">试试在搜索时关闭“仅看Steam”开关</string>
+    <string name="new_version_found">🚀 发现新版本：%1$s</string>
+    <string name="update_log">更新日志：</string>
+    <string name="download_now">立即去下载</string>
+    <string name="later">稍后再说</string>
+    <string name="game_cover">游戏封面</string>
+    <string name="review_count_suffix">%1$s 评价</string>
+    <string name="top_deals_title">🏆 85分+ 媒体高评榜</string>
+    <string name="quality_filter">品质过滤</string>
+    <string name="settings_title">配置中心</string>
+    <string name="auto_update">自动检查更新</string>
+    <string name="auto_update_desc">连接 GitHub 获取最新版本推送</string>
+    <string name="current_version">当前版本: %1$s</string>
+    <string name="app_edition">SteamPrice 开源版</string>
+
+    <!-- GameDetailDialog -->
+    <string name="steam_cn_price">Steam 国区当前定价</string>
+    <string name="go_to_store">去商店</string>
+    <string name="lowest_ever_ref">🏆 全网历史最低参考价：%1$s</string>
+    <string name="expand_description">展开查看完整剧情与介绍 ↓</string>
+    <string name="collapse_description">收起详情 ↑</string>
+    <string name="supported_languages">🌐 支持语言</string>
+    <string name="pc_requirements">💻 系统要求</string>
+    <string name="min_requirements">【最低配置】</string>
+    <string name="rec_requirements">【推荐配置】</string>
+    <string name="developers_label">开发商: %1$s</string>
+    <string name="release_date_label">📅 发行日期</string>
+    <string name="coming_soon">即将推出</string>
+    <string name="metacritic_label">⭐ 媒体评分</string>
+    <string name="dlc_count_label">📦 包含 %1$d 个可选 DLC</string>
+    <string name="recommendations_label">👍 Steam 共有 %1$d 位玩家推荐</string>
+    <string name="price_trend_title">📈 价格波动趋势 (监控中)</string>
+    <string name="close">关闭</string>
+    <string name="image_preview">大图预览</string>
+    <string name="image_preview_hint">双指缩放查看细节 · 点击返回</string>
+    <string name="accumulating_data">正在积累价格数据...</string>
+    <string name="recent_price_fluctuation">最近价格波动</string>
 </resources>

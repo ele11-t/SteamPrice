@@ -48,6 +48,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.ImeAction
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.net.toUri
 import com.ele.steamprice.data.DealItem
@@ -164,12 +165,12 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
                         .fillMaxWidth()
                         .padding(24.dp)
                 ) {
-                    Text(text = "🛡️ 游戏品质硬核过滤", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                    Text(text = "设置门槛，帮你过滤掉杂鱼和冷门作品", fontSize = 12.sp, color = Color.Gray)
+                    Text(text = stringResource(R.string.filter_title), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(R.string.filter_subtitle), fontSize = 12.sp, color = Color.Gray)
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    Text(text = "最小 Steam 好评率: ${marketViewModel.minSteamRating}%", fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                    Text(text = stringResource(R.string.min_steam_rating, marketViewModel.minSteamRating), fontSize = 14.sp, fontWeight = FontWeight.Medium)
                     Slider(
                         value = marketViewModel.minSteamRating.toFloat(),
                         onValueChange = { marketViewModel.onMinSteamRatingChanged(it.toInt()) },
@@ -179,7 +180,7 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text(text = "最小玩家评价数: ${marketViewModel.minReviewCount}", fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                    Text(text = stringResource(R.string.min_review_count, marketViewModel.minReviewCount), fontSize = 14.sp, fontWeight = FontWeight.Medium)
                     Slider(
                         value = marketViewModel.minReviewCount.toFloat(),
                         onValueChange = { marketViewModel.onMinReviewCountChanged(it.toInt()) },
@@ -190,7 +191,11 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "价格区间: $${marketViewModel.minPrice.toInt()} - $${if (marketViewModel.maxPrice >= 50f) "不限" else marketViewModel.maxPrice.toInt()}",
+                        text = stringResource(
+                            R.string.price_range,
+                            marketViewModel.minPrice.toInt().toString(),
+                            if (marketViewModel.maxPrice >= 50f) stringResource(R.string.price_unlimited) else marketViewModel.maxPrice.toInt().toString()
+                        ),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -209,8 +214,8 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Column {
-                            Text(text = "💰 人民币价格换算", fontSize = 14.sp, fontWeight = FontWeight.Medium)
-                            Text(text = "当前汇率参考: 1 USD ≈ ${marketViewModel.exchangeRate} CNY", fontSize = 11.sp, color = Color.Gray)
+                            Text(text = stringResource(R.string.currency_conversion), fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                            Text(text = stringResource(R.string.exchange_rate_ref, marketViewModel.exchangeRate.toString()), fontSize = 11.sp, color = Color.Gray)
                         }
                         Switch(
                             checked = marketViewModel.isRmbMode,
@@ -224,7 +229,7 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
                         onClick = { showFilterSheet = false },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("确定")
+                        Text(stringResource(R.string.confirm))
                     }
                     
                     Spacer(modifier = Modifier.height(32.dp))
@@ -259,10 +264,10 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
         marketViewModel.latestRelease?.let { release ->
             AlertDialog(
                 onDismissRequest = { marketViewModel.dismissUpdate() },
-                title = { Text("🚀 发现新版本：${release.tagName}") },
+                title = { Text(stringResource(R.string.new_version_found, release.tagName)) },
                 text = {
                     Column {
-                        Text(text = "更新日志：", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        Text(text = stringResource(R.string.update_log), fontWeight = FontWeight.Bold, fontSize = 14.sp)
                         Text(text = release.body, fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
                     }
                 },
@@ -270,12 +275,12 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
                     Button(onClick = {
                         context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, release.htmlUrl.toUri()))
                     }) {
-                        Text("立即去下载")
+                        Text(stringResource(R.string.download_now))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { marketViewModel.dismissUpdate() }) {
-                        Text("稍后再说")
+                        Text(stringResource(R.string.later))
                     }
                 }
             )
@@ -311,7 +316,7 @@ fun MarketTab(
                     CenterAlignedTopAppBar(
                         title = {
                             Text(
-                                text = if (viewModel.isSteamOnly) "🎮 Steam 史低雷达" else "🌐 全网折扣雷达",
+                                text = if (viewModel.isSteamOnly) stringResource(R.string.tab_steam_radar) else stringResource(R.string.tab_global_radar),
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.ExtraBold,
                                 color = MaterialTheme.colorScheme.primary
@@ -321,7 +326,7 @@ fun MarketTab(
                             IconButton(onClick = { onToggleFilter(true) }) {
                                 Icon(
                                     Icons.Default.FilterList,
-                                    contentDescription = "品质过滤",
+                                    contentDescription = stringResource(R.string.quality_filter),
                                     tint = if (viewModel.minSteamRating > 0 || viewModel.minReviewCount > 0)
                                         MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -351,9 +356,9 @@ fun MarketTab(
                                 text = {
                                     Text(
                                         text = when (mode) {
-                                            MarketViewModel.SortMode.DealRating -> "热门推荐"
-                                            MarketViewModel.SortMode.PriceHighToLow -> "价格降序"
-                                            MarketViewModel.SortMode.PriceLowToHigh -> "价格升序"
+                                            MarketViewModel.SortMode.DealRating -> stringResource(R.string.sort_recommend)
+                                            MarketViewModel.SortMode.PriceHighToLow -> stringResource(R.string.sort_price_desc)
+                                            MarketViewModel.SortMode.PriceLowToHigh -> stringResource(R.string.sort_price_asc)
                                         },
                                         fontSize = 13.sp,
                                         fontWeight = if (viewModel.currentSortMode == mode) FontWeight.Bold else FontWeight.Normal
@@ -371,9 +376,9 @@ fun MarketTab(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text("🔍", fontSize = 48.sp)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("未找到相关折扣游戏", color = Color.Gray)
+                    Text(stringResource(R.string.no_deals_found), color = Color.Gray)
                     if (viewModel.isSteamOnly) {
-                        Text("试试在搜索时关闭“仅看Steam”开关", fontSize = 12.sp, color = Color.Gray.copy(alpha = 0.7f))
+                        Text(stringResource(R.string.no_deals_hint), fontSize = 12.sp, color = Color.Gray.copy(alpha = 0.7f))
                     }
                 }
             }
@@ -467,7 +472,7 @@ fun GameDealCard(
                         .crossfade(true)
                         .diskCacheKey(deal.getHdCapsuleUrl(isPackage, size = "small"))
                         .build(),
-                    contentDescription = "游戏封面",
+                    contentDescription = stringResource(R.string.game_cover),
                     onLoading = { isImageLoading = true },
                     onSuccess = { isImageLoading = false },
                     onError = { isImageLoading = false },
@@ -541,7 +546,7 @@ fun GameDealCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "${deal.steamRatingCount ?: "0"} 评价",
+                        text = stringResource(R.string.review_count_suffix, deal.steamRatingCount ?: "0"),
                         fontSize = 11.sp,
                         color = MaterialTheme.colorScheme.outline
                     )
@@ -595,6 +600,7 @@ fun GameDealCard(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopDealsTab(
     viewModel: MarketViewModel,
@@ -611,7 +617,7 @@ fun TopDealsTab(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "🏆 85分+ 媒体高评榜",
+                    text = stringResource(R.string.top_deals_title),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
@@ -623,7 +629,7 @@ fun TopDealsTab(
                 ) {
                     Icon(
                         Icons.Default.FilterList,
-                        contentDescription = "品质过滤",
+                        contentDescription = stringResource(R.string.quality_filter),
                         tint = if (viewModel.minSteamRating > 0 || viewModel.minReviewCount > 0) MaterialTheme.colorScheme.primary else Color.Gray
                     )
                 }
@@ -635,9 +641,9 @@ fun TopDealsTab(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text("🔍", fontSize = 48.sp)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("未找到相关折扣游戏", color = Color.Gray)
+                    Text(stringResource(R.string.no_deals_found), color = Color.Gray)
                     if (viewModel.isSteamOnly) {
-                        Text("试试在搜索时关闭“仅看Steam”开关", fontSize = 12.sp, color = Color.Gray.copy(alpha = 0.7f))
+                        Text(stringResource(R.string.no_deals_hint), fontSize = 12.sp, color = Color.Gray.copy(alpha = 0.7f))
                     }
                 }
             }
@@ -701,7 +707,7 @@ fun SettingsTab(viewModel: MarketViewModel) {
     ) {
         Text(text = "⚙️", fontSize = 48.sp)
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "配置中心", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.settings_title), fontSize = 20.sp, fontWeight = FontWeight.Bold)
         
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -718,9 +724,9 @@ fun SettingsTab(viewModel: MarketViewModel) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = "自动检查更新", fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                    Text(text = stringResource(R.string.auto_update), fontSize = 16.sp, fontWeight = FontWeight.Medium)
                     Text(
-                        text = "连接 GitHub 获取最新版本推送",
+                        text = stringResource(R.string.auto_update_desc),
                         fontSize = 12.sp,
                         color = Color.Gray
                     )
@@ -735,12 +741,12 @@ fun SettingsTab(viewModel: MarketViewModel) {
         Spacer(modifier = Modifier.weight(1f))
         
         Text(
-            text = "当前版本: 1.0",
+            text = stringResource(R.string.current_version, "1.0"),
             fontSize = 12.sp,
             color = Color.Gray
         )
         Text(
-            text = "SteamPrice 开源版",
+            text = stringResource(R.string.app_edition),
             fontSize = 11.sp,
             color = Color.Gray.copy(alpha = 0.7f)
         )
