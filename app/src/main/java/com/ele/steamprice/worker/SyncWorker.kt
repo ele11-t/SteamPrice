@@ -1,11 +1,15 @@
 package com.ele.steamprice.worker
 
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.ele.steamprice.MainActivity
+import com.ele.steamprice.R
 import com.ele.steamprice.api.SteamPriceClient
 import com.ele.steamprice.db.PriceHistoryEntity
 import com.ele.steamprice.db.SteamPriceDatabase
@@ -24,10 +28,7 @@ class SyncWorker(
         try {
             Log.d("SyncWorker", "开始后台自动同步折扣数据...")
 
-            // 1. 获取数据库访问对象
             val dao = SteamPriceDatabase.getDatabase(applicationContext).steamPriceDao()
-            
-            // 2. 获取目前正在监控的游戏列表
             val monitoredGames = dao.getAllMonitoredGames()
 
             if (monitoredGames.isEmpty()) {
@@ -35,19 +36,14 @@ class SyncWorker(
                 return@withContext Result.success()
             }
 
-            // 3. 遍历并更新每个监控游戏的最新价格
             for (game in monitoredGames) {
                 try {
-                    // 调用 API 获取详情（包含最新价格）
                     val detail = SteamPriceClient.apiService.getGamePriceDetail(game.gameId)
-                    
-                    // 找到当前价格最低的那个 Deal
                     val currentCheapest = detail.deals.minByOrNull { it.price.toDouble() }
                     
                     if (currentCheapest != null) {
                         val newPrice = currentCheapest.price.toDouble()
                         
-                        // 如果价格发生变动，更新本地数据库
                         if (newPrice != game.currentPrice) {
                             val now = System.currentTimeMillis()
                             val updatedGame = game.copy(
@@ -56,7 +52,6 @@ class SyncWorker(
                             )
                             dao.insertMonitoredGame(updatedGame)
                             
-                            // 📈 记录价格轨迹到历史表
                             dao.insertPriceHistory(
                                 PriceHistoryEntity(
                                     gameId = game.gameId,
@@ -86,15 +81,27 @@ class SyncWorker(
     }
 
     private fun sendPriceDropNotification(title: String, price: Double) {
+        // 1. 创建点击通知后跳转的 Intent
+        val intent = Intent(applicationContext, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+            applicationContext, 0, intent, 
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // 2. 构建通知
         val builder = NotificationCompat.Builder(applicationContext, "PRICE_DROP_CHANNEL")
-            .setSmallIcon(android.R.drawable.ic_dialog_info) // 这里暂时用系统的
-            .setContentTitle("🎮 降价提醒：$title")
-            .setContentText("你关注的游戏已降至 $${price}，快去看看吧！")
+            .setSmallIcon(R.drawable.ic_launcher_foreground) // 🎯 使用 App 自己的图标
+            .setContentTitle(applicationContext.getString(R.string.notif_title, title))
+            .setContentText(applicationContext.getString(R.string.notif_content, price))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent) // 🎯 设置点击跳转
             .setAutoCancel(true)
 
         try {
             with(NotificationManagerCompat.from(applicationContext)) {
+                // 使用游戏标题的 hashCode 作为 ID，防止不同游戏的通知互相覆盖
                 notify(title.hashCode(), builder.build())
             }
         } catch (e: SecurityException) {

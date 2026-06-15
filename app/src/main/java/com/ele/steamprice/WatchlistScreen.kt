@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,8 +36,8 @@ fun WatchlistScreen(viewModel: MarketViewModel) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(text = "👁️", fontSize = 50.sp)
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "目前没有监控任何游戏呢", color = Color.Gray, fontSize = 14.sp)
-                Text(text = "去大厅找找折扣，点击“监控此游戏”吧！", color = Color.Gray, fontSize = 12.sp)
+                Text(text = stringResource(R.string.watchlist_empty_title), color = Color.Gray, fontSize = 14.sp)
+                Text(text = stringResource(R.string.watchlist_empty_subtitle), color = Color.Gray, fontSize = 12.sp)
             }
         }
     } else {
@@ -77,7 +78,7 @@ fun WatchlistScreen(viewModel: MarketViewModel) {
                         ) {
                             Icon(
                                 Icons.Default.Delete,
-                                contentDescription = "删除",
+                                contentDescription = stringResource(R.string.delete),
                                 tint = Color.White
                             )
                         }
@@ -131,9 +132,9 @@ fun MonitoredGameCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
-                    Text(text = "监控时价格: ${formatPrice(game.addedPrice)}", fontSize = 12.sp, color = Color.Gray)
+                    Text(text = stringResource(R.string.added_price_label, formatPrice(game.addedPrice)), fontSize = 12.sp, color = Color.Gray)
                     Text(
-                        text = "当前价格: ${formatPrice(game.currentPrice)}",
+                        text = stringResource(R.string.current_price_label, formatPrice(game.currentPrice)),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.primary
@@ -147,7 +148,7 @@ fun MonitoredGameCard(
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = "目标价: ${formatPrice(game.targetPrice)}",
+                        text = stringResource(R.string.target_price_label, formatPrice(game.targetPrice)),
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onErrorContainer,
                         fontWeight = FontWeight.Bold

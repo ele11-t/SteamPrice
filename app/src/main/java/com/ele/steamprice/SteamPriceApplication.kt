@@ -26,8 +26,8 @@ class SteamPriceApplication : Application(), ImageLoaderFactory {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Steam 降价提醒"
-            val descriptionText = "当监控的游戏降到目标价格时通知我"
+            val name = getString(R.string.notif_channel_name)
+            val descriptionText = getString(R.string.notif_channel_desc)
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel("PRICE_DROP_CHANNEL", name, importance).apply {
                 description = descriptionText

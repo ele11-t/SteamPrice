@@ -16,6 +16,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -56,6 +58,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.ui.viewinterop.AndroidView
 import android.widget.TextView
 import android.graphics.Typeface
@@ -103,6 +107,7 @@ fun GameDetailDialog(
     exchangeRate: Float = 1.0f,
     viewModel: DetailViewModel = viewModel(),
 ) {
+    val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
     val formatPrice = { priceStr: String ->
         val price = priceStr.toDoubleOrNull() ?: 0.0
@@ -207,7 +212,18 @@ fun GameDetailDialog(
                                                 .padding(bottom = 8.dp)
                                                 .clickable {
                                                     deal.steamAppID?.let { appId ->
-                                                        uriHandler.openUri("https://store.steampowered.com/app/$appId/")
+                                                        val steamUri = "steam://store/$appId"
+                                                        val webPath = if (viewModel.isPackage) "sub" else "app"
+                                                        val webUri = "https://store.steampowered.com/$webPath/$appId/"
+                                                        
+                                                        try {
+                                                            // 🚀 尝试唤起 Steam App
+                                                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(steamUri))
+                                                            context.startActivity(intent)
+                                                        } catch (e: Exception) {
+                                                            // 降级使用浏览器
+                                                            uriHandler.openUri(webUri)
+                                                        }
                                                     }
                                                 }
                                         ) {
@@ -498,19 +514,42 @@ fun GameDetailDialog(
                     }
                 }
 
-                // 右上角关闭按钮
-                IconButton(
-                    onClick = onDismiss,
+                // 右上角操作按钮
+                Row(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(top = 40.dp, end = 32.dp)
-                        .background(Color.Black.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
+                        .padding(top = 40.dp, end = 32.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(R.string.close),
-                        tint = Color.White
-                    )
+                    // 🎯 新增：监控开关按钮
+                    IconButton(
+                        onClick = {
+                            viewModel.toggleMonitor(
+                                gameId = deal.gameID,
+                                title = deal.title,
+                                appId = deal.steamAppID ?: "",
+                                currentPrice = deal.salePrice.toDoubleOrNull() ?: 0.0
+                            )
+                        },
+                        modifier = Modifier.background(Color.Black.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
+                    ) {
+                        Icon(
+                            imageVector = if (viewModel.isMonitored) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = if (viewModel.isMonitored) stringResource(R.string.unmonitor_game) else stringResource(R.string.monitor_game),
+                            tint = if (viewModel.isMonitored) Color.Red else Color.White
+                        )
+                    }
+
+                    IconButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.background(Color.Black.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(R.string.close),
+                            tint = Color.White
+                        )
+                    }
                 }
 
                 AnimatedVisibility(

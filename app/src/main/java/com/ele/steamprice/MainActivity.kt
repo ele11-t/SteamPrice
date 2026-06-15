@@ -257,7 +257,16 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
                         outerPadding = innerPadding
                     )
                 }
-                else -> {}
+                Screen.Watchlist -> {
+                    Box(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())) {
+                        WatchlistScreen(viewModel = marketViewModel)
+                    }
+                }
+                Screen.Settings -> {
+                    Box(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())) {
+                        SettingsTab(viewModel = marketViewModel)
+                    }
+                }
             }
         }
 

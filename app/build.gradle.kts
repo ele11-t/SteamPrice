@@ -4,16 +4,17 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinCompose)
     alias(libs.plugins.ksp)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
     namespace = "com.ele.steamprice"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.ele.steamprice"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -24,13 +25,19 @@ android {
         create("release") {
             val keystoreBase64 = System.getenv("SIGNING_KEY")
             if (!keystoreBase64.isNullOrEmpty()) {
-                val keystoreFile = file("release.jks")
-                keystoreFile.writeBytes(Base64.getDecoder().decode(keystoreBase64.trim()))
-                
-                storeFile = keystoreFile
-                storePassword = System.getenv("STORE_PASSWORD")
-                keyAlias = System.getenv("KEY_ALIAS")
-                keyPassword = System.getenv("KEY_PASSWORD")
+                try {
+                    // 🚀 鲁棒性优化：移除所有空白字符（包括中间的换行）再解码
+                    val cleanBase64 = keystoreBase64.replace("\\s".toRegex(), "")
+                    val keystoreFile = file("release.jks")
+                    keystoreFile.writeBytes(Base64.getDecoder().decode(cleanBase64))
+                    
+                    storeFile = keystoreFile
+                    storePassword = System.getenv("STORE_PASSWORD")
+                    keyAlias = System.getenv("KEY_ALIAS")
+                    keyPassword = System.getenv("KEY_PASSWORD")
+                } catch (e: Exception) {
+                    throw GradleException("Keystore decoding failed: ${e.message}")
+                }
             }
         }
     }
@@ -51,6 +58,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

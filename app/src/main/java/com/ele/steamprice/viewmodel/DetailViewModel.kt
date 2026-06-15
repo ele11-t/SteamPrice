@@ -51,9 +51,20 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
      * 🌍 加载游戏详情、全网比价、商店元数据
      */
     fun loadGameDetail(gameId: String) {
+        // 🚀 核心修复：立即重置所有状态，防止由于 ViewModel 复用导致的 UI 闪烁
+        priceDetail = null
+        isMonitored = false
+        isPackage = false
         isLoadingDetail = true
+
         viewModelScope.launch {
             try {
+                // 🚀 优化 2：优先检查本地数据库监控状态，确保 UI 上的“红心”能瞬间准确显示
+                val existing = withContext(Dispatchers.IO) {
+                    dao.getGameById(gameId)
+                }
+                isMonitored = existing != null
+
                 // 1. 并发抓取史低数据和商店列表
                 val detailDeferred = withContext(Dispatchers.IO) {
                     SteamPriceClient.apiService.getGamePriceDetail(gameId)
@@ -135,10 +146,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
                 }
                 
                 // 4. 检查本地数据库是否已经监控了该游戏
-                val existing = withContext(Dispatchers.IO) {
-                    dao.getGameById(gameId)
-                }
-                isMonitored = existing != null
+                // 🚀 此处逻辑已在函数头部前置处理，故删除重复代码
 
                 // 📈 5. 获取历史价格数据
                 // 无论是否监控，都开启监听流，确保点击开启的一瞬间图表能出来

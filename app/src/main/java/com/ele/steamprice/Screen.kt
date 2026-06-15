@@ -17,5 +17,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
 // 组合成一个方便遍历的列表
 val bottomNavItems = listOf(
     Screen.Market,
-    Screen.TopDeals
+    Screen.TopDeals,
+    Screen.Watchlist,
+    Screen.Settings
 )

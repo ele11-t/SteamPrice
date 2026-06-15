@@ -49,9 +49,25 @@
     <string name="dlc_count_label">📦 包含 %1$d 个可选 DLC</string>
     <string name="recommendations_label">👍 Steam 共有 %1$d 位玩家推荐</string>
     <string name="price_trend_title">📈 价格波动趋势 (监控中)</string>
+    <string name="monitor_game">监控此游戏</string>
+    <string name="unmonitor_game">取消监控</string>
     <string name="close">关闭</string>
     <string name="image_preview">大图预览</string>
     <string name="image_preview_hint">双指缩放查看细节 · 点击返回</string>
     <string name="accumulating_data">正在积累价格数据...</string>
     <string name="recent_price_fluctuation">最近价格波动</string>
+
+    <!-- WatchlistScreen -->
+    <string name="watchlist_empty_title">目前没有监控任何游戏呢</string>
+    <string name="watchlist_empty_subtitle">去大厅找找折扣，点击“监控此游戏”吧！</string>
+    <string name="added_price_label">监控时价格: %1$s</string>
+    <string name="current_price_label">当前价格: %1$s</string>
+    <string name="target_price_label">目标价: %1$s</string>
+    <string name="delete">删除</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_name">Steam 降价提醒</string>
+    <string name="notif_channel_desc">当监控的游戏降到目标价格时通知我</string>
+    <string name="notif_title">🎮 降价提醒：%1$s</string>
+    <string name="notif_content">你关注的游戏已降至 $%1$.2f，快去看看吧！</string>
 </resources>
