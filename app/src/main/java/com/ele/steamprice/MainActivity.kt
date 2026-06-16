@@ -259,7 +259,10 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
                 }
                 Screen.Watchlist -> {
                     Box(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())) {
-                        WatchlistScreen(viewModel = marketViewModel)
+                        WatchlistScreen(
+                            viewModel = marketViewModel,
+                            onGameClick = { selectedDeal = it }
+                        )
                     }
                 }
                 Screen.Settings -> {

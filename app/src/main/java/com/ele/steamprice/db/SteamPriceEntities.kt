@@ -19,7 +19,26 @@ data class MonitoredGameEntity(
     val targetPrice: Double,     // 用户的心理预期价（低于这个价就弹窗提醒）
     val isLowestEver: Boolean,   // 当前是否是历史史低
     val lastUpdateTime: Long     // 上次后台更新价格的时间戳
-)
+) {
+    fun toDealItem(): com.ele.steamprice.data.DealItem {
+        return com.ele.steamprice.data.DealItem(
+            internalName = title,
+            title = title,
+            dealID = "", // 监控模式下不需要真实的 dealID
+            storeID = "1", // 默认显示 Steam 商店
+            gameID = gameId,
+            salePrice = currentPrice.toString(),
+            normalPrice = addedPrice.toString(),
+            savings = "0",
+            metacriticScore = "0",
+            steamRatingText = null,
+            steamRatingPercent = null,
+            steamRatingCount = null,
+            steamAppID = steamAppId,
+            thumb = ""
+        )
+    }
+}
 
 /**
  * 📈 表2：游戏历史价格流水表（专门用来画折线图）
