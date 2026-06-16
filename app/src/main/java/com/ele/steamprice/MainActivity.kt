@@ -576,7 +576,7 @@ fun GameDealCard(
                             text = officialPrice.final_formatted,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.ExtraBold,
-                            color = MaterialTheme.colorScheme.error
+                            color = SteamPriceColors.SteamGreen
                         )
                         if (officialPrice.discount_percent > 0) {
                             Text(
@@ -597,7 +597,7 @@ fun GameDealCard(
                             text = formatPrice(deal.salePrice),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.ExtraBold,
-                            color = MaterialTheme.colorScheme.error
+                            color = SteamPriceColors.SteamGreen
                         )
                         Text(
                             text = formatPrice(deal.normalPrice),

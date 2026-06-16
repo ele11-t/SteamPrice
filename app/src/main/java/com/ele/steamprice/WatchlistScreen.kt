@@ -98,8 +98,7 @@ fun WatchlistScreen(
                 ) {
                     MonitoredGameCard(
                         game = game,
-                        isRmbMode = viewModel.isRmbMode,
-                        exchangeRate = viewModel.exchangeRate,
+                        officialPrice = viewModel.steamPriceMap[game.steamAppId],
                         onClick = { onGameClick(game.toDealItem()) }
                     )
                 }
@@ -111,18 +110,9 @@ fun WatchlistScreen(
 @Composable
 fun MonitoredGameCard(
     game: MonitoredGameEntity,
-    isRmbMode: Boolean = false,
-    exchangeRate: Float = 1.0f,
+    officialPrice: com.ele.steamprice.data.SteamPriceOverview? = null,
     onClick: () -> Unit
 ) {
-    val formatPrice = { price: Double ->
-        if (isRmbMode) {
-            "¥${String.format(Locale.US, "%.2f", price * exchangeRate)}"
-        } else {
-            "$${String.format(Locale.US, "%.2f", price)}"
-        }
-    }
-
     Card(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
@@ -136,7 +126,7 @@ fun MonitoredGameCard(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // 🎯 新增：游戏封面图
+            // 🎯 游戏封面图
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(game.toDealItem().getHdCapsuleUrl(size = "small"))
@@ -171,26 +161,34 @@ fun MonitoredGameCard(
                     verticalAlignment = Alignment.Bottom
                 ) {
                     Column {
-                        Text(text = stringResource(R.string.added_price_label, formatPrice(game.addedPrice)), fontSize = 11.sp, color = Color.Gray)
-                        Text(
-                            text = stringResource(R.string.current_price_label, formatPrice(game.currentPrice)),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        if (officialPrice != null) {
+                            Text(
+                                text = stringResource(R.string.current_price_label, officialPrice.final_formatted),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = SteamPriceColors.SteamGreen
+                            )
+                        } else {
+                            Text(
+                                text = stringResource(R.string.current_price_label, "$${game.currentPrice}"),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = SteamPriceColors.SteamGreen
+                            )
+                        }
                     }
 
-                    // 期望提醒价格（降价10%后的目标价）
-                    Box(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.errorContainer, RoundedCornerShape(6.dp))
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                    // 目标价提示
+                    Surface(
+                        color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.7f),
+                        shape = RoundedCornerShape(6.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.target_price_label, formatPrice(game.targetPrice)),
+                            text = "目标: $${String.format(Locale.US, "%.2f", game.targetPrice)}",
                             fontSize = 10.sp,
                             color = MaterialTheme.colorScheme.onErrorContainer,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                         )
                     }
                 }
