@@ -19,7 +19,23 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.qrcode.QRCodeWriter
+import android.graphics.Bitmap
+import android.graphics.Color as AndroidColor
+import java.io.File
+import java.io.FileOutputStream
+import androidx.core.content.FileProvider
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,6 +74,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+import android.util.Log
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.ui.viewinterop.AndroidView
@@ -123,6 +140,29 @@ fun GameDetailDialog(
 
     var selectedImageUrl by remember { mutableStateOf<String?>(null) }
     var isImageLoading by remember { mutableStateOf(true) }
+    var showShareSheet by remember { mutableStateOf(false) }
+
+    val coroutineScope = rememberCoroutineScope()
+    val graphicsLayer = rememberGraphicsLayer()
+
+    // 🚀 辅助函数：生成二维码 Bitmap
+    fun generateQRCode(text: String): Bitmap? {
+        return try {
+            val writer = QRCodeWriter()
+            val bitMatrix = writer.encode(text, BarcodeFormat.QR_CODE, 200, 200)
+            val width = bitMatrix.width
+            val height = bitMatrix.height
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+            for (x in 0 until width) {
+                for (y in 0 until height) {
+                    bitmap.setPixel(x, y, if (bitMatrix.get(x, y)) AndroidColor.BLACK else AndroidColor.WHITE)
+                }
+            }
+            bitmap
+        } catch (e: Exception) {
+            null
+        }
+    }
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -540,6 +580,18 @@ fun GameDetailDialog(
                         )
                     }
 
+                    // 🚀 新增：分享按钮
+                    IconButton(
+                        onClick = { showShareSheet = true },
+                        modifier = Modifier.background(Color.Black.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = stringResource(R.string.share_game),
+                            tint = Color.White
+                        )
+                    }
+
                     IconButton(
                         onClick = onDismiss,
                         modifier = Modifier.background(Color.Black.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
@@ -612,6 +664,160 @@ fun GameDetailDialog(
                             )
                         }
                     }
+                }
+
+                // 🚀 神价分享海报生成弹窗
+                if (showShareSheet) {
+                    AlertDialog(
+                        onDismissRequest = { showShareSheet = false },
+                        title = { Text(stringResource(R.string.share_game)) },
+                        text = {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .drawWithContent {
+                                        // 🎯 核心：将 UI 捕获到 graphicsLayer 准备生成位图
+                                        graphicsLayer.record {
+                                            this@drawWithContent.drawContent()
+                                        }
+                                        drawContent()
+                                    }
+                                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(16.dp))
+                                    .padding(20.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                // 1. 游戏大图封面
+                                AsyncImage(
+                                    model = deal.getHdCapsuleUrl(viewModel.isPackage, size = "large"),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .aspectRatio(460f / 215f)
+                                        .clip(RoundedCornerShape(8.dp)),
+                                    contentScale = ContentScale.Crop
+                                )
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                // 2. 标题与史低勋章
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = deal.title,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier.weight(1f),
+                                        maxLines = 2
+                                    )
+                                    
+                                    viewModel.priceDetail?.cheapestPriceEver?.let { cheapest ->
+                                        val currentPrice = deal.salePrice.toDoubleOrNull() ?: 0.0
+                                        val lowestPrice = cheapest.price.toDoubleOrNull() ?: 0.0
+                                        if (currentPrice <= lowestPrice) {
+                                            Surface(
+                                                color = MaterialTheme.colorScheme.primaryContainer,
+                                                shape = RoundedCornerShape(4.dp),
+                                                modifier = Modifier.padding(start = 8.dp)
+                                            ) {
+                                                Text(
+                                                    text = stringResource(R.string.share_lowest_badge),
+                                                    fontSize = 10.sp,
+                                                    color = MaterialTheme.colorScheme.primary,
+                                                    fontWeight = FontWeight.Bold,
+                                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                // 3. 价格与二维码展示
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Column {
+                                        val displayPrice = viewModel.priceDetail?.steamDetail?.price_overview?.final_formatted 
+                                            ?: "$${deal.salePrice}"
+                                        
+                                        Text(
+                                            text = displayPrice,
+                                            fontSize = 28.sp,
+                                            fontWeight = FontWeight.ExtraBold,
+                                            color = MaterialTheme.colorScheme.primary
+                                        )
+                                        Text(
+                                            text = stringResource(R.string.share_scan_hint),
+                                            fontSize = 10.sp,
+                                            color = Color.Gray
+                                        )
+                                    }
+
+                                    // 🚀 二维码：指向国区商店页面
+                                    val qrBitmap = remember(deal.steamAppID) {
+                                        generateQRCode("https://store.steampowered.com/app/${deal.steamAppID}/?cc=cn")
+                                    }
+                                    qrBitmap?.let {
+                                        AsyncImage(
+                                            model = it,
+                                            contentDescription = "QR Code",
+                                            modifier = Modifier.size(60.dp)
+                                        )
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.height(20.dp))
+                                Text(
+                                    text = "—— " + stringResource(R.string.app_name) + " ——",
+                                    fontSize = 10.sp,
+                                    color = Color.Gray.copy(alpha = 0.5f)
+                                )
+                            }
+                        },
+                        confirmButton = {
+                            Button(onClick = {
+                                coroutineScope.launch {
+                                    try {
+                                        // 🎯 将 UI 图层转为 Bitmap 并分享
+                                        val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
+                                        
+                                        val cachePath = File(context.cacheDir, "shared_images")
+                                        cachePath.mkdirs()
+                                        val file = File(cachePath, "share_${deal.gameID}.png")
+                                        withContext(Dispatchers.IO) {
+                                            FileOutputStream(file).use { out ->
+                                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                                            }
+                                        }
+
+                                        val contentUri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+                                        val shareIntent = Intent().apply {
+                                            action = Intent.ACTION_SEND
+                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                            setDataAndType(contentUri, context.contentResolver.getType(contentUri))
+                                            putExtra(Intent.EXTRA_STREAM, contentUri)
+                                        }
+                                        context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_title)))
+                                        showShareSheet = false
+                                    } catch (e: Exception) {
+                                        Log.e("Share", "Share failed", e)
+                                    }
+                                }
+                            }) {
+                                Text(stringResource(R.string.confirm))
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showShareSheet = false }) {
+                                Text(stringResource(R.string.close))
+                            }
+                        }
+                    )
                 }
             }
         }
