@@ -148,7 +148,7 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
                     SteamPriceClient.githubApiService.getLatestRelease("ele11-t", "SteamPrice")
                 }
                 
-                val currentVersion = "1.0" 
+                val currentVersion = "1.2"
                 if (response.tagName != currentVersion) {
                     latestRelease = response
                 }

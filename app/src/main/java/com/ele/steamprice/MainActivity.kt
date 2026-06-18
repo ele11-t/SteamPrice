@@ -799,7 +799,7 @@ fun SettingsTab(viewModel: MarketViewModel) {
         Spacer(modifier = Modifier.weight(1f))
         
         Text(
-            text = stringResource(R.string.current_version, "1.0"),
+            text = stringResource(R.string.current_version, "1.2"),
             fontSize = 12.sp,
             color = Color.Gray
         )
