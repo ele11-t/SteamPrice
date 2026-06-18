@@ -86,6 +86,22 @@ class MarketViewModel(application: Application) : AndroidViewModel(application) 
     var isSteamOnly by mutableStateOf(true)
         private set
 
+    // 🚀 增加持久化存储
+    private val prefs = application.getSharedPreferences("steam_price_prefs", android.content.Context.MODE_PRIVATE)
+    private val THEME_KEY = "current_theme_mode"
+
+    // 🚀 新增：主题模式控制
+    enum class ThemeMode { System, Light, Dark }
+    var currentThemeMode by mutableStateOf(
+        ThemeMode.valueOf(prefs.getString(THEME_KEY, ThemeMode.System.name) ?: ThemeMode.System.name)
+    )
+        private set
+
+    fun onThemeModeChanged(mode: ThemeMode) {
+        currentThemeMode = mode
+        prefs.edit().putString(THEME_KEY, mode.name).apply()
+    }
+
     // 💰 汇率控制：人民币模式 (🎯 默认开启)
     var isRmbMode by mutableStateOf(true)
         private set

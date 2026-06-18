@@ -76,6 +76,10 @@ import java.util.Locale
 
 import android.util.Log
 import android.content.Intent
+import android.content.ContentValues
+import android.provider.MediaStore
+import android.widget.Toast
+import android.os.Build
 import android.net.Uri
 import androidx.compose.ui.viewinterop.AndroidView
 import android.widget.TextView
@@ -144,6 +148,38 @@ fun GameDetailDialog(
 
     val coroutineScope = rememberCoroutineScope()
     val graphicsLayer = rememberGraphicsLayer()
+
+    // 🚀 辅助函数：保存 Bitmap 到系统相册
+    fun saveBitmapToGallery(bitmap: Bitmap) {
+        val fileName = "SteamPrice_${System.currentTimeMillis()}.png"
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+            put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/SteamPrice")
+                put(MediaStore.Images.Media.IS_PENDING, 1)
+            }
+        }
+
+        val resolver = context.contentResolver
+        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        try {
+            uri?.let {
+                resolver.openOutputStream(it)?.use { stream ->
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    contentValues.clear()
+                    contentValues.put(MediaStore.Images.Media.IS_PENDING, 0)
+                    resolver.update(it, contentValues, null, null)
+                }
+                Toast.makeText(context, context.getString(R.string.share_saved_success), Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(context, context.getString(R.string.share_saved_failed), Toast.LENGTH_SHORT).show()
+        }
+    }
 
     // 🚀 辅助函数：生成二维码 Bitmap
     fun generateQRCode(text: String): Bitmap? {
@@ -670,7 +706,6 @@ fun GameDetailDialog(
                 if (showShareSheet) {
                     AlertDialog(
                         onDismissRequest = { showShareSheet = false },
-                        title = { Text(stringResource(R.string.share_game)) },
                         text = {
                             Column(
                                 modifier = Modifier
@@ -686,6 +721,7 @@ fun GameDetailDialog(
                                     .padding(20.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
+// ... (rest of the layout)
                                 // 1. 游戏大图封面
                                 AsyncImage(
                                     model = deal.getHdCapsuleUrl(viewModel.isPackage, size = "large"),
@@ -780,36 +816,48 @@ fun GameDetailDialog(
                             }
                         },
                         confirmButton = {
-                            Button(onClick = {
-                                coroutineScope.launch {
-                                    try {
-                                        // 🎯 将 UI 图层转为 Bitmap 并分享
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                // 🚀 保存按钮
+                                TextButton(onClick = {
+                                    coroutineScope.launch {
                                         val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
-                                        
-                                        val cachePath = File(context.cacheDir, "shared_images")
-                                        cachePath.mkdirs()
-                                        val file = File(cachePath, "share_${deal.gameID}.png")
-                                        withContext(Dispatchers.IO) {
-                                            FileOutputStream(file).use { out ->
-                                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
-                                            }
-                                        }
-
-                                        val contentUri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
-                                        val shareIntent = Intent().apply {
-                                            action = Intent.ACTION_SEND
-                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                            setDataAndType(contentUri, context.contentResolver.getType(contentUri))
-                                            putExtra(Intent.EXTRA_STREAM, contentUri)
-                                        }
-                                        context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_title)))
-                                        showShareSheet = false
-                                    } catch (e: Exception) {
-                                        Log.e("Share", "Share failed", e)
+                                        saveBitmapToGallery(bitmap)
                                     }
+                                }) {
+                                    Text(stringResource(R.string.share_save))
                                 }
-                            }) {
-                                Text(stringResource(R.string.confirm))
+
+                                // 🚀 分享按钮
+                                Button(onClick = {
+                                    coroutineScope.launch {
+                                        try {
+                                            val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
+                                            
+                                            val cachePath = File(context.cacheDir, "shared_images")
+                                            cachePath.mkdirs()
+                                            val file = File(cachePath, "share_${deal.gameID}.png")
+                                            withContext(Dispatchers.IO) {
+                                                FileOutputStream(file).use { out ->
+                                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                                                }
+                                            }
+
+                                            val contentUri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+                                            val shareIntent = Intent().apply {
+                                                action = Intent.ACTION_SEND
+                                                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                                setDataAndType(contentUri, context.contentResolver.getType(contentUri))
+                                                putExtra(Intent.EXTRA_STREAM, contentUri)
+                                            }
+                                            context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_title)))
+                                            showShareSheet = false
+                                        } catch (e: Exception) {
+                                            Log.e("Share", "Share failed", e)
+                                        }
+                                    }
+                                }) {
+                                    Text(stringResource(R.string.share_game))
+                                }
                             }
                         },
                         dismissButton = {

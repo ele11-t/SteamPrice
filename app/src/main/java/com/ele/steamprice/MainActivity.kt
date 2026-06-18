@@ -106,12 +106,20 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            MaterialTheme {
+            val marketViewModel: MarketViewModel = viewModel()
+            val themeMode = marketViewModel.currentThemeMode
+            val isDarkTheme = when (themeMode) {
+                MarketViewModel.ThemeMode.System -> isSystemInDarkTheme()
+                MarketViewModel.ThemeMode.Light -> false
+                MarketViewModel.ThemeMode.Dark -> true
+            }
+
+            MaterialTheme(colorScheme = if (isDarkTheme) darkColorScheme() else lightColorScheme()) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainAppScreen()
+                    MainAppScreen(marketViewModel)
                 }
             }
         }
@@ -258,7 +266,13 @@ fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
                     )
                 }
                 Screen.Watchlist -> {
-                    Box(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())) {
+                    Box(modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            top = innerPadding.calculateTopPadding(),
+                            bottom = innerPadding.calculateBottomPadding()
+                        )
+                    ) {
                         WatchlistScreen(
                             viewModel = marketViewModel,
                             onGameClick = { selectedDeal = it }
@@ -709,6 +723,7 @@ fun TopDealsTab(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsTab(viewModel: MarketViewModel) {
     Column(
@@ -722,6 +737,37 @@ fun SettingsTab(viewModel: MarketViewModel) {
         Text(text = stringResource(R.string.settings_title), fontSize = 20.sp, fontWeight = FontWeight.Bold)
         
         Spacer(modifier = Modifier.height(32.dp))
+
+        // 🚀 新增：主题模式切换
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(text = stringResource(R.string.theme_mode), fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                Spacer(modifier = Modifier.height(12.dp))
+                
+                SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+                    MarketViewModel.ThemeMode.entries.forEachIndexed { index, mode ->
+                        SegmentedButton(
+                            selected = viewModel.currentThemeMode == mode,
+                            onClick = { viewModel.onThemeModeChanged(mode) },
+                            shape = SegmentedButtonDefaults.itemShape(index = index, count = MarketViewModel.ThemeMode.entries.size)
+                        ) {
+                            Text(
+                                text = when (mode) {
+                                    MarketViewModel.ThemeMode.System -> stringResource(R.string.theme_system)
+                                    MarketViewModel.ThemeMode.Light -> stringResource(R.string.theme_light)
+                                    MarketViewModel.ThemeMode.Dark -> stringResource(R.string.theme_dark)
+                                },
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
 
         Surface(
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),

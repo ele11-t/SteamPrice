@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -99,6 +100,7 @@ fun WatchlistScreen(
                     MonitoredGameCard(
                         game = game,
                         officialPrice = viewModel.steamPriceMap[game.steamAppId],
+                        exchangeRate = viewModel.exchangeRate,
                         onClick = { onGameClick(game.toDealItem()) }
                     )
                 }
@@ -111,6 +113,7 @@ fun WatchlistScreen(
 fun MonitoredGameCard(
     game: MonitoredGameEntity,
     officialPrice: com.ele.steamprice.data.SteamPriceOverview? = null,
+    exchangeRate: Float = 7.23f,
     onClick: () -> Unit
 ) {
     Card(
@@ -183,8 +186,16 @@ fun MonitoredGameCard(
                         color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.7f),
                         shape = RoundedCornerShape(6.dp)
                     ) {
+                        // 🚀 核心修复：采用比例换算法，确保目标价与国区现价逻辑一致
+                        val targetDisplayCny = if (officialPrice != null) {
+                            val ratio = if (game.currentPrice > 0) game.targetPrice / game.currentPrice else 0.9
+                            (officialPrice.final / 100.0) * ratio
+                        } else {
+                            game.targetPrice * exchangeRate
+                        }
+
                         Text(
-                            text = "目标: $${String.format(Locale.US, "%.2f", game.targetPrice)}",
+                            text = "目标: ¥${String.format(Locale.US, "%.2f", targetDisplayCny)}",
                             fontSize = 10.sp,
                             color = MaterialTheme.colorScheme.onErrorContainer,
                             fontWeight = FontWeight.Bold,
