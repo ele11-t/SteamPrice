@@ -1,0 +1,4639 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.github/workflows/android.yml
+.gitignore
+app/.gitignore
+app/build.gradle.kts
+app/proguard-rules.pro
+app/release/baselineProfiles/0/app-release.dm
+app/release/baselineProfiles/1/app-release.dm
+app/release/output-metadata.json
+app/release/SteamPrice v1.1.apk
+app/src/androidTest/java/com/ele/steamprice/ExampleInstrumentedTest.kt
+app/src/main/AndroidManifest.xml
+app/src/main/java/com/ele/steamprice/api/CheapSharkApiService.kt
+app/src/main/java/com/ele/steamprice/data/SteamPriceModel.kt
+app/src/main/java/com/ele/steamprice/db/SteamPriceDao.kt
+app/src/main/java/com/ele/steamprice/db/SteamPriceDatabase.kt
+app/src/main/java/com/ele/steamprice/db/SteamPriceEntities.kt
+app/src/main/java/com/ele/steamprice/GameDetailDialog.kt
+app/src/main/java/com/ele/steamprice/MainActivity.kt
+app/src/main/java/com/ele/steamprice/Screen.kt
+app/src/main/java/com/ele/steamprice/SteamPriceApplication.kt
+app/src/main/java/com/ele/steamprice/ui/theme/Color.kt
+app/src/main/java/com/ele/steamprice/ui/theme/Theme.kt
+app/src/main/java/com/ele/steamprice/ui/theme/Type.kt
+app/src/main/java/com/ele/steamprice/viewmodel/DetailViewModel.kt
+app/src/main/java/com/ele/steamprice/viewmodel/MarketViewModel.kt
+app/src/main/java/com/ele/steamprice/WatchlistScreen.kt
+app/src/main/java/com/ele/steamprice/worker/SyncWorker.kt
+app/src/main/res/drawable/ic_launcher_background.xml
+app/src/main/res/drawable/ic_launcher_foreground.xml
+app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+app/src/main/res/mipmap-hdpi/ic_launcher_round.webp
+app/src/main/res/mipmap-hdpi/ic_launcher.webp
+app/src/main/res/mipmap-mdpi/ic_launcher_round.webp
+app/src/main/res/mipmap-mdpi/ic_launcher.webp
+app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp
+app/src/main/res/mipmap-xhdpi/ic_launcher.webp
+app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp
+app/src/main/res/mipmap-xxhdpi/ic_launcher.webp
+app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp
+app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp
+app/src/main/res/values/colors.xml
+app/src/main/res/values/strings.xml
+app/src/main/res/values/themes.xml
+app/src/main/res/xml/backup_rules.xml
+app/src/main/res/xml/data_extraction_rules.xml
+app/src/main/res/xml/file_paths.xml
+app/src/test/java/com/ele/steamprice/ExampleUnitTest.kt
+build.gradle.kts
+gradle.properties
+gradle/gradle-daemon-jvm.properties
+gradle/libs.versions.toml
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+gradlew
+gradlew.bat
+settings.gradle.kts
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="app/.gitignore">
+/build
+</file>
+
+<file path="app/proguard-rules.pro">
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
+
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile
+</file>
+
+<file path="app/release/output-metadata.json">
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.ele.steamprice",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 2,
+      "versionName": "1.1",
+      "outputFile": "app-release.apk"
+    }
+  ],
+  "elementType": "File",
+  "baselineProfiles": [
+    {
+      "minApi": 28,
+      "maxApi": 30,
+      "baselineProfiles": [
+        "baselineProfiles/1/app-release.dm"
+      ]
+    },
+    {
+      "minApi": 31,
+      "maxApi": 2147483647,
+      "baselineProfiles": [
+        "baselineProfiles/0/app-release.dm"
+      ]
+    }
+  ],
+  "minSdkVersionForDexing": 24
+}
+</file>
+
+<file path="app/src/androidTest/java/com/ele/steamprice/ExampleInstrumentedTest.kt">
+package com.ele.steamprice
+
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.ext.junit.runners.AndroidJUnit4
+
+import org.junit.Test
+import org.junit.runner.RunWith
+
+import org.junit.Assert.*
+
+/**
+ * Instrumented test, which will execute on an Android device.
+ *
+ * See [testing documentation](http://d.android.com/tools/testing).
+ */
+@RunWith(AndroidJUnit4::class)
+class ExampleInstrumentedTest {
+    @Test
+    fun useAppContext() {
+        // Context of the app under test.
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        assertEquals("com.ele.steamprice", appContext.packageName)
+    }
+}
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/ui/theme/Color.kt">
+package com.ele.steamprice.ui.theme
+
+import androidx.compose.ui.graphics.Color
+
+val Purple80 = Color(0xFFD0BCFF)
+val PurpleGrey80 = Color(0xFFCCC2DC)
+val Pink80 = Color(0xFFEFB8C8)
+
+val Purple40 = Color(0xFF6650a4)
+val PurpleGrey40 = Color(0xFF625b71)
+val Pink40 = Color(0xFF7D5260)
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/ui/theme/Theme.kt">
+package com.ele.steamprice.ui.theme
+
+import android.app.Activity
+import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+
+private val DarkColorScheme = darkColorScheme(
+    primary = Purple80,
+    secondary = PurpleGrey80,
+    tertiary = Pink80
+)
+
+private val LightColorScheme = lightColorScheme(
+    primary = Purple40,
+    secondary = PurpleGrey40,
+    tertiary = Pink40
+
+    /* Other default colors to override
+    background = Color(0xFFFFFBFE),
+    surface = Color(0xFFFFFBFE),
+    onPrimary = Color.White,
+    onSecondary = Color.White,
+    onTertiary = Color.White,
+    onBackground = Color(0xFF1C1B1F),
+    onSurface = Color(0xFF1C1B1F),
+    */
+)
+
+@Composable
+fun SteamPriceTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    // Dynamic color is available on Android 12+
+    dynamicColor: Boolean = true,
+    content: @Composable () -> Unit
+) {
+    val colorScheme = when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            val context = LocalContext.current
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
+
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
+    }
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography,
+        content = content
+    )
+}
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/ui/theme/Type.kt">
+package com.ele.steamprice.ui.theme
+
+import androidx.compose.material3.Typography
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+
+// Set of Material typography styles to start with
+val Typography = Typography(
+    bodyLarge = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    )
+    /* Other default text styles to override
+    titleLarge = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    ),
+    labelSmall = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Medium,
+        fontSize = 11.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp
+    )
+    */
+)
+</file>
+
+<file path="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml">
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@drawable/ic_launcher_background" />
+    <foreground android:drawable="@drawable/ic_launcher_foreground" />
+    <monochrome android:drawable="@drawable/ic_launcher_foreground" />
+</adaptive-icon>
+</file>
+
+<file path="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml">
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@drawable/ic_launcher_background" />
+    <foreground android:drawable="@drawable/ic_launcher_foreground" />
+    <monochrome android:drawable="@drawable/ic_launcher_foreground" />
+</adaptive-icon>
+</file>
+
+<file path="app/src/main/res/values/colors.xml">
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
+</file>
+
+<file path="app/src/main/res/values/themes.xml">
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.SteamPrice" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
+</file>
+
+<file path="app/src/main/res/xml/backup_rules.xml">
+<?xml version="1.0" encoding="utf-8"?><!--
+   Sample backup rules file; uncomment and customize as necessary.
+   See https://developer.android.com/guide/topics/data/autobackup
+   for details.
+   Note: This file is ignored for devices older than API 31
+   See https://developer.android.com/about/versions/12/backup-restore
+-->
+<full-backup-content>
+    <!--
+   <include domain="sharedpref" path="."/>
+   <exclude domain="sharedpref" path="device.xml"/>
+-->
+</full-backup-content>
+</file>
+
+<file path="app/src/main/res/xml/data_extraction_rules.xml">
+<?xml version="1.0" encoding="utf-8"?><!--
+   Sample data extraction rules file; uncomment and customize as necessary.
+   See https://developer.android.com/about/versions/12/backup-restore#xml-changes
+   for details.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- TODO: Use <include> and <exclude> to control what is backed up.
+        <include .../>
+        <exclude .../>
+        -->
+    </cloud-backup>
+    <!--
+    <device-transfer>
+        <include .../>
+        <exclude .../>
+    </device-transfer>
+    -->
+</data-extraction-rules>
+</file>
+
+<file path="app/src/main/res/xml/file_paths.xml">
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <cache-path name="shared_images" path="shared_images/" />
+</paths>
+</file>
+
+<file path="app/src/test/java/com/ele/steamprice/ExampleUnitTest.kt">
+package com.ele.steamprice
+
+import org.junit.Test
+
+import org.junit.Assert.*
+
+/**
+ * Example local unit test, which will execute on the development machine (host).
+ *
+ * See [testing documentation](http://d.android.com/tools/testing).
+ */
+class ExampleUnitTest {
+    @Test
+    fun addition_isCorrect() {
+        assertEquals(4, 2 + 2)
+    }
+}
+</file>
+
+<file path="gradle.properties">
+# Project-wide Gradle settings.
+# IDE (e.g. Android Studio) users:
+# Gradle settings configured through the IDE *will override*
+# any settings specified in this file.
+# For more details on how to configure your build environment visit
+# http://www.gradle.org/docs/current/userguide/build_environment.html
+# Specifies the JVM arguments used for the daemon process.
+# The setting is particularly useful for tweaking memory settings.
+org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
+# When configured, Gradle will run in incubating parallel mode.
+# This option should only be used with decoupled projects. For more details, visit
+# https://developer.android.com/r/tools/gradle-multi-project-decoupled-projects
+# org.gradle.parallel=true
+# Kotlin code style for this project: "official" or "obsolete":
+kotlin.code.style=official
+android.disallowKotlinSourceSets=false
+</file>
+
+<file path="gradle/gradle-daemon-jvm.properties">
+#This file is generated by updateDaemonJvm
+toolchainUrl.FREE_BSD.AARCH64=https\://api.foojay.io/disco/v3.0/ids/ec7520a1e057cd116f9544c42142a16b/redirect
+toolchainUrl.FREE_BSD.X86_64=https\://api.foojay.io/disco/v3.0/ids/4c4f879899012ff0a8b2e2117df03b0e/redirect
+toolchainUrl.LINUX.AARCH64=https\://api.foojay.io/disco/v3.0/ids/ec7520a1e057cd116f9544c42142a16b/redirect
+toolchainUrl.LINUX.X86_64=https\://api.foojay.io/disco/v3.0/ids/4c4f879899012ff0a8b2e2117df03b0e/redirect
+toolchainUrl.MAC_OS.AARCH64=https\://api.foojay.io/disco/v3.0/ids/73bcfb608d1fde9fb62e462f834a3299/redirect
+toolchainUrl.MAC_OS.X86_64=https\://api.foojay.io/disco/v3.0/ids/846ee0d876d26a26f37aa1ce8de73224/redirect
+toolchainUrl.UNIX.AARCH64=https\://api.foojay.io/disco/v3.0/ids/ec7520a1e057cd116f9544c42142a16b/redirect
+toolchainUrl.UNIX.X86_64=https\://api.foojay.io/disco/v3.0/ids/4c4f879899012ff0a8b2e2117df03b0e/redirect
+toolchainUrl.WINDOWS.AARCH64=https\://api.foojay.io/disco/v3.0/ids/9482ddec596298c84656d31d16652665/redirect
+toolchainUrl.WINDOWS.X86_64=https\://api.foojay.io/disco/v3.0/ids/39701d92e1756bb2f141eb67cd4c660e/redirect
+toolchainVersion=21
+</file>
+
+<file path="gradle/wrapper/gradle-wrapper.properties">
+#Tue May 26 10:45:21 SGT 2026
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionSha256Sum=2ab2958f2a1e51120c326cad6f385153bb11ee93b3c216c5fccebfdfbb7ec6cb
+distributionUrl=https\://services.gradle.org/distributions/gradle-9.4.1-bin.zip
+networkTimeout=10000
+validateDistributionUrl=true
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+</file>
+
+<file path="gradlew">
+#!/bin/sh
+
+#
+# Copyright © 2015 the original authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+##############################################################################
+#
+#   Gradle start up script for POSIX generated by Gradle.
+#
+#   Important for running:
+#
+#   (1) You need a POSIX-compliant shell to run this script. If your /bin/sh is
+#       noncompliant, but you have some other compliant shell such as ksh or
+#       bash, then to run this script, type that shell name before the whole
+#       command line, like:
+#
+#           ksh Gradle
+#
+#       Busybox and similar reduced shells will NOT work, because this script
+#       requires all of these POSIX shell features:
+#         * functions;
+#         * expansions «$var», «${var}», «${var:-default}», «${var+SET}»,
+#           «${var#prefix}», «${var%suffix}», and «$( cmd )»;
+#         * compound commands having a testable exit status, especially «case»;
+#         * various built-in commands including «command», «set», and «ulimit».
+#
+#   Important for patching:
+#
+#   (2) This script targets any POSIX shell, so it avoids extensions provided
+#       by Bash, Ksh, etc; in particular arrays are avoided.
+#
+#       The "traditional" practice of packing multiple parameters into a
+#       space-separated string is a well documented source of bugs and security
+#       problems, so this is (mostly) avoided, by progressively accumulating
+#       options in "$@", and eventually passing that to Java.
+#
+#       Where the inherited environment variables (DEFAULT_JVM_OPTS, JAVA_OPTS,
+#       and GRADLE_OPTS) rely on word-splitting, this is performed explicitly;
+#       see the in-line comments for details.
+#
+#       There are tweaks for specific operating systems such as AIX, CygWin,
+#       Darwin, MinGW, and NonStop.
+#
+#   (3) This script is generated from the Groovy template
+#       https://github.com/gradle/gradle/blob/HEAD/platforms/jvm/plugins-application/src/main/resources/org/gradle/api/internal/plugins/unixStartScript.txt
+#       within the Gradle project.
+#
+#       You can find Gradle at https://github.com/gradle/gradle/.
+#
+##############################################################################
+
+# Attempt to set APP_HOME
+
+# Resolve links: $0 may be a link
+app_path=$0
+
+# Need this for daisy-chained symlinks.
+while
+    APP_HOME=${app_path%"${app_path##*/}"}  # leaves a trailing /; empty if no leading path
+    [ -h "$app_path" ]
+do
+    ls=$( ls -ld "$app_path" )
+    link=${ls#*' -> '}
+    case $link in             #(
+      /*)   app_path=$link ;; #(
+      *)    app_path=$APP_HOME$link ;;
+    esac
+done
+
+# This is normally unused
+# shellcheck disable=SC2034
+APP_BASE_NAME=${0##*/}
+# Discard cd standard output in case $CDPATH is set (https://github.com/gradle/gradle/issues/25036)
+APP_HOME=$( cd -P "${APP_HOME:-./}" > /dev/null && printf '%s\n' "$PWD" ) || exit
+
+# Use the maximum available, or set MAX_FD != -1 to use that value.
+MAX_FD=maximum
+
+warn () {
+    echo "$*"
+} >&2
+
+die () {
+    echo
+    echo "$*"
+    echo
+    exit 1
+} >&2
+
+# OS specific support (must be 'true' or 'false').
+cygwin=false
+msys=false
+darwin=false
+nonstop=false
+case "$( uname )" in                #(
+  CYGWIN* )         cygwin=true  ;; #(
+  Darwin* )         darwin=true  ;; #(
+  MSYS* | MINGW* )  msys=true    ;; #(
+  NONSTOP* )        nonstop=true ;;
+esac
+
+CLASSPATH="\\\"\\\""
+
+
+# Determine the Java command to use to start the JVM.
+if [ -n "$JAVA_HOME" ] ; then
+    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
+        # IBM's JDK on AIX uses strange locations for the executables
+        JAVACMD=$JAVA_HOME/jre/sh/java
+    else
+        JAVACMD=$JAVA_HOME/bin/java
+    fi
+    if [ ! -x "$JAVACMD" ] ; then
+        die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME
+
+Please set the JAVA_HOME variable in your environment to match the
+location of your Java installation."
+    fi
+else
+    JAVACMD=java
+    if ! command -v java >/dev/null 2>&1
+    then
+        die "ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
+
+Please set the JAVA_HOME variable in your environment to match the
+location of your Java installation."
+    fi
+fi
+
+# Increase the maximum file descriptors if we can.
+if ! "$cygwin" && ! "$darwin" && ! "$nonstop" ; then
+    case $MAX_FD in #(
+      max*)
+        # In POSIX sh, ulimit -H is undefined. That's why the result is checked to see if it worked.
+        # shellcheck disable=SC2039,SC3045
+        MAX_FD=$( ulimit -H -n ) ||
+            warn "Could not query maximum file descriptor limit"
+    esac
+    case $MAX_FD in  #(
+      '' | soft) :;; #(
+      *)
+        # In POSIX sh, ulimit -n is undefined. That's why the result is checked to see if it worked.
+        # shellcheck disable=SC2039,SC3045
+        ulimit -n "$MAX_FD" ||
+            warn "Could not set maximum file descriptor limit to $MAX_FD"
+    esac
+fi
+
+# Collect all arguments for the java command, stacking in reverse order:
+#   * args from the command line
+#   * the main class name
+#   * -classpath
+#   * -D...appname settings
+#   * --module-path (only if needed)
+#   * DEFAULT_JVM_OPTS, JAVA_OPTS, and GRADLE_OPTS environment variables.
+
+# For Cygwin or MSYS, switch paths to Windows format before running java
+if "$cygwin" || "$msys" ; then
+    APP_HOME=$( cygpath --path --mixed "$APP_HOME" )
+    CLASSPATH=$( cygpath --path --mixed "$CLASSPATH" )
+
+    JAVACMD=$( cygpath --unix "$JAVACMD" )
+
+    # Now convert the arguments - kludge to limit ourselves to /bin/sh
+    for arg do
+        if
+            case $arg in                                #(
+              -*)   false ;;                            # don't mess with options #(
+              /?*)  t=${arg#/} t=/${t%%/*}              # looks like a POSIX filepath
+                    [ -e "$t" ] ;;                      #(
+              *)    false ;;
+            esac
+        then
+            arg=$( cygpath --path --ignore --mixed "$arg" )
+        fi
+        # Roll the args list around exactly as many times as the number of
+        # args, so each arg winds up back in the position where it started, but
+        # possibly modified.
+        #
+        # NB: a `for` loop captures its iteration list before it begins, so
+        # changing the positional parameters here affects neither the number of
+        # iterations, nor the values presented in `arg`.
+        shift                   # remove old arg
+        set -- "$@" "$arg"      # push replacement arg
+    done
+fi
+
+
+# Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
+
+# Collect all arguments for the java command:
+#   * DEFAULT_JVM_OPTS, JAVA_OPTS, and optsEnvironmentVar are not allowed to contain shell fragments,
+#     and any embedded shellness will be escaped.
+#   * For example: A user cannot expect ${Hostname} to be expanded, as it is an environment variable and will be
+#     treated as '${Hostname}' itself on the command line.
+
+set -- \
+        "-Dorg.gradle.appname=$APP_BASE_NAME" \
+        -classpath "$CLASSPATH" \
+        -jar "$APP_HOME/gradle/wrapper/gradle-wrapper.jar" \
+        "$@"
+
+# Stop when "xargs" is not available.
+if ! command -v xargs >/dev/null 2>&1
+then
+    die "xargs is not available"
+fi
+
+# Use "xargs" to parse quoted args.
+#
+# With -n1 it outputs one arg per line, with the quotes and backslashes removed.
+#
+# In Bash we could simply go:
+#
+#   readarray ARGS < <( xargs -n1 <<<"$var" ) &&
+#   set -- "${ARGS[@]}" "$@"
+#
+# but POSIX shell has neither arrays nor command substitution, so instead we
+# post-process each arg (as a line of input to sed) to backslash-escape any
+# character that might be a shell metacharacter, then use eval to reverse
+# that process (while maintaining the separation between arguments), and wrap
+# the whole thing up as a single "set" statement.
+#
+# This will of course break if any of these variables contains a newline or
+# an unmatched quote.
+#
+
+eval "set -- $(
+        printf '%s\n' "$DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS" |
+        xargs -n1 |
+        sed ' s~[^-[:alnum:]+,./:=@_]~\\&~g; ' |
+        tr '\n' ' '
+    )" '"$@"'
+
+exec "$JAVACMD" "$@"
+</file>
+
+<file path="gradlew.bat">
+@rem
+@rem Copyright 2015 the original author or authors.
+@rem
+@rem Licensed under the Apache License, Version 2.0 (the "License");
+@rem you may not use this file except in compliance with the License.
+@rem You may obtain a copy of the License at
+@rem
+@rem      https://www.apache.org/licenses/LICENSE-2.0
+@rem
+@rem Unless required by applicable law or agreed to in writing, software
+@rem distributed under the License is distributed on an "AS IS" BASIS,
+@rem WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+@rem See the License for the specific language governing permissions and
+@rem limitations under the License.
+@rem
+@rem SPDX-License-Identifier: Apache-2.0
+@rem
+
+@if "%DEBUG%"=="" @echo off
+@rem ##########################################################################
+@rem
+@rem  Gradle startup script for Windows
+@rem
+@rem ##########################################################################
+
+@rem Set local scope for the variables with windows NT shell
+if "%OS%"=="Windows_NT" setlocal
+
+set DIRNAME=%~dp0
+if "%DIRNAME%"=="" set DIRNAME=.
+@rem This is normally unused
+set APP_BASE_NAME=%~n0
+set APP_HOME=%DIRNAME%
+
+@rem Resolve any "." and ".." in APP_HOME to make it shorter.
+for %%i in ("%APP_HOME%") do set APP_HOME=%%~fi
+
+@rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+set DEFAULT_JVM_OPTS="-Xmx64m" "-Xms64m"
+
+@rem Find java.exe
+if defined JAVA_HOME goto findJavaFromJavaHome
+
+set JAVA_EXE=java.exe
+%JAVA_EXE% -version >NUL 2>&1
+if %ERRORLEVEL% equ 0 goto execute
+
+echo. 1>&2
+echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH. 1>&2
+echo. 1>&2
+echo Please set the JAVA_HOME variable in your environment to match the 1>&2
+echo location of your Java installation. 1>&2
+
+goto fail
+
+:findJavaFromJavaHome
+set JAVA_HOME=%JAVA_HOME:"=%
+set JAVA_EXE=%JAVA_HOME%/bin/java.exe
+
+if exist "%JAVA_EXE%" goto execute
+
+echo. 1>&2
+echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME% 1>&2
+echo. 1>&2
+echo Please set the JAVA_HOME variable in your environment to match the 1>&2
+echo location of your Java installation. 1>&2
+
+goto fail
+
+:execute
+@rem Setup the command line
+
+set CLASSPATH=
+
+
+@rem Execute Gradle
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %GRADLE_OPTS% "-Dorg.gradle.appname=%APP_BASE_NAME%" -classpath "%CLASSPATH%" -jar "%APP_HOME%\gradle\wrapper\gradle-wrapper.jar" %*
+
+:end
+@rem End local scope for the variables with windows NT shell
+if %ERRORLEVEL% equ 0 goto mainEnd
+
+:fail
+rem Set variable GRADLE_EXIT_CONSOLE if you need the _script_ return code instead of
+rem the _cmd.exe /c_ return code!
+set EXIT_CODE=%ERRORLEVEL%
+if %EXIT_CODE% equ 0 set EXIT_CODE=1
+if not ""=="%GRADLE_EXIT_CONSOLE%" exit %EXIT_CODE%
+exit /b %EXIT_CODE%
+
+:mainEnd
+if "%OS%"=="Windows_NT" endlocal
+
+:omega
+</file>
+
+<file path="settings.gradle.kts">
+pluginManagement {
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "SteamPrice"
+include(":app")
+</file>
+
+<file path=".gitignore">
+*.iml
+.gradle/
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build/
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/db/SteamPriceDatabase.kt">
+package com.ele.steamprice.db
+
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+
+@Database(
+    entities = [
+        MonitoredGameEntity::class,
+        PriceHistoryEntity::class,
+        GameDetailCacheEntity::class
+    ],
+    version = 2, // 🎯 升级版本号
+    exportSchema = false
+)
+abstract class SteamPriceDatabase : RoomDatabase() {
+
+    abstract fun steamPriceDao(): SteamPriceDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: SteamPriceDatabase? = null
+
+        fun getDatabase(context: Context): SteamPriceDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    SteamPriceDatabase::class.java,
+                    "steam_price_database"
+                )
+                    // 💡 在开发阶段如果改了表结构，这行代码能防止 App 崩溃，它会自动清空表重新建
+                    .fallbackToDestructiveMigration()
+                    .build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+}
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/SteamPriceApplication.kt">
+package com.ele.steamprice
+
+import android.app.Application
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.disk.DiskCache
+import coil.memory.MemoryCache
+
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import com.ele.steamprice.worker.SyncWorker
+import java.util.concurrent.TimeUnit
+
+class SteamPriceApplication : Application(), ImageLoaderFactory {
+    override fun onCreate() {
+        super.onCreate()
+        createNotificationChannel()
+        setupBackgroundSync()
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.notif_channel_name)
+            val descriptionText = getString(R.string.notif_channel_desc)
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel("PRICE_DROP_CHANNEL", name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager =
+                getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun setupBackgroundSync() {
+        // 设置同步约束：仅在有网络时进行，且不一定要在充电时
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        // 创建每 1 小时运行一次的周期性任务（CheapShark API 大约每小时更新一次）
+        val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(1, TimeUnit.HOURS)
+            .setConstraints(constraints)
+            .setInitialDelay(15, TimeUnit.MINUTES) // 启动 15 分钟后首次运行，避免抢占启动资源
+            .build()
+
+        // 提交任务，使用 KEEP 策略确保不会重复创建
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "GamePriceSync",
+            ExistingPeriodicWorkPolicy.KEEP,
+            syncRequest
+        )
+    }
+    override fun newImageLoader(): ImageLoader {
+        return ImageLoader.Builder(this)
+            .memoryCache {
+                MemoryCache.Builder(this)
+                    .maxSizePercent(0.25)
+                    .build()
+            }
+            .diskCache {
+                DiskCache.Builder()
+                    .directory(this.cacheDir.resolve("image_cache"))
+                    .maxSizePercent(0.02)
+                    .build()
+            }
+            .crossfade(true)
+            .allowHardware(true) // 🎯 优化 3: 开启硬件位图加速
+            .build()
+    }
+}
+</file>
+
+<file path="app/src/main/res/drawable/ic_launcher_background.xml">
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#6750A4"
+        android:pathData="M0,0h108v108h-108z" />
+    <path
+        android:fillAlpha="0.2"
+        android:fillColor="#FFFFFF"
+        android:pathData="M0,0 L108,0 L108,108 Z" />
+</vector>
+</file>
+
+<file path="app/src/main/res/drawable/ic_launcher_foreground.xml">
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 🎮 Controller Body -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,44C26,44 22,50 22,58C22,66 26,72 34,72C38,72 42,70 46,66L62,66C66,70 70,72 74,72C82,72 86,66 86,58C86,50 82,44 74,44C70,44 66,46 62,50L46,50C42,46 38,44 34,44ZM34,50C36,50 38,51 40,53C38,55 37,58 37,60L71,60C71,58 70,55 68,53C70,51 72,50 74,50C78,50 80,52 80,58C80,64 78,66 74,66C72,66 70,65 68,63L40,63C38,65 36,66 34,66C30,66 28,64 28,58C28,52 30,50 34,50Z" />
+
+    <!-- 📶 Radar Pulse 1 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.6"
+        android:pathData="M54,34C60,34 66,36 71,40L75,35C69,30 62,28 54,28C46,28 39,30 33,35L37,40C42,36 48,34 54,34Z" />
+
+    <!-- 📶 Radar Pulse 2 (Outer) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.3"
+        android:pathData="M54,22C64,22 74,25 82,31L86,26C77,18 66,15 54,15C42,15 31,18 22,26L26,31C34,25 44,22 54,22Z" />
+
+    <!-- 💰 Price Drop / Tag Indicator -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M48,54L54,60L60,54Z" />
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M53,46h2v8h-2z" />
+
+</vector>
+</file>
+
+<file path="build.gradle.kts">
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    alias(libs.plugins.androidApplication) apply false
+    alias(libs.plugins.kotlinCompose) apply false
+    alias(libs.plugins.ksp) apply false
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1" apply false
+}
+</file>
+
+<file path="gradle/libs.versions.toml">
+[versions]
+agp = "9.2.1"
+coreKtx = "1.18.0"
+junit = "4.13.2"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+lifecycleRuntimeKtx = "2.10.0"
+activityCompose = "1.13.0"
+kotlin = "2.2.10"
+ksp = "2.2.10-2.0.2"
+composeBom = "2026.02.01"
+retrofit = "3.0.0"
+room = "2.8.4"
+coil = "2.7.0"
+zxing = "3.5.3"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+kotlinCompose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+</file>
+
+<file path="app/src/main/AndroidManifest.xml">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <application
+        android:name=".SteamPriceApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SteamPrice">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.SteamPrice">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/db/SteamPriceDao.kt">
+package com.ele.steamprice.db
+
+import androidx.room.*
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface SteamPriceDao {
+
+    // ==========================================
+    // 游戏监控核心操作
+    // ==========================================
+
+    /**
+     * 📥 添加或更新一个监控游戏
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMonitoredGame(game: MonitoredGameEntity)
+
+    /**
+     * ❌ 取消监控某个游戏
+     */
+    @Delete
+    suspend fun deleteMonitoredGame(game: MonitoredGameEntity)
+
+    /**
+     * 👥 实时监听所有的监控游戏列表（Flow 响应式流，UI层的最爱）
+     */
+    @Query("SELECT * FROM monitored_games ORDER BY lastUpdateTime DESC")
+    fun getAllMonitoredGamesFlow(): Flow<List<MonitoredGameEntity>>
+
+    /**
+     * 📥 直接获取所有的监控游戏列表（非 Flow，用于 Worker 等后台任务）
+     */
+    @Query("SELECT * FROM monitored_games")
+    suspend fun getAllMonitoredGames(): List<MonitoredGameEntity>
+
+    /**
+     * 🔍 检查某个游戏是否已经被监控（用于详情页显示“已关注”或“加监控”按钮）
+     */
+    @Query("SELECT * FROM monitored_games WHERE gameId = :gameId LIMIT 1")
+    suspend fun getGameById(gameId: String): MonitoredGameEntity?
+
+
+    // ==========================================
+    // 历史价格曲线核心操作
+    // ==========================================
+
+    /**
+     * 📈 插入一条新的价格轨迹
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPriceHistory(historyEntry: PriceHistoryEntity)
+
+    /**
+     * 📊 获取某个游戏的所有历史价格点（按时间正序排列，方便折线图从左往右画）
+     */
+    @Query("SELECT * FROM price_history WHERE gameId = :gameId ORDER BY recordTime ASC")
+    fun getPriceHistoryFlow(gameId: String): Flow<List<PriceHistoryEntity>>
+
+    // ==========================================
+    // 二级缓存核心操作
+    // ==========================================
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDetailCache(cache: GameDetailCacheEntity)
+
+    @Query("SELECT * FROM game_detail_cache WHERE gameId = :gameId LIMIT 1")
+    suspend fun getDetailCacheById(gameId: String): GameDetailCacheEntity?
+}
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/db/SteamPriceEntities.kt">
+package com.ele.steamprice.db
+
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
+
+/**
+ * 🎯 表1：用户监控的游戏名单
+ */
+@Entity(tableName = "monitored_games")
+data class MonitoredGameEntity(
+    @PrimaryKey
+    val gameId: String,          // 对应 CheapShark 的 gameID
+    val title: String,           // 游戏名称
+    val steamAppId: String,      // 用于拼接高清封面图
+    val addedPrice: Double,      // 加入监控时的价格
+    val currentPrice: Double,    // 当前最新价格
+    val targetPrice: Double,     // 用户的心理预期价（低于这个价就弹窗提醒）
+    val isLowestEver: Boolean,   // 当前是否是历史史低
+    val lastUpdateTime: Long     // 上次后台更新价格的时间戳
+) {
+    fun toDealItem(): com.ele.steamprice.data.DealItem {
+        return com.ele.steamprice.data.DealItem(
+            internalName = title,
+            title = title,
+            dealID = "", // 监控模式下不需要真实的 dealID
+            storeID = "1", // 默认显示 Steam 商店
+            gameID = gameId,
+            salePrice = currentPrice.toString(),
+            normalPrice = addedPrice.toString(),
+            savings = "0",
+            metacriticScore = "0",
+            steamRatingText = null,
+            steamRatingPercent = null,
+            steamRatingCount = null,
+            steamAppID = steamAppId,
+            thumb = ""
+        )
+    }
+}
+
+/**
+ * 📈 表2：游戏历史价格流水表（专门用来画折线图）
+ * 当 MonitoredGameEntity 被删除时，这张表里对应的历史记录也会自动级联删除（OnDelete = CASCADE）
+ */
+@Entity(
+    tableName = "price_history",
+    foreignKeys = [
+        ForeignKey(
+            entity = MonitoredGameEntity::class,
+            parentColumns = ["gameId"],
+            childColumns = ["gameId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index(value = ["gameId"])] // 给外键加索引，提升查询性能
+)
+data class PriceHistoryEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+    val gameId: String,          // 关联的游戏ID
+    val recordedPrice: Double,   // 记录时刻的价格
+    val recordTime: Long         // 记录时刻的时间戳
+)
+
+/**
+ * 💾 表3：详情页信息二级缓存
+ * 专门缓存来自 Steam 官方 API 的简介、截图链接等静态信息，避免重复请求
+ */
+@Entity(tableName = "game_detail_cache")
+data class GameDetailCacheEntity(
+    @PrimaryKey
+    val gameId: String,          // CheapShark 的 gameID
+    val steamAppId: String?,
+    val detailJson: String,      // 序列化后的 SteamStoreDetail JSON 字符串
+    val lastCachedTime: Long     // 缓存时间戳
+)
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/worker/SyncWorker.kt">
+package com.ele.steamprice.worker
+
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
+import com.ele.steamprice.MainActivity
+import com.ele.steamprice.R
+import com.ele.steamprice.api.SteamPriceClient
+import com.ele.steamprice.db.PriceHistoryEntity
+import com.ele.steamprice.db.SteamPriceDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+/**
+ * 🔄 后台同步任务：定时从 API 拉取最新折扣并更新本地数据
+ */
+class SyncWorker(
+    context: Context,
+    params: WorkerParameters,
+) : CoroutineWorker(context, params) {
+
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+        try {
+            Log.d("SyncWorker", "开始后台自动同步折扣数据...")
+
+            val dao = SteamPriceDatabase.getDatabase(applicationContext).steamPriceDao()
+            val monitoredGames = dao.getAllMonitoredGames()
+
+            if (monitoredGames.isEmpty()) {
+                Log.d("SyncWorker", "没有正在监控的游戏，跳过更新")
+                return@withContext Result.success()
+            }
+
+            for (game in monitoredGames) {
+                try {
+                    val detail = SteamPriceClient.apiService.getGamePriceDetail(game.gameId)
+                    val currentCheapest = detail.deals.minByOrNull { it.price.toDouble() }
+                    
+                    if (currentCheapest != null) {
+                        val newPrice = currentCheapest.price.toDouble()
+                        
+                        if (newPrice != game.currentPrice) {
+                            val now = System.currentTimeMillis()
+                            val updatedGame = game.copy(
+                                currentPrice = newPrice,
+                                lastUpdateTime = now,
+                            )
+                            dao.insertMonitoredGame(updatedGame)
+                            
+                            dao.insertPriceHistory(
+                                PriceHistoryEntity(
+                                    gameId = game.gameId,
+                                    recordedPrice = newPrice,
+                                    recordTime = now
+                                )
+                            )
+
+                            // 🔔 如果降到了目标价格，发送系统通知
+                            if (newPrice <= game.targetPrice) {
+                                sendPriceDropNotification(game.title, newPrice)
+                            }
+                            Log.d("SyncWorker", "已更新 ${game.title} 的最新价格为: $newPrice")
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("SyncWorker", "更新游戏 ${game.title} 失败", e)
+                }
+            }
+
+            Log.d("SyncWorker", "后台同步完成")
+            Result.success()
+        } catch (e: Exception) {
+            Log.e("SyncWorker", "后台同步任务执行出错", e)
+            Result.retry()
+        }
+    }
+
+    private fun sendPriceDropNotification(title: String, price: Double) {
+        // 1. 创建点击通知后跳转的 Intent
+        val intent = Intent(applicationContext, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+            applicationContext, 0, intent, 
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // 2. 构建通知
+        val builder = NotificationCompat.Builder(applicationContext, "PRICE_DROP_CHANNEL")
+            .setSmallIcon(R.drawable.ic_launcher_foreground) // 🎯 使用 App 自己的图标
+            .setContentTitle(applicationContext.getString(R.string.notif_title, title))
+            .setContentText(applicationContext.getString(R.string.notif_content, price))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent) // 🎯 设置点击跳转
+            .setAutoCancel(true)
+
+        try {
+            with(NotificationManagerCompat.from(applicationContext)) {
+                // 使用游戏标题的 hashCode 作为 ID，防止不同游戏的通知互相覆盖
+                notify(title.hashCode(), builder.build())
+            }
+        } catch (e: SecurityException) {
+            Log.e("SyncWorker", "发送通知失败：缺少权限", e)
+        }
+    }
+}
+</file>
+
+<file path=".github/workflows/android.yml">
+name: Android CI/CD
+
+on:
+  push:
+    branches: [ "master" ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug
+
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: SteamPrice-Debug-APK
+        path: app/build/outputs/apk/debug/app-debug.apk
+
+  release:
+    name: Create Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build and Sign Release APK
+      run: ./gradlew assembleRelease
+      env:
+        SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: app/build/outputs/apk/release/app-release.apk
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/Screen.kt">
+package com.ele.steamprice
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.RemoveRedEye
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.ui.graphics.vector.ImageVector
+
+sealed class Screen(val route: String, val title: String, val icon: ImageVector) {
+    object Market : Screen("market", "Steam大厅", Icons.Default.LocalFireDepartment) //  🔥 火爆折扣
+    object TopDeals : Screen("top_deals", "超值榜单", Icons.Default.Star)            // ⭐ 9分以上神价
+    object Watchlist : Screen("watchlist", "我的监控", Icons.Default.RemoveRedEye)      // 👁️ 盯着史低
+    object Settings : Screen("settings", "配置中心", Icons.Default.Settings)         // ⚙️ 后台轮询设置
+}
+
+// 组合成一个方便遍历的列表
+val bottomNavItems = listOf(
+    Screen.Market,
+    Screen.TopDeals,
+    Screen.Watchlist,
+    Screen.Settings
+)
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/api/CheapSharkApiService.kt">
+package com.ele.steamprice.api
+
+import com.ele.steamprice.data.DealItem
+import com.ele.steamprice.data.GamePriceDetail
+import com.ele.steamprice.data.StoreInfo
+import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
+import com.google.gson.reflect.TypeToken
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
+
+interface CheapSharkApiService {
+
+    /**
+     * 🔍 获取全网最新折扣游戏列表
+     * @param storeID 锁死 "1" 代表只看 Steam 商店的折扣
+     * @param pageNumber 分页页码（从 0 开始）
+     * @param pageSize 每页抓取多少条
+     * @param sortBy 排序规则，默认按 "Savings"（折扣力度）从大到小排，也可以按 "Price" 排
+     * @param title 搜索关键字
+     * @param desc 是否降序
+     * @param aaa 是否只看大作
+     */
+    @GET("deals")
+    suspend fun getSteamDeals(
+        @Query("storeID") storeID: String? = null, // 🎯 修正：改为可选，传 null 则搜索全网
+        @Query("pageNumber") pageNumber: Int = 0,
+        @Query("pageSize") pageSize: Int = 20,
+        @Query("sortBy") sortBy: String = "Savings",
+        @Query("title") title: String? = null,
+        @Query("desc") desc: Int = 0,
+        @Query("AAA") aaa: Int = 0,
+        @Query("upperPrice") upperPrice: Int? = null,
+        @Query("lowerPrice") lowerPrice: Int? = null,
+        @Query("metacritic") metacritic: Int? = null,
+        @Query("steamRating") steamRating: Int? = null,
+        @Query("minimumReviewCount") minReviewCount: Int? = null, // 🎯 修正参数名
+        @Query("onSale") onSale: Int? = null,
+        @Query("dealRating") minDealRating: Int? = null
+    ): List<DealItem>
+
+    /**
+     * 🎯 精准查询某个游戏的详细价格变动与【历史最低价】
+     * @param id 传入 DealItem 里的 gameID
+     */
+    @GET("games")
+    suspend fun getGamePriceDetail(
+        @Query("id") id: String
+    ): GamePriceDetail
+
+    /**
+     * 🏪 获取所有商店的元数据（ID、名称、图标路径）
+     */
+    @GET("stores")
+    suspend fun getStoreList(): List<StoreInfo>
+}
+
+// 🎯 新增：汇率接口
+interface ExchangeRateApiService {
+    @GET("v6/latest/USD")
+    suspend fun getUsdExchangeRate(): ExchangeRateResponse
+}
+
+data class ExchangeRateResponse(
+    val rates: Map<String, Float>
+)
+
+// 🎯 新增：Steam 商店接口，用于抓取截图和简介
+interface SteamStoreApiService {
+    @GET("api/appdetails")
+    suspend fun getAppDetails(
+        @Query(value = "appids", encoded = true) appid: String, // 🎯 关键：使用 encoded = true 防止逗号被转义，Steam API 要求逗号分隔
+        @Query("l") language: String = "schinese",
+        @Query("cc") country: String = "cn",
+        @Query("filters") filters: String? = null // 🎯 新增：支持过滤字段，减少数据量
+    ): Map<String, SteamStoreResponse>
+
+    @GET("api/packagedetails")
+    suspend fun getPackageDetails(
+        @Query("packageids") packageid: String,
+        @Query("l") language: String = "schinese",
+        @Query("cc") country: String = "cn"
+    ): Map<String, SteamPackageResponse>
+}
+
+data class SteamStoreResponse(
+    val success: Boolean,
+    val data: com.ele.steamprice.data.SteamStoreDetail?
+)
+
+data class SteamPackageResponse(
+    val success: Boolean,
+    val data: com.ele.steamprice.data.SteamPackageDetail?
+)
+
+// 🎯 新增：GitHub 更新检测接口
+interface GithubApiService {
+    @GET("repos/{owner}/{repo}/releases/latest")
+    suspend fun getLatestRelease(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): GithubReleaseResponse
+}
+
+data class GithubReleaseResponse(
+    @SerializedName("tag_name") val tagName: String,
+    @SerializedName("body") val body: String, // 更新日志
+    @SerializedName("html_url") val htmlUrl: String // 下载页面
+)
+
+// 🚀 单例客户端
+object SteamPriceClient {
+    private const val BASE_URL = "https://www.cheapshark.com/api/1.0/"
+    private const val STEAM_STORE_URL = "https://store.steampowered.com/"
+    private const val EXCHANGE_RATE_URL = "https://open.er-api.com/"
+    private const val GITHUB_API_URL = "https://api.github.com/"
+
+    val apiService: CheapSharkApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(CheapSharkApiService::class.java)
+    }
+
+    val steamApiService: SteamStoreApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(STEAM_STORE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(SteamStoreApiService::class.java)
+    }
+
+    val exchangeRateService: ExchangeRateApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(EXCHANGE_RATE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ExchangeRateApiService::class.java)
+    }
+
+    val githubApiService: GithubApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(GITHUB_API_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(GithubApiService::class.java)
+    }
+}
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/data/SteamPriceModel.kt">
+package com.ele.steamprice.data
+
+// 1. 主页折扣列表项模型
+data class DealItem(
+    val internalName: String,
+    val title: String,            // 游戏英文/通用名
+    val dealID: String,           // 交易唯一ID（用于后续跳转或详情查询）
+    val storeID: String,          // 商店ID（Steam的ID通常是 "1"）
+    val gameID: String,           // 游戏ID
+    val salePrice: String,        // 当前打折价（美元，后续我们在UI层算汇率或直接展示）
+    val normalPrice: String,      // 原价
+    val savings: String,          // 节约了百分之多少（例如 "66.6666" 代表打了33折）
+    val metacriticScore: String,  // 媒体评分（可以直接在卡片上亮出来，逼格+1）
+    val steamRatingText: String?, // Steam评价（如 "Very Positive"）
+    val steamRatingPercent: String?, // Steam好评率（如 "92"）
+    val steamRatingCount: String?,   // 🎯 新增：Steam评价总数（例如 "12543"）
+    val steamAppID: String?,      // 🚨 最核心：Steam官方的AppID，用于拼接高清封面图
+    val thumb: String             // 缩略图
+) {
+    // 💡 阶梯加载：根据不同场景返回不同尺寸的 Steam 官方高清图
+    fun getHdCapsuleUrl(isPackage: Boolean = false, size: String = "header"): String {
+        return if (!steamAppID.isNullOrBlank()) {
+            val type = if (isPackage) "subs" else "apps"
+            val fileName = when (size) {
+                "small" -> "capsule_231x87.jpg"
+                "large" -> "capsule_616x353.jpg"
+                else -> "header.jpg"
+            }
+            "https://cdn.akamai.steamstatic.com/steam/$type/$steamAppID/$fileName"
+        } else {
+            thumb
+        }
+    }
+
+    val hdCapsuleUrl: String get() = getHdCapsuleUrl(size = "header")
+
+    // 💡 把字符串价格转成浮点数，方便后续我们在UI里算折扣
+    val discountPercent: Int get() = savings.toDoubleOrNull()?.toInt() ?: 0
+}
+
+// 2. 详情页数据模型
+data class GamePriceDetail(
+    val info: GameInfo,
+    val cheapestPriceEver: CheapestPriceEver, // 🚨 史低核心数据！
+    val deals: List<GameDealDetail>, // 🎯 新增：该游戏在全网各大商店的实时报价列表
+    var steamDetail: SteamStoreDetail? = null // 🎯 新增：从 Steam 官网抓取的详细信息（截图、简介）
+)
+
+data class GameInfo(
+    val name: String,
+    val thumb: String,
+    val steamAppID: String?
+)
+
+// 🎯 新增：Steam 商店详情模型
+data class SteamStoreDetail(
+    val short_description: String?,
+    val detailed_description: String?, // 🎯 新增：HTML 格式的详细介绍
+    val developers: List<String>?,    // 🎯 新增：开发商
+    val genres: List<SteamGenre>?,    // 🎯 新增：游戏类型
+    val screenshots: List<SteamScreenshot>,
+    val pc_requirements: SteamRequirements?, // 🎯 新增：PC 配置要求
+    val supported_languages: String?,         // 🎯 新增：支持语言（HTML 格式）
+    val categories: List<SteamCategory>?,     // 🎯 新增：游戏特性（单人、成就、云存档等）
+    val release_date: SteamReleaseDate?,     // 🎯 新增：发行日期
+    val metacritic: SteamMetacritic?,        // 🎯 新增：媒体评分与链接
+    val dlc: List<Int>?,                     // 🎯 新增：DLC AppID 列表
+    val recommendations: SteamRecommendationsCount?, // 🎯 新增：推荐人数
+    val price_overview: SteamPriceOverview? // 🎯 新增：国区定价信息
+)
+
+data class SteamPriceOverview(
+    val currency: String,
+    val initial: Long,
+    val final: Long,
+    val discount_percent: Int,
+    val initial_formatted: String,
+    val final_formatted: String
+)
+
+data class SteamReleaseDate(
+    val coming_soon: Boolean,
+    val date: String
+)
+
+data class SteamMetacritic(
+    val score: Int,
+    val url: String
+)
+
+data class SteamRecommendationsCount(
+    val total: Int
+)
+
+data class SteamCategory(
+    val id: Int,
+    val description: String
+)
+
+data class SteamRequirements(
+    val minimum: String?,
+    val recommended: String?
+)
+
+data class SteamGenre(
+    val id: String,
+    val description: String
+)
+
+data class SteamScreenshot(
+    val id: Int,
+    val path_thumbnail: String,
+    val path_full: String
+)
+
+// 🚀 新增：Package (SubID) 专属详情
+data class SteamPackageDetail(
+    val name: String?,
+    val page_content: String?, // 对应 detailed_description
+    val small_description: String?, // 对应 short_description
+    val header_image: String?,
+    val price_overview: SteamPriceOverview?,
+    val controller_support: String?,
+    val release_date: SteamReleaseDate?
+) {
+    // 💡 关键：将 Package 数据转换为通用的 SteamStoreDetail，适配现有 UI
+    fun toStoreDetail(): SteamStoreDetail {
+        return SteamStoreDetail(
+            short_description = small_description,
+            detailed_description = page_content,
+            developers = null,
+            genres = null,
+            screenshots = emptyList(),
+            pc_requirements = null,
+            supported_languages = null,
+            categories = null,
+            release_date = release_date,
+            metacritic = null,
+            dlc = null,
+            recommendations = null,
+            price_overview = price_overview
+        )
+    }
+}
+
+data class CheapestPriceEver(
+    val price: String, // 史低价格
+    val date: Long     // 触发史低的时间戳（秒）
+)
+
+// 🎯 新增：各大商店报价项模型
+data class GameDealDetail(
+    val storeID: String,
+    val dealID: String,
+    val price: String,
+    val retailPrice: String,
+    val savings: String
+)
+
+// 🎯 新增：商店元数据模型
+data class StoreInfo(
+    val storeID: String,
+    val storeName: String,
+    val images: StoreImages
+)
+
+data class StoreImages(
+    val icon: String,
+    val logo: String,
+    val banner: String
+) {
+    val fullIconUrl: String get() = "https://www.cheapshark.com$icon"
+}
+</file>
+
+<file path="app/src/main/res/values/strings.xml">
+<resources>
+    <string name="app_name">SteamPrice</string>
+
+    <!-- MainActivity -->
+    <string name="filter_title">🛡️ 游戏品质硬核过滤</string>
+    <string name="filter_subtitle">设置门槛，帮你过滤掉杂鱼和冷门作品</string>
+    <string name="min_steam_rating">最小 Steam 好评率: %1$d%%</string>
+    <string name="min_review_count">最小玩家评价数: %1$d</string>
+    <string name="price_range">价格区间: $%1$s - %2$s</string>
+    <string name="price_unlimited">不限</string>
+    <string name="currency_conversion">💰 人民币价格换算</string>
+    <string name="exchange_rate_ref">当前汇率参考: 1 USD ≈ %1$s CNY</string>
+    <string name="confirm">确定</string>
+    <string name="tab_steam_radar">🎮 Steam 史低雷达</string>
+    <string name="tab_global_radar">🌐 全网折扣雷达</string>
+    <string name="sort_recommend">热门推荐</string>
+    <string name="sort_price_desc">价格降序</string>
+    <string name="sort_price_asc">价格升序</string>
+    <string name="no_deals_found">未找到相关折扣游戏</string>
+    <string name="no_deals_hint">试试在搜索时关闭“仅看Steam”开关</string>
+    <string name="new_version_found">🚀 发现新版本：%1$s</string>
+    <string name="update_log">更新日志：</string>
+    <string name="download_now">立即去下载</string>
+    <string name="later">稍后再说</string>
+    <string name="game_cover">游戏封面</string>
+    <string name="review_count_suffix">%1$s 评价</string>
+    <string name="top_deals_title">🏆 85分+ 媒体高评榜</string>
+    <string name="quality_filter">品质过滤</string>
+    <string name="settings_title">配置中心</string>
+    <string name="theme_mode">主题模式</string>
+    <string name="theme_system">跟随系统</string>
+    <string name="theme_light">浅色模式</string>
+    <string name="theme_dark">深色模式</string>
+    <string name="auto_update">自动检查更新</string>
+    <string name="auto_update_desc">连接 GitHub 获取最新版本推送</string>
+    <string name="current_version">当前版本: %1$s</string>
+    <string name="app_edition">SteamPrice 开源版</string>
+
+    <!-- GameDetailDialog -->
+    <string name="steam_cn_price">Steam 国区当前定价</string>
+    <string name="go_to_store">去商店</string>
+    <string name="lowest_ever_ref">🏆 全网历史最低参考价：%1$s</string>
+    <string name="expand_description">展开查看完整剧情与介绍 ↓</string>
+    <string name="collapse_description">收起详情 ↑</string>
+    <string name="supported_languages">🌐 支持语言</string>
+    <string name="pc_requirements">💻 系统要求</string>
+    <string name="min_requirements">【最低配置】</string>
+    <string name="rec_requirements">【推荐配置】</string>
+    <string name="developers_label">开发商: %1$s</string>
+    <string name="release_date_label">📅 发行日期</string>
+    <string name="coming_soon">即将推出</string>
+    <string name="metacritic_label">⭐ 媒体评分</string>
+    <string name="dlc_count_label">📦 包含 %1$d 个可选 DLC</string>
+    <string name="recommendations_label">👍 Steam 共有 %1$d 位玩家推荐</string>
+    <string name="price_trend_title">📈 价格波动趋势 (监控中)</string>
+    <string name="monitor_game">监控此游戏</string>
+    <string name="unmonitor_game">取消监控</string>
+    <string name="close">关闭</string>
+    <string name="image_preview">大图预览</string>
+    <string name="share_game">分享</string>
+    <string name="share_save">保存</string>
+    <string name="share_saved_success">已保存到系统相册</string>
+    <string name="share_saved_failed">保存失败</string>
+    <string name="share_title">分享自 SteamPrice App</string>
+    <string name="share_lowest_badge">🏆 全网史低</string>
+    <string name="share_scan_hint">长按或扫码看详情</string>
+    <string name="image_preview_hint">双指缩放查看细节 · 点击返回</string>
+    <string name="accumulating_data">正在积累价格数据...</string>
+    <string name="recent_price_fluctuation">最近价格波动</string>
+
+    <!-- WatchlistScreen -->
+    <string name="watchlist_empty_title">目前没有监控任何游戏呢</string>
+    <string name="watchlist_empty_subtitle">去大厅找找折扣，点击“监控此游戏”吧！</string>
+    <string name="added_price_label">监控时价格: %1$s</string>
+    <string name="current_price_label">当前价格: %1$s</string>
+    <string name="target_price_label">目标价: %1$s</string>
+    <string name="delete">删除</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_name">Steam 降价提醒</string>
+    <string name="notif_channel_desc">当监控的游戏降到目标价格时通知我</string>
+    <string name="notif_title">🎮 降价提醒：%1$s</string>
+    <string name="notif_content">你关注的游戏已降至 $%1$.2f，快去看看吧！</string>
+</resources>
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/viewmodel/DetailViewModel.kt">
+package com.ele.steamprice.viewmodel
+
+import android.app.Application
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.ele.steamprice.api.SteamPriceClient
+import com.ele.steamprice.data.GamePriceDetail
+import com.ele.steamprice.data.SteamStoreDetail
+import com.ele.steamprice.data.StoreInfo
+import com.ele.steamprice.db.GameDetailCacheEntity
+import com.ele.steamprice.db.MonitoredGameEntity
+import com.ele.steamprice.db.PriceHistoryEntity
+import com.ele.steamprice.db.SteamPriceDatabase
+import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+class DetailViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val dao = SteamPriceDatabase.getDatabase(application).steamPriceDao()
+
+    var priceDetail by mutableStateOf<GamePriceDetail?>(null)
+        private set
+
+    var storeList by mutableStateOf<List<StoreInfo>>(emptyList())
+        private set
+
+    var isLoadingDetail by mutableStateOf(value = false)
+        private set
+
+    var isMonitored by mutableStateOf(false)
+        private set
+
+    var isPackage by mutableStateOf(false)
+        private set
+
+    private val gson = Gson()
+
+    private val _priceHistory = MutableStateFlow<List<PriceHistoryEntity>>(emptyList())
+    val priceHistory: StateFlow<List<PriceHistoryEntity>> = _priceHistory.asStateFlow()
+
+    /**
+     * 🌍 加载游戏详情、全网比价、商店元数据
+     */
+    fun loadGameDetail(gameId: String) {
+        // 🚀 核心修复：立即重置所有状态，防止由于 ViewModel 复用导致的 UI 闪烁
+        priceDetail = null
+        isMonitored = false
+        isPackage = false
+        isLoadingDetail = true
+
+        viewModelScope.launch {
+            try {
+                // 🚀 优化 2：优先检查本地数据库监控状态，确保 UI 上的“红心”能瞬间准确显示
+                val existing = withContext(Dispatchers.IO) {
+                    dao.getGameById(gameId)
+                }
+                isMonitored = existing != null
+
+                // 1. 并发抓取史低数据和商店列表
+                val detailDeferred = withContext(Dispatchers.IO) {
+                    SteamPriceClient.apiService.getGamePriceDetail(gameId)
+                }
+                val storesDeferred = withContext(Dispatchers.IO) {
+                    SteamPriceClient.apiService.getStoreList()
+                }
+                
+                priceDetail = detailDeferred
+                storeList = storesDeferred
+
+                // 🎯 3. 二级缓存逻辑
+                val cachedDetail = withContext(Dispatchers.IO) {
+                    dao.getDetailCacheById(gameId)
+                }
+
+                var tempSteamDetail: SteamStoreDetail? = null
+                var isFullCache = false
+                val CACHE_EXPIRATION_MS = 24 * 60 * 60 * 1000L // 24小时
+
+                if (cachedDetail != null) {
+                    try {
+                        tempSteamDetail = gson.fromJson(cachedDetail.detailJson, SteamStoreDetail::class.java)
+                        if (!tempSteamDetail?.detailed_description.isNullOrBlank()) {
+                            // 检查是否过期
+                            val isExpired = System.currentTimeMillis() - cachedDetail.lastCachedTime > CACHE_EXPIRATION_MS
+                            if (!isExpired) {
+                                isFullCache = true
+                            }
+                            priceDetail = priceDetail?.copy(steamDetail = tempSteamDetail)
+                            Log.d("DetailViewModel", "从本地加载了详情: $gameId (过期: $isExpired)")
+                        }
+                    } catch (e: Exception) {
+                        Log.e("DetailViewModel", "缓存解析失败", e)
+                    }
+                }
+
+                // 如果没缓存完整数据，则尝试联网更新
+                if (!isFullCache) {
+                    val appId = detailDeferred.info.steamAppID
+                    if (!appId.isNullOrBlank()) {
+                        try {
+                            Log.d("DetailViewModel", "尝试从网络补全详情 (AppID): $appId")
+                            val steamResponse = withContext(Dispatchers.IO) {
+                                SteamPriceClient.steamApiService.getAppDetails(appId)
+                            }
+                            val gameData = steamResponse[appId]
+                            
+                            if (gameData?.success == true && gameData.data != null) {
+                                isPackage = false
+                                val freshDetail = gameData.data
+                                priceDetail = priceDetail?.copy(steamDetail = freshDetail)
+                                saveCache(gameId, appId, freshDetail)
+                                Log.d("DetailViewModel", "App 详情联网更新成功")
+                            } else {
+                                // 🚀 关键回退：如果 AppID 模式失败，尝试 Package (SubID) 模式
+                                Log.i("DetailViewModel", "AppID 模式无效，尝试 PackageID 模式: $appId")
+                                val pkgResponse = withContext(Dispatchers.IO) {
+                                    SteamPriceClient.steamApiService.getPackageDetails(appId)
+                                }
+                                val pkgData = pkgResponse[appId]
+                                if (pkgData?.success == true && pkgData.data != null) {
+                                    isPackage = true
+                                    val mappedDetail = pkgData.data.toStoreDetail()
+                                    priceDetail = priceDetail?.copy(steamDetail = mappedDetail)
+                                    saveCache(gameId, appId, mappedDetail)
+                                    Log.d("DetailViewModel", "Package 详情联网更新成功")
+                                }
+                            }
+                        } catch (e: Exception) {
+                            Log.e("DetailViewModel", "联网拉取失败", e)
+                            // 💡 关键：联网报错时，如果有旧缓存，也强行使用旧缓存兜底
+                            if (tempSteamDetail != null) {
+                                priceDetail = priceDetail?.copy(steamDetail = tempSteamDetail)
+                                Log.i("DetailViewModel", "网络超时，已使用旧版缓存兜底显示")
+                            }
+                        }
+                    }
+                }
+                
+                // 4. 检查本地数据库是否已经监控了该游戏
+                // 🚀 此处逻辑已在函数头部前置处理，故删除重复代码
+
+                // 📈 5. 获取历史价格数据
+                // 无论是否监控，都开启监听流，确保点击开启的一瞬间图表能出来
+                viewModelScope.launch {
+                    dao.getPriceHistoryFlow(gameId).collect { history ->
+                        _priceHistory.value = history
+                    }
+                }
+                
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                isLoadingDetail = false
+            }
+        }
+    }
+
+    private suspend fun saveCache(gameId: String, appId: String, detail: SteamStoreDetail) {
+        withContext(Dispatchers.IO) {
+            dao.insertDetailCache(
+                GameDetailCacheEntity(
+                    gameId = gameId,
+                    steamAppId = appId,
+                    detailJson = gson.toJson(detail),
+                    lastCachedTime = System.currentTimeMillis(),
+                )
+            )
+        }
+    }
+
+    /**
+     * 👁️ 开启/取消 监控开关
+     */
+    fun toggleMonitor(gameId: String, title: String, appId: String, currentPrice: Double) {
+        viewModelScope.launch {
+            if (isMonitored) {
+                // 取消监控
+                val existing = dao.getGameById(gameId)
+                if (existing != null) {
+                    dao.deleteMonitoredGame(existing)
+                    isMonitored = false
+                }
+            } else {
+                // 开启监控：设置目标价为当前价格的 90%
+                val newGame = MonitoredGameEntity(
+                    gameId = gameId,
+                    steamAppId = appId,
+                    title = title,
+                    addedPrice = currentPrice,
+                    currentPrice = currentPrice,
+                    targetPrice = currentPrice * 0.9,
+                    isLowestEver = false, // 初始设为 false，后续由后台同步逻辑更新
+                    lastUpdateTime = System.currentTimeMillis()
+                )
+                dao.insertMonitoredGame(newGame)
+                
+                // 📈 初始化第一条历史价格
+                dao.insertPriceHistory(
+                    PriceHistoryEntity(
+                        gameId = gameId,
+                        recordedPrice = currentPrice,
+                        recordTime = System.currentTimeMillis()
+                    )
+                )
+                isMonitored = true
+            }
+        }
+    }
+}
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/WatchlistScreen.kt">
+package com.ele.steamprice
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import com.ele.steamprice.db.MonitoredGameEntity
+import com.ele.steamprice.viewmodel.MarketViewModel
+
+import java.util.Locale
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WatchlistScreen(
+    viewModel: MarketViewModel,
+    onGameClick: (com.ele.steamprice.data.DealItem) -> Unit
+) {
+    // 🎯 核心核心！实时监听来自 Room 数据库的 Flow 变动
+    val monitoredList by viewModel.monitoredGames.collectAsState()
+
+    if (monitoredList.isEmpty()) {
+        // 如果数据库没监控数据，显示温馨的空状态提示
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = "👁️", fontSize = 50.sp)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = stringResource(R.string.watchlist_empty_title), color = Color.Gray, fontSize = 14.sp)
+                Text(text = stringResource(R.string.watchlist_empty_subtitle), color = Color.Gray, fontSize = 12.sp)
+            }
+        }
+    } else {
+        // 如果有监控数据，用 LazyColumn 把它们优雅地渲染出来
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(
+                items = monitoredList,
+                key = { it.gameId }
+            ) { game ->
+                val dismissState = rememberSwipeToDismissBoxState(
+                    confirmValueChange = {
+                        if (it == SwipeToDismissBoxValue.EndToStart) {
+                            viewModel.removeFromWatchlist(game)
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                )
+
+                SwipeToDismissBox(
+                    state = dismissState,
+                    backgroundContent = {
+                        val color = when (dismissState.dismissDirection) {
+                            SwipeToDismissBoxValue.EndToStart -> Color.Red.copy(alpha = 0.8f)
+                            else -> Color.Transparent
+                        }
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color, RoundedCornerShape(12.dp))
+                                .padding(horizontal = 20.dp),
+                            contentAlignment = Alignment.CenterEnd
+                        ) {
+                            Icon(
+                                Icons.Default.Delete,
+                                contentDescription = stringResource(R.string.delete),
+                                tint = Color.White
+                            )
+                        }
+                    },
+                    enableDismissFromStartToEnd = false
+                ) {
+                    MonitoredGameCard(
+                        game = game,
+                        officialPrice = viewModel.steamPriceMap[game.steamAppId],
+                        exchangeRate = viewModel.exchangeRate,
+                        onClick = { onGameClick(game.toDealItem()) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MonitoredGameCard(
+    game: MonitoredGameEntity,
+    officialPrice: com.ele.steamprice.data.SteamPriceOverview? = null,
+    exchangeRate: Float = 7.23f,
+    onClick: () -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // 🎯 游戏封面图
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(game.toDealItem().getHdCapsuleUrl(size = "small"))
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
+                placeholder = rememberVectorPainter(Icons.Default.Image),
+                error = rememberVectorPainter(Icons.Default.Image),
+                modifier = Modifier
+                    .size(width = 100.dp, height = 55.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                contentScale = ContentScale.Crop
+            )
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                // 游戏标题
+                Text(
+                    text = game.title,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Column {
+                        if (officialPrice != null) {
+                            Text(
+                                text = stringResource(R.string.current_price_label, officialPrice.final_formatted),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = SteamPriceColors.SteamGreen
+                            )
+                        } else {
+                            Text(
+                                text = stringResource(R.string.current_price_label, "$${game.currentPrice}"),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = SteamPriceColors.SteamGreen
+                            )
+                        }
+                    }
+
+                    // 目标价提示
+                    Surface(
+                        color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.7f),
+                        shape = RoundedCornerShape(6.dp)
+                    ) {
+                        // 🚀 核心修复：采用比例换算法，确保目标价与国区现价逻辑一致
+                        val targetDisplayCny = if (officialPrice != null) {
+                            val ratio = if (game.currentPrice > 0) game.targetPrice / game.currentPrice else 0.9
+                            (officialPrice.final / 100.0) * ratio
+                        } else {
+                            game.targetPrice * exchangeRate
+                        }
+
+                        Text(
+                            text = "目标: ¥${String.format(Locale.US, "%.2f", targetDisplayCny)}",
+                            fontSize = 10.sp,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/viewmodel/MarketViewModel.kt">
+package com.ele.steamprice.viewmodel
+
+import android.app.Application
+import android.util.Log
+import androidx.compose.runtime.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.ele.steamprice.api.SteamPriceClient
+import com.ele.steamprice.data.DealItem
+import com.ele.steamprice.data.StoreInfo
+import com.ele.steamprice.db.MonitoredGameEntity
+import com.ele.steamprice.db.SteamPriceDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+class MarketViewModel(application: Application) : AndroidViewModel(application) {
+
+    // 🎯 初始化数据库 DAO 访问层
+    private val dao = SteamPriceDatabase.getDatabase(application).steamPriceDao()
+
+    // 🚀 核心优化：限制并发数为 3，防止瞬间并发网络请求过多
+    private val fetchDispatcher = Dispatchers.IO.limitedParallelism(3)
+    // 🚀 核心优化：记录正在获取中的 ID，防止重复请求
+    private val fetchingIds = mutableSetOf<String>()
+
+    // ==========================================
+    // 👁️ 监控大厅核心：实时观察本地 Room 数据库的变动
+    // ==========================================
+    val monitoredGames: StateFlow<List<MonitoredGameEntity>> = dao.getAllMonitoredGamesFlow()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000), // 当 UI 销毁 5 秒后才停止监听，省电又安全
+            initialValue = emptyList(),
+        )
+
+    // ==========================================
+    // 🔥 折扣大厅核心：全网折扣游戏列表（网络层）
+    // ==========================================
+    val dealList = mutableStateListOf<DealItem>()
+
+    // 状态控制：当前页码、是否正在加载、是否已经全部加载完
+    private var currentPage = 0
+    var isPageLoading by mutableStateOf(value = false)
+        private set
+    var isAllLoaded by mutableStateOf(value = false)
+        private set
+
+    // ⚖️ 排序模式
+    enum class SortMode(val apiValue: String, val desc: Int) {
+        DealRating("ReviewCount", 1),
+        PriceHighToLow("Price", 1),
+        PriceLowToHigh("Price", 0)
+    }
+
+    var currentSortMode by mutableStateOf(SortMode.DealRating)
+        private set
+
+    // 🎮 AAA 过滤：是否只显示大作
+    var isAAAOnly by mutableStateOf(false)
+        private set
+
+    // 🏆 品质过滤：Steam 好评率 (0-100)
+    var minSteamRating by mutableIntStateOf(0)
+        private set
+
+    // 👥 品质过滤：最小评价数量
+    var minReviewCount by mutableIntStateOf(0)
+        private set
+
+    // 💰 价格区间过滤
+    var minPrice by mutableFloatStateOf(0f)
+        private set
+    var maxPrice by mutableFloatStateOf(50f)
+        private set
+
+    // ⭐ 超值榜单模式：只看 Deal Rating >= 9 的神价
+    var isTopDealsOnly by mutableStateOf(false)
+        private set
+
+    // 🏪 商店过滤：true 为只看 Steam，false 为看全网
+    var isSteamOnly by mutableStateOf(true)
+        private set
+
+    // 🚀 增加持久化存储
+    private val prefs = application.getSharedPreferences("steam_price_prefs", android.content.Context.MODE_PRIVATE)
+    private val THEME_KEY = "current_theme_mode"
+
+    // 🚀 新增：主题模式控制
+    enum class ThemeMode { System, Light, Dark }
+    var currentThemeMode by mutableStateOf(
+        ThemeMode.valueOf(prefs.getString(THEME_KEY, ThemeMode.System.name) ?: ThemeMode.System.name)
+    )
+        private set
+
+    fun onThemeModeChanged(mode: ThemeMode) {
+        currentThemeMode = mode
+        prefs.edit().putString(THEME_KEY, mode.name).apply()
+    }
+
+    // 💰 汇率控制：人民币模式 (🎯 默认开启)
+    var isRmbMode by mutableStateOf(true)
+        private set
+    var exchangeRate by mutableFloatStateOf(7.23f) 
+        private set
+
+    // 🚀 更新控制
+    var isAutoUpdateEnabled by mutableStateOf(true)
+        private set
+    var latestRelease by mutableStateOf<com.ele.steamprice.api.GithubReleaseResponse?>(null)
+        private set
+
+    var storeList by mutableStateOf<List<StoreInfo>>(emptyList())
+        private set
+
+    // 🎯 新增：存储 Steam 官方国区价格映射 (AppID -> PriceOverview)
+    val steamPriceMap = mutableStateMapOf<String, com.ele.steamprice.data.SteamPriceOverview>()
+    // 🚀 新增：存储哪些 ID 是 Package (SubID)，用于 UI 切换图片路径
+    val packageIdSet = mutableStateListOf<String>()
+
+    init {
+        // 🎯 优化：分步启动任务，且每一项都独立 try-catch，防止一个失败导致全盘空白
+        viewModelScope.launch {
+            try { loadStores() } catch (e: Exception) { Log.e("MarketViewModel", "加载商店失败", e) }
+            delay(300)
+            try { updateExchangeRate() } catch (e: Exception) { Log.e("MarketViewModel", "加载汇率失败", e) }
+            delay(300)
+            // 🚀 这是最重要的，确保主页数据最后且必定尝试拉取
+            loadNextPage()
+            delay(300)
+            try { checkAppUpdate() } catch (e: Exception) { Log.e("MarketViewModel", "检查更新失败", e) }
+        }
+    }
+
+    /**
+     * 🚀 检查 App 更新
+     */
+    private fun checkAppUpdate() {
+        if (!isAutoUpdateEnabled) return
+        
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    SteamPriceClient.githubApiService.getLatestRelease("ele11-t", "SteamPrice")
+                }
+                
+                val currentVersion = "1.2"
+                if (response.tagName != currentVersion) {
+                    latestRelease = response
+                }
+            } catch (e: Exception) {
+                Log.e("UpdateCheck", "更新检测失败", e)
+            }
+        }
+    }
+
+    /**
+     * 🚀 切换自动更新开关
+     */
+    fun toggleAutoUpdate(enabled: Boolean) {
+        isAutoUpdateEnabled = enabled
+    }
+
+    /**
+     * 🚀 清除更新提示
+     */
+    fun dismissUpdate() {
+        latestRelease = null
+    }
+
+    private fun updateExchangeRate() {
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    SteamPriceClient.exchangeRateService.getUsdExchangeRate()
+                }
+                response.rates["CNY"]?.let { rate ->
+                    exchangeRate = rate
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun loadStores() {
+        viewModelScope.launch {
+            try {
+                storeList = withContext(Dispatchers.IO) {
+                    SteamPriceClient.apiService.getStoreList()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    /**
+     * 🏪 切换 Steam/全网 模式
+     */
+    fun toggleStoreMode(steamOnly: Boolean) {
+        if (isSteamOnly == steamOnly) return
+        isSteamOnly = steamOnly
+        resetAndReload()
+    }
+
+    /**
+     * ⭐ 开启/关闭超值榜单模式
+     */
+    fun setTopDealsMode(enabled: Boolean) {
+        if (isTopDealsOnly == enabled) return
+        isTopDealsOnly = enabled
+        resetAndReload()
+    }
+
+    /**
+     * 🎮 切换 AAA 过滤模式
+     */
+    fun toggleAAAOnly(enabled: Boolean) {
+        if (isAAAOnly == enabled) return
+        isAAAOnly = enabled
+        resetAndReload()
+    }
+
+    /**
+     * 🏆 设置最小好评率
+     */
+    fun onMinSteamRatingChanged(rating: Int) {
+        if (minSteamRating == rating) return
+        minSteamRating = rating
+        resetAndReload()
+    }
+
+    /**
+     * 👥 设置最小评价数
+     */
+    fun onMinReviewCountChanged(count: Int) {
+        if (minReviewCount == count) return
+        minReviewCount = count
+        resetAndReload()
+    }
+
+    /**
+     * 💰 设置价格区间
+     */
+    fun onPriceRangeChanged(min: Float, max: Float) {
+        if ((minPrice == min) && (maxPrice == max)) return
+        minPrice = min
+        maxPrice = max
+        resetAndReload()
+    }
+
+    /**
+     * ⚖️ 切换排序模式并重新加载
+     */
+    fun onSortModeChanged(mode: SortMode) {
+        if (currentSortMode == mode) return
+        currentSortMode = mode
+        resetAndReload()
+    }
+
+    /**
+     * 💰 切换汇率模式
+     */
+    fun toggleCurrencyMode(isRmb: Boolean) {
+        isRmbMode = isRmb
+    }
+
+    private fun resetAndReload() {
+        currentPage = 0
+        isAllLoaded = false
+        dealList.clear()
+        loadNextPage()
+    }
+
+    /**
+     * 🚀 核心：拉取下一页折扣数据
+     */
+    fun loadNextPage() {
+        if (isPageLoading || isAllLoaded) return
+        isPageLoading = true
+
+        viewModelScope.launch {
+            try {
+                // 🔥 普通浏览模式 (保持原有的品质过滤和分页)
+                val response = withContext(Dispatchers.IO) {
+                    SteamPriceClient.apiService.getSteamDeals(
+                        storeID = if (isSteamOnly) "1" else null,
+                        pageNumber = currentPage,
+                        pageSize = 20,
+                        sortBy = currentSortMode.apiValue,
+                        desc = currentSortMode.desc,
+                        aaa = if (isAAAOnly) 1 else 0,
+                        lowerPrice = if (minPrice > 0) minPrice.toInt() else null,
+                        upperPrice = if (maxPrice < 50) maxPrice.toInt() else null,
+                        steamRating = if (minSteamRating > 0) minSteamRating else null,
+                        minReviewCount = if (minReviewCount > 0) minReviewCount else null,
+                        metacritic = if (isTopDealsOnly) 85 else null,
+                    )
+                }
+
+                if (response.isNotEmpty()) {
+                    dealList.addAll(response)
+                    currentPage++
+                    // 🎯 核心：异步批量拉取这些游戏的 Steam 官方国区价格
+                    fetchOfficialSteamPrices(response)
+                } else {
+                    isAllLoaded = true
+                }
+            } catch (e: Exception) {
+                Log.e("MarketSearch", "数据加载失败", e)
+            } finally {
+                isPageLoading = false
+            }
+        }
+    }
+
+    /**
+     * 🚀 批量从 Steam 官方 API 获取国区价格
+     * 优化点：并发限制、请求去重、分块请求
+     */
+    private fun fetchOfficialSteamPrices(deals: List<DealItem>) {
+        val appIds = deals.mapNotNull { it.steamAppID }
+            .filter { id ->
+                id.isNotEmpty() && 
+                id != "0" && 
+                !steamPriceMap.containsKey(id) && // 不在已成功的 Map 里
+                !fetchingIds.contains(id)         // 也不在正在获取的队列里
+            }
+            .distinct()
+        
+        if (appIds.isEmpty()) return
+
+        // 标记为正在获取
+        fetchingIds.addAll(appIds)
+
+        appIds.chunked(10).forEach { chunk ->
+            // 🚀 使用 fetchDispatcher 限制并发数
+            viewModelScope.launch(fetchDispatcher) {
+                try {
+                    val idString = chunk.joinToString(",")
+                    // 1. 尝试按 AppID 获取
+                    val response = withContext(Dispatchers.IO) {
+                        SteamPriceClient.steamApiService.getAppDetails(
+                            appid = idString,
+                            filters = "price_overview"
+                        )
+                    }
+                    
+                    val failedIds = mutableListOf<String>()
+
+                    withContext(Dispatchers.Main) {
+                        chunk.forEach { id ->
+                            val result = response[id]
+                            if (result?.success == true && result.data?.price_overview != null) {
+                                steamPriceMap[id.trim()] = result.data.price_overview
+                                fetchingIds.remove(id) // 成功后从队列移除
+                            } else {
+                                failedIds.add(id)
+                            }
+                        }
+                    }
+
+                    // 2. 对失败的 ID 尝试按 PackageID 获取
+                    if (failedIds.isNotEmpty()) {
+                        failedIds.forEach { pkgId ->
+                            try {
+                                val pkgResponse = withContext(Dispatchers.IO) {
+                                    SteamPriceClient.steamApiService.getPackageDetails(pkgId)
+                                }
+                                val pkgResult = pkgResponse[pkgId]
+                                if (pkgResult?.success == true && pkgResult.data?.price_overview != null) {
+                                    withContext(Dispatchers.Main) {
+                                        steamPriceMap[pkgId.trim()] = pkgResult.data.price_overview
+                                        if (!packageIdSet.contains(pkgId)) {
+                                            packageIdSet.add(pkgId)
+                                        }
+                                        fetchingIds.remove(pkgId)
+                                    }
+                                } else {
+                                    // 彻底失败也需要移除，否则该 ID 永远不会再被请求
+                                    withContext(Dispatchers.Main) { fetchingIds.remove(pkgId) }
+                                }
+                            } catch (e: Exception) {
+                                withContext(Dispatchers.Main) { fetchingIds.remove(pkgId) }
+                                Log.e("MarketViewModel", "Package 价格拉取失败: $pkgId")
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    // 发生网络异常，清理这些 ID 状态，允许后续重试
+                    withContext(Dispatchers.Main) { fetchingIds.removeAll(chunk.toSet()) }
+                    Log.e("MarketViewModel", "批量获取 Steam 价格失败 (${chunk.firstOrNull()}...): ${e.message}")
+                }
+            }
+        }
+    }
+
+    /**
+     * ❌ 核心：取消监控某个游戏
+     */
+    fun removeFromWatchlist(game: MonitoredGameEntity) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                dao.deleteMonitoredGame(game)
+            }
+        }
+    }
+}
+</file>
+
+<file path="app/build.gradle.kts">
+import java.util.Base64
+
+plugins {
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlinCompose)
+    alias(libs.plugins.ksp)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+}
+
+android {
+    namespace = "com.ele.steamprice"
+    compileSdk = 36
+
+    defaultConfig {
+        applicationId = "com.ele.steamprice"
+        minSdk = 24
+        targetSdk = 36
+        versionCode = 3
+        versionName = "1.2"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        create("release") {
+            val keystoreBase64 = System.getenv("SIGNING_KEY")
+            if (!keystoreBase64.isNullOrEmpty()) {
+                try {
+                    // 🚀 鲁棒性优化：移除所有空白字符（包括中间的换行）再解码
+                    val cleanBase64 = keystoreBase64.replace("\\s".toRegex(), "")
+                    val keystoreFile = file("release.jks")
+                    keystoreFile.writeBytes(Base64.getDecoder().decode(cleanBase64))
+                    
+                    storeFile = keystoreFile
+                    storePassword = System.getenv("STORE_PASSWORD")
+                    keyAlias = System.getenv("KEY_ALIAS")
+                    keyPassword = System.getenv("KEY_PASSWORD")
+                } catch (e: Exception) {
+                    throw GradleException("Keystore decoding failed: ${e.message}")
+                }
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
+}
+
+dependencies {
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.coil.compose)
+    implementation("com.google.zxing:core:3.5.3")
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation("com.google.code.gson:gson:2.11.0") 
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    implementation("androidx.work:work-runtime-ktx:2.10.0") 
+    ksp(libs.androidx.room.compiler)
+    testImplementation(libs.junit)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.junit)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+}
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/GameDetailDialog.kt">
+package com.ele.steamprice
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.scaleIn
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.*
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.qrcode.QRCodeWriter
+import android.graphics.Bitmap
+import android.graphics.Color as AndroidColor
+import java.io.File
+import java.io.FileOutputStream
+import androidx.core.content.FileProvider
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.gestures.detectTransformGestures
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.zIndex
+import androidx.core.text.HtmlCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.ele.steamprice.data.DealItem
+import com.ele.steamprice.db.PriceHistoryEntity
+import com.ele.steamprice.viewmodel.DetailViewModel
+import androidx.compose.foundation.Canvas
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+import android.util.Log
+import android.content.Intent
+import android.content.ContentValues
+import android.provider.MediaStore
+import android.widget.Toast
+import android.os.Build
+import android.net.Uri
+import androidx.compose.ui.viewinterop.AndroidView
+import android.widget.TextView
+import android.graphics.Typeface
+import android.text.method.LinkMovementMethod
+
+@Composable
+fun HtmlText(
+    html: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: Float = 12f,
+    maxLines: Int = Int.MAX_VALUE
+) {
+    val textColor = if (color == Color.Unspecified) MaterialTheme.colorScheme.onSurfaceVariant else color
+    val androidColor = android.graphics.Color.argb(
+        (textColor.alpha * 255).toInt(),
+        (textColor.red * 255).toInt(),
+        (textColor.green * 255).toInt(),
+        (textColor.blue * 255).toInt()
+    )
+
+    AndroidView(
+        modifier = modifier,
+        factory = { context ->
+            TextView(context).apply {
+                textSize = fontSize
+                setTextColor(androidColor)
+                // 允许点击 HTML 里的超链接
+                movementMethod = LinkMovementMethod.getInstance()
+            }
+        },
+        update = { textView ->
+            textView.text = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT)
+            textView.maxLines = maxLines
+            textView.ellipsize = android.text.TextUtils.TruncateAt.END
+        }
+    )
+}
+
+@Composable
+fun GameDetailDialog(
+    deal: DealItem,
+    onDismiss: () -> Unit,
+    isRmbMode: Boolean = false,
+    exchangeRate: Float = 1.0f,
+    viewModel: DetailViewModel = viewModel(),
+) {
+    val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
+    val formatPrice = { priceStr: String ->
+        val price = priceStr.toDoubleOrNull() ?: 0.0
+        if (isRmbMode) {
+            "¥${String.format(Locale.US, "%.2f", price * exchangeRate)}"
+        } else {
+            "$$priceStr"
+        }
+    }
+    LaunchedEffect(deal.gameID) {
+        viewModel.loadGameDetail(deal.gameID)
+    }
+
+    var selectedImageUrl by remember { mutableStateOf<String?>(null) }
+    var isImageLoading by remember { mutableStateOf(true) }
+    var showShareSheet by remember { mutableStateOf(false) }
+
+    val coroutineScope = rememberCoroutineScope()
+    val graphicsLayer = rememberGraphicsLayer()
+
+    // 🚀 辅助函数：保存 Bitmap 到系统相册
+    fun saveBitmapToGallery(bitmap: Bitmap) {
+        val fileName = "SteamPrice_${System.currentTimeMillis()}.png"
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+            put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/SteamPrice")
+                put(MediaStore.Images.Media.IS_PENDING, 1)
+            }
+        }
+
+        val resolver = context.contentResolver
+        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        try {
+            uri?.let {
+                resolver.openOutputStream(it)?.use { stream ->
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    contentValues.clear()
+                    contentValues.put(MediaStore.Images.Media.IS_PENDING, 0)
+                    resolver.update(it, contentValues, null, null)
+                }
+                Toast.makeText(context, context.getString(R.string.share_saved_success), Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(context, context.getString(R.string.share_saved_failed), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // 🚀 辅助函数：生成二维码 Bitmap
+    fun generateQRCode(text: String): Bitmap? {
+        return try {
+            val writer = QRCodeWriter()
+            val bitMatrix = writer.encode(text, BarcodeFormat.QR_CODE, 200, 200)
+            val width = bitMatrix.width
+            val height = bitMatrix.height
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+            for (x in 0 until width) {
+                for (y in 0 until height) {
+                    bitmap.setPixel(x, y, if (bitMatrix.get(x, y)) AndroidColor.BLACK else AndroidColor.WHITE)
+                }
+            }
+            bitmap
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        AnimatedVisibility(
+            visible = true,
+            enter = scaleIn(animationSpec = tween(300)) + fadeIn(animationSpec = tween(300)),
+            exit = fadeOut(animationSpec = tween(300))
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable { onDismiss() },
+                contentAlignment = Alignment.Center
+            ) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                        .fillMaxHeight(0.85f)
+                        .clickable(enabled = false) { },
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                ) {
+                    val scrollState = rememberScrollState()
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp)
+                            .verticalScroll(scrollState),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(deal.getHdCapsuleUrl(viewModel.isPackage, size = "large"))
+                                .crossfade(enable = true)
+                                .diskCacheKey(deal.getHdCapsuleUrl(viewModel.isPackage, size = "large"))
+                                .build(),
+                            contentDescription = null,
+                            onLoading = { isImageLoading = true },
+                            onSuccess = { isImageLoading = false },
+                            onError = { isImageLoading = false },
+                            placeholder = rememberVectorPainter(Icons.Default.Image),
+                            error = rememberVectorPainter(Icons.Default.Image),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(140.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(shimmerBrush(isImageLoading))
+                                .clickable { selectedImageUrl = deal.getHdCapsuleUrl(viewModel.isPackage, size = "large") },
+                            contentScale = ContentScale.Crop
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        Text(
+                            text = deal.title,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.align(Alignment.Start)
+                        )
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (viewModel.isLoadingDetail) {
+                                // 🎯 骨架屏：详情加载中
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    Box(modifier = Modifier.fillMaxWidth().height(80.dp).clip(RoundedCornerShape(12.dp)).background(shimmerBrush()))
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Box(modifier = Modifier.fillMaxWidth().height(36.dp).clip(RoundedCornerShape(8.dp)).background(shimmerBrush()))
+                                }
+                            } else {
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    viewModel.priceDetail?.steamDetail?.price_overview?.let { steamPrice ->
+                                        Card(
+                                            colors = CardDefaults.cardColors(
+                                                containerColor = SteamPriceColors.SteamGreenContainer
+                                            ),
+                                            shape = RoundedCornerShape(12.dp),
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(bottom = 8.dp)
+                                                .clickable {
+                                                    deal.steamAppID?.let { appId ->
+                                                        val steamUri = "steam://store/$appId"
+                                                        val webPath = if (viewModel.isPackage) "sub" else "app"
+                                                        val webUri = "https://store.steampowered.com/$webPath/$appId/"
+                                                        
+                                                        try {
+                                                            // 🚀 尝试唤起 Steam App
+                                                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(steamUri))
+                                                            context.startActivity(intent)
+                                                        } catch (e: Exception) {
+                                                            // 降级使用浏览器
+                                                            uriHandler.openUri(webUri)
+                                                        }
+                                                    }
+                                                }
+                                        ) {
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.SpaceBetween
+                                            ) {
+                                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                                    Text(
+                                                        text = "🇨🇳",
+                                                        fontSize = 20.sp
+                                                    )
+                                                    Spacer(modifier = Modifier.width(8.dp))
+                                                    Column {
+                                                        Text(
+                                                            text = stringResource(R.string.steam_cn_price),
+                                                            fontSize = 11.sp,
+                                                            color = SteamPriceColors.SteamGreen.copy(alpha = 0.7f),
+                                                            fontWeight = FontWeight.Bold
+                                                        )
+                                                        Text(
+                                                            text = steamPrice.final_formatted,
+                                                            fontSize = 18.sp,
+                                                            color = SteamPriceColors.SteamGreen,
+                                                            fontWeight = FontWeight.ExtraBold
+                                                        )
+                                                    }
+                                                }
+
+                                                Surface(
+                                                    color = SteamPriceColors.SteamGreen,
+                                                    shape = RoundedCornerShape(20.dp)
+                                                ) {
+                                                    Row(
+                                                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                                                        verticalAlignment = Alignment.CenterVertically
+                                                    ) {
+                                                        Text(
+                                                            text = stringResource(R.string.go_to_store),
+                                                            color = Color.White,
+                                                            fontSize = 11.sp,
+                                                            fontWeight = FontWeight.Bold
+                                                        )
+                                                        Text(
+                                                            text = " ➔",
+                                                            color = Color.White,
+                                                            fontSize = 10.sp
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    viewModel.priceDetail?.cheapestPriceEver?.let { cheapest ->
+                                        Surface(
+                                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
+                                            shape = RoundedCornerShape(8.dp),
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            Text(
+                                                text = stringResource(R.string.lowest_ever_ref, formatPrice(cheapest.price)),
+                                                fontSize = 13.sp,
+                                                color = MaterialTheme.colorScheme.primary,
+                                                fontWeight = FontWeight.Bold,
+                                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        viewModel.priceDetail?.steamDetail?.let { steam ->
+                            var isExpanded by remember { mutableStateOf(false) }
+
+                            Column(modifier = Modifier.fillMaxWidth()) {
+                                steam.genres?.let { genres ->
+                                    LazyRow(
+                                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                        modifier = Modifier.padding(vertical = 4.dp)
+                                    ) {
+                                        items(genres) { genre ->
+                                            Surface(
+                                                shape = RoundedCornerShape(4.dp),
+                                                color = MaterialTheme.colorScheme.secondaryContainer,
+                                                modifier = Modifier.padding(vertical = 2.dp)
+                                            ) {
+                                                Text(
+                                                    text = genre.description,
+                                                    fontSize = 10.sp,
+                                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+
+                                steam.categories?.let { cats ->
+                                    LazyRow(
+                                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                        modifier = Modifier.padding(vertical = 4.dp)
+                                    ) {
+                                        items(cats) { cat ->
+                                            Surface(
+                                                shape = RoundedCornerShape(4.dp),
+                                                color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.6f),
+                                                modifier = Modifier.padding(vertical = 2.dp)
+                                            ) {
+                                                Text(
+                                                    text = cat.description,
+                                                    fontSize = 9.sp,
+                                                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+
+                                LazyRow(
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    contentPadding = PaddingValues(vertical = 4.dp),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    items(steam.screenshots) { shot ->
+                                        Card(
+                                            shape = RoundedCornerShape(8.dp),
+                                            modifier = Modifier
+                                                .width(180.dp)
+                                                .height(100.dp)
+                                                .clickable { selectedImageUrl = shot.path_full }
+                                        ) {
+                                            AsyncImage(
+                                                model = ImageRequest.Builder(LocalContext.current)
+                                                    .data(shot.path_thumbnail)
+                                                    .crossfade(enable = true)
+                                                    .build(),
+                                                contentDescription = null,
+                                                contentScale = ContentScale.Crop,
+                                                modifier = Modifier.fillMaxSize()
+                                            )
+                                        }
+                                    }
+                                }
+
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .animateContentSize()
+                                        .clickable { isExpanded = !isExpanded }
+                                ) {
+                                    if (isExpanded) {
+                                        HtmlText(
+                                            html = steam.detailed_description ?: "",
+                                            modifier = Modifier.padding(vertical = 4.dp)
+                                        )
+                                    } else {
+                                        Text(
+                                            text = HtmlCompat.fromHtml(
+                                                steam.short_description ?: "",
+                                                HtmlCompat.FROM_HTML_MODE_COMPACT
+                                            ).toString().trim(),
+                                            fontSize = 12.sp,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            maxLines = 3,
+                                            overflow = TextOverflow.Ellipsis,
+                                            lineHeight = 16.sp,
+                                            modifier = Modifier.padding(vertical = 4.dp)
+                                        )
+                                    }
+
+                                    Text(
+                                        text = if (isExpanded) stringResource(R.string.collapse_description) else stringResource(R.string.expand_description),
+                                        fontSize = 11.sp,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier.fillMaxWidth(),
+                                        textAlign = TextAlign.Center
+                                    )
+
+                                    if (isExpanded) {
+                                        steam.supported_languages?.let { langs ->
+                                            val languages = remember(langs) {
+                                                HtmlCompat.fromHtml(langs, HtmlCompat.FROM_HTML_MODE_COMPACT).toString().trim()
+                                            }
+                                            Column(modifier = Modifier.padding(top = 12.dp)) {
+                                                Text(text = stringResource(R.string.supported_languages), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                                Text(text = languages, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                            }
+                                        }
+
+                                        steam.pc_requirements?.let { reqs ->
+                                            Column(modifier = Modifier.padding(top = 12.dp)) {
+                                                Text(text = stringResource(R.string.pc_requirements), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                                reqs.minimum?.let { min ->
+                                                    val minReq = remember(min) {
+                                                        HtmlCompat.fromHtml(min, HtmlCompat.FROM_HTML_MODE_COMPACT).toString().trim()
+                                                    }
+                                                    Text(text = stringResource(R.string.min_requirements) + "\n$minReq", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                                }
+                                                reqs.recommended?.let { rec ->
+                                                    val recReq = remember(rec) {
+                                                        HtmlCompat.fromHtml(rec, HtmlCompat.FROM_HTML_MODE_COMPACT).toString().trim()
+                                                    }
+                                                    Text(text = "\n" + stringResource(R.string.rec_requirements) + "\n$recReq", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                steam.developers?.let { devs ->
+                                    Text(
+                                        text = stringResource(R.string.developers_label, devs.joinToString(", ")),
+                                        fontSize = 11.sp,
+                                        color = Color.Gray,
+                                        modifier = Modifier.padding(top = 4.dp)
+                                    )
+                                }
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                                ) {
+                                    steam.release_date?.let { release ->
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Text(text = stringResource(R.string.release_date_label), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                            Text(text = if (release.coming_soon) stringResource(R.string.coming_soon) else release.date, fontSize = 11.sp, color = Color.Gray)
+                                        }
+                                    }
+
+                                    steam.metacritic?.let { meta ->
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Text(text = stringResource(R.string.metacritic_label), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                            Text(
+                                                text = "${meta.score} / 100",
+                                                fontSize = 11.sp,
+                                                color = MaterialTheme.colorScheme.primary,
+                                                fontWeight = FontWeight.Bold,
+                                                textDecoration = TextDecoration.Underline,
+                                                modifier = Modifier.clickable {
+                                                    uriHandler.openUri(meta.url)
+                                                }
+                                            )
+                                        }
+                                    }
+                                }
+
+                                steam.dlc?.let { dlcList ->
+                                    Text(
+                                        text = stringResource(R.string.dlc_count_label, dlcList.size),
+                                        fontSize = 11.sp,
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        modifier = Modifier.padding(top = 8.dp)
+                                    )
+                                }
+
+                                steam.recommendations?.let { recs ->
+                                    Text(
+                                        text = stringResource(R.string.recommendations_label, recs.total),
+                                        fontSize = 11.sp,
+                                        color = Color.Gray,
+                                        modifier = Modifier.padding(top = 4.dp)
+                                    )
+                                }
+                            }
+                        }
+
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+
+                        val history by viewModel.priceHistory.collectAsState()
+                        if (history.isNotEmpty()) {
+                            Text(
+                                text = stringResource(R.string.price_trend_title),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.align(Alignment.Start).padding(bottom = 8.dp)
+                            )
+                            PriceTrendChart(history = history)
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                }
+
+                // 右上角操作按钮
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(top = 40.dp, end = 32.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    // 🎯 新增：监控开关按钮
+                    IconButton(
+                        onClick = {
+                            viewModel.toggleMonitor(
+                                gameId = deal.gameID,
+                                title = deal.title,
+                                appId = deal.steamAppID ?: "",
+                                currentPrice = deal.salePrice.toDoubleOrNull() ?: 0.0
+                            )
+                        },
+                        modifier = Modifier.background(Color.Black.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
+                    ) {
+                        Icon(
+                            imageVector = if (viewModel.isMonitored) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = if (viewModel.isMonitored) stringResource(R.string.unmonitor_game) else stringResource(R.string.monitor_game),
+                            tint = if (viewModel.isMonitored) Color.Red else Color.White
+                        )
+                    }
+
+                    // 🚀 新增：分享按钮
+                    IconButton(
+                        onClick = { showShareSheet = true },
+                        modifier = Modifier.background(Color.Black.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = stringResource(R.string.share_game),
+                            tint = Color.White
+                        )
+                    }
+
+                    IconButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.background(Color.Black.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(R.string.close),
+                            tint = Color.White
+                        )
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = selectedImageUrl != null,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    modifier = Modifier.zIndex(10f)
+                ) {
+                    var scale by remember { mutableFloatStateOf(1f) }
+                    var offset by remember { mutableStateOf(Offset.Zero) }
+
+                    LaunchedEffect(selectedImageUrl) {
+                        scale = 1f
+                        offset = Offset.Zero
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.9f))
+                            .pointerInput(Unit) {
+                                detectTransformGestures { _, pan, zoom, _ ->
+                                    scale = (scale * zoom).coerceIn(1f, 5f)
+                                    if (scale > 1f) {
+                                        offset += pan
+                                    } else {
+                                        offset = Offset.Zero
+                                    }
+                                }
+                            }
+                            .clickable { selectedImageUrl = null },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(selectedImageUrl)
+                                .crossfade(enable = true)
+                                .build(),
+                            contentDescription = stringResource(R.string.image_preview),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                                .graphicsLayer(
+                                    scaleX = scale,
+                                    scaleY = scale,
+                                    translationX = offset.x,
+                                    translationY = offset.y
+                                ),
+                            contentScale = ContentScale.Fit
+                        )
+
+                        if (scale == 1f) {
+                            Text(
+                                text = stringResource(R.string.image_preview_hint),
+                                color = Color.White.copy(alpha = 0.7f),
+                                fontSize = 12.sp,
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .padding(bottom = 32.dp)
+                            )
+                        }
+                    }
+                }
+
+                // 🚀 神价分享海报生成弹窗
+                if (showShareSheet) {
+                    AlertDialog(
+                        onDismissRequest = { showShareSheet = false },
+                        text = {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .drawWithContent {
+                                        // 🎯 核心：将 UI 捕获到 graphicsLayer 准备生成位图
+                                        graphicsLayer.record {
+                                            this@drawWithContent.drawContent()
+                                        }
+                                        drawContent()
+                                    }
+                                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(16.dp))
+                                    .padding(20.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+// ... (rest of the layout)
+                                // 1. 游戏大图封面
+                                AsyncImage(
+                                    model = deal.getHdCapsuleUrl(viewModel.isPackage, size = "large"),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .aspectRatio(460f / 215f)
+                                        .clip(RoundedCornerShape(8.dp)),
+                                    contentScale = ContentScale.Crop
+                                )
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                // 2. 标题与史低勋章
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = deal.title,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier.weight(1f),
+                                        maxLines = 2
+                                    )
+                                    
+                                    viewModel.priceDetail?.cheapestPriceEver?.let { cheapest ->
+                                        val currentPrice = deal.salePrice.toDoubleOrNull() ?: 0.0
+                                        val lowestPrice = cheapest.price.toDoubleOrNull() ?: 0.0
+                                        if (currentPrice <= lowestPrice) {
+                                            Surface(
+                                                color = MaterialTheme.colorScheme.primaryContainer,
+                                                shape = RoundedCornerShape(4.dp),
+                                                modifier = Modifier.padding(start = 8.dp)
+                                            ) {
+                                                Text(
+                                                    text = stringResource(R.string.share_lowest_badge),
+                                                    fontSize = 10.sp,
+                                                    color = MaterialTheme.colorScheme.primary,
+                                                    fontWeight = FontWeight.Bold,
+                                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                // 3. 价格与二维码展示
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Column {
+                                        val displayPrice = viewModel.priceDetail?.steamDetail?.price_overview?.final_formatted 
+                                            ?: "$${deal.salePrice}"
+                                        
+                                        Text(
+                                            text = displayPrice,
+                                            fontSize = 28.sp,
+                                            fontWeight = FontWeight.ExtraBold,
+                                            color = MaterialTheme.colorScheme.primary
+                                        )
+                                        Text(
+                                            text = stringResource(R.string.share_scan_hint),
+                                            fontSize = 10.sp,
+                                            color = Color.Gray
+                                        )
+                                    }
+
+                                    // 🚀 二维码：指向国区商店页面
+                                    val qrBitmap = remember(deal.steamAppID) {
+                                        generateQRCode("https://store.steampowered.com/app/${deal.steamAppID}/?cc=cn")
+                                    }
+                                    qrBitmap?.let {
+                                        AsyncImage(
+                                            model = it,
+                                            contentDescription = "QR Code",
+                                            modifier = Modifier.size(60.dp)
+                                        )
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.height(20.dp))
+                                Text(
+                                    text = "—— " + stringResource(R.string.app_name) + " ——",
+                                    fontSize = 10.sp,
+                                    color = Color.Gray.copy(alpha = 0.5f)
+                                )
+                            }
+                        },
+                        confirmButton = {
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                // 🚀 保存按钮
+                                TextButton(onClick = {
+                                    coroutineScope.launch {
+                                        val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
+                                        saveBitmapToGallery(bitmap)
+                                    }
+                                }) {
+                                    Text(stringResource(R.string.share_save))
+                                }
+
+                                // 🚀 分享按钮
+                                Button(onClick = {
+                                    coroutineScope.launch {
+                                        try {
+                                            val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
+                                            
+                                            val cachePath = File(context.cacheDir, "shared_images")
+                                            cachePath.mkdirs()
+                                            val file = File(cachePath, "share_${deal.gameID}.png")
+                                            withContext(Dispatchers.IO) {
+                                                FileOutputStream(file).use { out ->
+                                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                                                }
+                                            }
+
+                                            val contentUri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+                                            val shareIntent = Intent().apply {
+                                                action = Intent.ACTION_SEND
+                                                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                                setDataAndType(contentUri, context.contentResolver.getType(contentUri))
+                                                putExtra(Intent.EXTRA_STREAM, contentUri)
+                                            }
+                                            context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_title)))
+                                            showShareSheet = false
+                                        } catch (e: Exception) {
+                                            Log.e("Share", "Share failed", e)
+                                        }
+                                    }
+                                }) {
+                                    Text(stringResource(R.string.share_game))
+                                }
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showShareSheet = false }) {
+                                Text(stringResource(R.string.close))
+                            }
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PriceTrendChart(history: List<PriceHistoryEntity>) {
+    val primaryColor = MaterialTheme.colorScheme.primary
+    val outlineColor = MaterialTheme.colorScheme.outlineVariant
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(150.dp)
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+            .padding(16.dp)
+    ) {
+        if (history.size < 2) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(stringResource(R.string.accumulating_data), fontSize = 12.sp, color = Color.Gray)
+            }
+        } else {
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                val minPrice = history.minOf { it.recordedPrice }.toFloat()
+                val maxPrice = history.maxOf { it.recordedPrice }.toFloat()
+                val priceRange = (maxPrice - minPrice).coerceAtLeast(1f)
+
+                val minTime = history.minOf { it.recordTime }.toFloat()
+                val maxTime = history.maxOf { it.recordTime }.toFloat()
+                val timeRange = (maxTime - minTime).coerceAtLeast(1f)
+
+                val points = history.map {
+                    val x = ((it.recordTime - minTime) / timeRange) * size.width
+                    val y = size.height - (((it.recordedPrice.toFloat() - minPrice) / priceRange) * size.height)
+                    Offset(x, y)
+                }
+
+                drawLine(
+                    color = outlineColor,
+                    start = Offset(0f, size.height),
+                    end = Offset(size.width, size.height),
+                    strokeWidth = 1.dp.toPx()
+                )
+
+                val path = Path().apply {
+                    moveTo(points.first().x, points.first().y)
+                    points.forEach { lineTo(it.x, it.y) }
+                }
+
+                drawPath(
+                    path = path,
+                    color = primaryColor,
+                    style = Stroke(width = 2.dp.toPx(), cap = StrokeCap.Round)
+                )
+
+                points.forEach { point ->
+                    drawCircle(
+                        color = primaryColor,
+                        radius = 4.dp.toPx(),
+                        center = point
+                    )
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                val sdf = SimpleDateFormat("MM-dd", Locale.getDefault())
+                Text(text = sdf.format(Date(history.first().recordTime)), fontSize = 9.sp, color = Color.Gray)
+                Text(text = stringResource(R.string.recent_price_fluctuation), fontSize = 9.sp, color = Color.Gray)
+                Text(text = sdf.format(Date(history.last().recordTime)), fontSize = 9.sp, color = Color.Gray)
+            }
+        }
+    }
+}
+</file>
+
+<file path="app/src/main/java/com/ele/steamprice/MainActivity.kt">
+package com.ele.steamprice
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.*
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import androidx.compose.ui.platform.LocalContext
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.ImeAction
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.ui.res.stringResource
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.core.net.toUri
+import com.ele.steamprice.data.DealItem
+import com.ele.steamprice.data.StoreInfo
+import java.util.Locale
+import com.ele.steamprice.viewmodel.MarketViewModel
+import androidx.compose.animation.core.*
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+
+@Composable
+fun shimmerBrush(showShimmer: Boolean = true, targetValue: Float = 1000f): Brush {
+    return if (showShimmer) {
+        val shimmerColors = listOf(
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f),
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+        )
+
+        val transition = rememberInfiniteTransition(label = "shimmer")
+        val translateAnimation = transition.animateFloat(
+            initialValue = 0f,
+            targetValue = targetValue,
+            animationSpec = infiniteRepeatable(
+                animation = tween(800, easing = LinearEasing),
+                repeatMode = RepeatMode.Restart
+            ),
+            label = "shimmer"
+        )
+
+        Brush.linearGradient(
+            colors = shimmerColors,
+            start = Offset.Zero,
+            end = Offset(x = translateAnimation.value, y = translateAnimation.value)
+        )
+    } else {
+        Brush.linearGradient(
+            colors = listOf(Color.Transparent, Color.Transparent),
+            start = Offset.Zero,
+            end = Offset.Zero
+        )
+    }
+}
+
+// 🎯 语义化颜色定义，适配深色模式
+object SteamPriceColors {
+    val SteamGreen @Composable get() = if (isSystemInDarkTheme()) Color(0xFF4CAF50) else Color(0xFF2E7D32)
+    val SteamGreenContainer @Composable get() = SteamGreen.copy(alpha = 0.1f)
+    val RatingGold @Composable get() = Color(0xFFFFB300)
+}
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+        setContent {
+            val marketViewModel: MarketViewModel = viewModel()
+            val themeMode = marketViewModel.currentThemeMode
+            val isDarkTheme = when (themeMode) {
+                MarketViewModel.ThemeMode.System -> isSystemInDarkTheme()
+                MarketViewModel.ThemeMode.Light -> false
+                MarketViewModel.ThemeMode.Dark -> true
+            }
+
+            MaterialTheme(colorScheme = if (isDarkTheme) darkColorScheme() else lightColorScheme()) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    MainAppScreen(marketViewModel)
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainAppScreen(marketViewModel: MarketViewModel = viewModel()) {
+    val context = LocalContext.current
+    var currentScreen by remember { mutableStateOf<Screen>(Screen.Market) }
+    var selectedDeal by remember { mutableStateOf<DealItem?>(null) }
+    var showFilterSheet by remember { mutableStateOf(false) }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { _ -> }
+
+    LaunchedEffect(Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
+    Scaffold(
+        bottomBar = {
+            NavigationBar(containerColor = MaterialTheme.colorScheme.primaryContainer) {
+                bottomNavItems.forEach { screen ->
+                    NavigationBarItem(
+                        selected = currentScreen == screen,
+                        onClick = { currentScreen = screen },
+                        label = { Text(screen.title) },
+                        icon = { Icon(imageVector = screen.icon, contentDescription = screen.title) },
+                        colors = NavigationBarItemDefaults.colors(
+                            indicatorColor = MaterialTheme.colorScheme.primary
+                        )
+                    )
+                }
+            }
+        }
+    ) { innerPadding ->
+        if (showFilterSheet) {
+            ModalBottomSheet(
+                onDismissRequest = { showFilterSheet = false },
+                sheetState = rememberModalBottomSheetState()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp)
+                ) {
+                    Text(text = stringResource(R.string.filter_title), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(R.string.filter_subtitle), fontSize = 12.sp, color = Color.Gray)
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Text(text = stringResource(R.string.min_steam_rating, marketViewModel.minSteamRating), fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                    Slider(
+                        value = marketViewModel.minSteamRating.toFloat(),
+                        onValueChange = { marketViewModel.onMinSteamRatingChanged(it.toInt()) },
+                        valueRange = 0f..100f,
+                        steps = 9
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(text = stringResource(R.string.min_review_count, marketViewModel.minReviewCount), fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                    Slider(
+                        value = marketViewModel.minReviewCount.toFloat(),
+                        onValueChange = { marketViewModel.onMinReviewCountChanged(it.toInt()) },
+                        valueRange = 0f..2000f,
+                        steps = 19
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = stringResource(
+                            R.string.price_range,
+                            marketViewModel.minPrice.toInt().toString(),
+                            if (marketViewModel.maxPrice >= 50f) stringResource(R.string.price_unlimited) else marketViewModel.maxPrice.toInt().toString()
+                        ),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    RangeSlider(
+                        value = marketViewModel.minPrice..marketViewModel.maxPrice,
+                        onValueChange = { marketViewModel.onPriceRangeChanged(it.start, it.endInclusive) },
+                        valueRange = 0f..50f,
+                        steps = 9
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column {
+                            Text(text = stringResource(R.string.currency_conversion), fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                            Text(text = stringResource(R.string.exchange_rate_ref, marketViewModel.exchangeRate.toString()), fontSize = 11.sp, color = Color.Gray)
+                        }
+                        Switch(
+                            checked = marketViewModel.isRmbMode,
+                            onCheckedChange = { marketViewModel.toggleCurrencyMode(it) }
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Button(
+                        onClick = { showFilterSheet = false },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(stringResource(R.string.confirm))
+                    }
+                    
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
+            }
+        }
+
+        Box {
+            when (currentScreen) {
+                Screen.Market -> {
+                    LaunchedEffect(Unit) { marketViewModel.setTopDealsMode(false) }
+                    MarketTab(
+                        viewModel = marketViewModel,
+                        onToggleFilter = { showFilterSheet = it },
+                        onGameClick = { selectedDeal = it },
+                        outerPadding = innerPadding
+                    )
+                }
+                Screen.TopDeals -> {
+                    LaunchedEffect(Unit) { marketViewModel.setTopDealsMode(true) }
+                    TopDealsTab(
+                        viewModel = marketViewModel,
+                        onToggleFilter = { showFilterSheet = it },
+                        onGameClick = { selectedDeal = it },
+                        outerPadding = innerPadding
+                    )
+                }
+                Screen.Watchlist -> {
+                    Box(modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            top = innerPadding.calculateTopPadding(),
+                            bottom = innerPadding.calculateBottomPadding()
+                        )
+                    ) {
+                        WatchlistScreen(
+                            viewModel = marketViewModel,
+                            onGameClick = { selectedDeal = it }
+                        )
+                    }
+                }
+                Screen.Settings -> {
+                    Box(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())) {
+                        SettingsTab(viewModel = marketViewModel)
+                    }
+                }
+            }
+        }
+
+        marketViewModel.latestRelease?.let { release ->
+            AlertDialog(
+                onDismissRequest = { marketViewModel.dismissUpdate() },
+                title = { Text(stringResource(R.string.new_version_found, release.tagName)) },
+                text = {
+                    Column {
+                        Text(text = stringResource(R.string.update_log), fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        Text(text = release.body, fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
+                    }
+                },
+                confirmButton = {
+                    Button(onClick = {
+                        context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, release.htmlUrl.toUri()))
+                    }) {
+                        Text(stringResource(R.string.download_now))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { marketViewModel.dismissUpdate() }) {
+                        Text(stringResource(R.string.later))
+                    }
+                }
+            )
+        }
+    }
+
+    selectedDeal?.let { deal ->
+        GameDetailDialog(
+            deal = deal,
+            onDismiss = { selectedDeal = null },
+            isRmbMode = marketViewModel.isRmbMode,
+            exchangeRate = marketViewModel.exchangeRate
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MarketTab(
+    viewModel: MarketViewModel,
+    onToggleFilter: (Boolean) -> Unit,
+    onGameClick: (DealItem) -> Unit,
+    outerPadding: PaddingValues
+) {
+    Scaffold(
+        topBar = {
+            Surface(
+                tonalElevation = 4.dp,
+                shadowElevation = 8.dp,
+                color = MaterialTheme.colorScheme.surface
+            ) {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    CenterAlignedTopAppBar(
+                        title = {
+                            Text(
+                                text = if (viewModel.isSteamOnly) stringResource(R.string.tab_steam_radar) else stringResource(R.string.tab_global_radar),
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        },
+                        actions = {
+                            IconButton(onClick = { onToggleFilter(true) }) {
+                                Icon(
+                                    Icons.Default.FilterList,
+                                    contentDescription = stringResource(R.string.quality_filter),
+                                    tint = if (viewModel.minSteamRating > 0 || viewModel.minReviewCount > 0)
+                                        MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        },
+                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                            containerColor = Color.Transparent
+                        )
+                    )
+
+                    TabRow(
+                        selectedTabIndex = viewModel.currentSortMode.ordinal,
+                        containerColor = Color.Transparent,
+                        divider = {},
+                        indicator = { tabPositions ->
+                            SecondaryIndicator(
+                                Modifier.tabIndicatorOffset(tabPositions[viewModel.currentSortMode.ordinal]),
+                                color = MaterialTheme.colorScheme.primary,
+                                height = 3.dp
+                            )
+                        }
+                    ) {
+                        MarketViewModel.SortMode.entries.forEach { mode ->
+                            Tab(
+                                selected = viewModel.currentSortMode == mode,
+                                onClick = { viewModel.onSortModeChanged(mode) },
+                                text = {
+                                    Text(
+                                        text = when (mode) {
+                                            MarketViewModel.SortMode.DealRating -> stringResource(R.string.sort_recommend)
+                                            MarketViewModel.SortMode.PriceHighToLow -> stringResource(R.string.sort_price_desc)
+                                            MarketViewModel.SortMode.PriceLowToHigh -> stringResource(R.string.sort_price_asc)
+                                        },
+                                        fontSize = 13.sp,
+                                        fontWeight = if (viewModel.currentSortMode == mode) FontWeight.Bold else FontWeight.Normal
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    ) { innerPadding ->
+        if (viewModel.dealList.isEmpty() && !viewModel.isPageLoading) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("🔍", fontSize = 48.sp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(stringResource(R.string.no_deals_found), color = Color.Gray)
+                    if (viewModel.isSteamOnly) {
+                        Text(stringResource(R.string.no_deals_hint), fontSize = 12.sp, color = Color.Gray.copy(alpha = 0.7f))
+                    }
+                }
+            }
+        }
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = innerPadding.calculateTopPadding(),
+                    bottom = outerPadding.calculateBottomPadding()
+                ),
+            contentPadding = PaddingValues(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            items(
+                items = viewModel.dealList,
+                key = { it.dealID }
+            ) { deal ->
+                val store = viewModel.storeList.find { it.storeID == deal.storeID }
+                val steamAppId = deal.steamAppID?.trim() ?: ""
+                val officialPrice = if (steamAppId.isNotEmpty()) viewModel.steamPriceMap[steamAppId] else null
+                
+                GameDealCard(
+                    deal = deal,
+                    storeInfo = store,
+                    officialPrice = officialPrice,
+                    isRmbMode = viewModel.isRmbMode,
+                    exchangeRate = viewModel.exchangeRate,
+                    isPackage = deal.steamAppID?.let { viewModel.packageIdSet.contains(it) } ?: false,
+                    onClick = { onGameClick(deal) }
+                )
+            }
+
+            item(span = { GridItemSpan(2) }) {
+                LaunchedEffect(viewModel.dealList.size) {
+                    if (!viewModel.isAllLoaded && !viewModel.isPageLoading) {
+                        viewModel.loadNextPage()
+                    }
+                }
+
+                if (viewModel.isPageLoading) {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun GameDealCard(
+    deal: DealItem,
+    storeInfo: StoreInfo? = null,
+    officialPrice: com.ele.steamprice.data.SteamPriceOverview? = null,
+    isRmbMode: Boolean = false,
+    exchangeRate: Float = 1.0f,
+    isPackage: Boolean = false,
+    onClick: () -> Unit
+) {
+    val formatPrice = { priceStr: String ->
+        val price = priceStr.toDoubleOrNull() ?: 0.0
+        if (isRmbMode) {
+            "¥${String.format(Locale.US, "%.2f", price * exchangeRate)}"
+        } else {
+            "$$priceStr"
+        }
+    }
+
+    var isImageLoading by remember { mutableStateOf(true) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+    ) {
+        Column {
+            Box(contentAlignment = Alignment.BottomEnd) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(deal.getHdCapsuleUrl(isPackage, size = "small"))
+                        .crossfade(true)
+                        .diskCacheKey(deal.getHdCapsuleUrl(isPackage, size = "small"))
+                        .build(),
+                    contentDescription = stringResource(R.string.game_cover),
+                    onLoading = { isImageLoading = true },
+                    onSuccess = { isImageLoading = false },
+                    onError = { isImageLoading = false },
+                    placeholder = rememberVectorPainter(Icons.Default.Image),
+                    error = rememberVectorPainter(Icons.Default.Image),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(460f / 215f)
+                        .background(shimmerBrush(isImageLoading)),
+                    contentScale = ContentScale.Crop
+                )
+
+                storeInfo?.let {
+                    Surface(
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .size(18.dp),
+                        shape = RoundedCornerShape(4.dp),
+                        color = Color.White.copy(alpha = 0.9f)
+                    ) {
+                        AsyncImage(
+                            model = it.images.fullIconUrl,
+                            contentDescription = null,
+                            modifier = Modifier.padding(2.dp)
+                        )
+                    }
+                }
+
+                val savings = officialPrice?.discount_percent ?: deal.savings.toDoubleOrNull()?.toInt() ?: 0
+                if (savings > 0) {
+                    Surface(
+                        color = MaterialTheme.colorScheme.error,
+                        shape = RoundedCornerShape(bottomEnd = 8.dp),
+                        modifier = Modifier.align(Alignment.TopStart)
+                    ) {
+                        Text(
+                            text = "-$savings%",
+                            color = Color.White,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        )
+                    }
+                }
+            }
+
+            Column(modifier = Modifier.padding(10.dp)) {
+                Text(
+                    text = deal.title,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = if (deal.title.isEmpty()) Modifier
+                        .fillMaxWidth()
+                        .background(shimmerBrush()) else Modifier
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "👍 ${deal.steamRatingPercent ?: "0"}%",
+                        fontSize = 11.sp,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(R.string.review_count_suffix, deal.steamRatingCount ?: "0"),
+                        fontSize = 11.sp,
+                        color = MaterialTheme.colorScheme.outline
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                if (officialPrice != null) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.Bottom,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = officialPrice.final_formatted,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = SteamPriceColors.SteamGreen
+                        )
+                        if (officialPrice.discount_percent > 0) {
+                            Text(
+                                text = officialPrice.initial_formatted,
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.outline,
+                                textDecoration = TextDecoration.LineThrough
+                            )
+                        }
+                    }
+                } else {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.Bottom,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = formatPrice(deal.salePrice),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = SteamPriceColors.SteamGreen
+                        )
+                        Text(
+                            text = formatPrice(deal.normalPrice),
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.outline,
+                            textDecoration = TextDecoration.LineThrough
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopDealsTab(
+    viewModel: MarketViewModel,
+    onToggleFilter: (Boolean) -> Unit,
+    onGameClick: (DealItem) -> Unit,
+    outerPadding: PaddingValues
+) {
+    Scaffold(
+        topBar = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.top_deals_title),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                
+                IconButton(
+                    modifier = Modifier.align(Alignment.CenterEnd).padding(end = 16.dp),
+                    onClick = { onToggleFilter(true) }
+                ) {
+                    Icon(
+                        Icons.Default.FilterList,
+                        contentDescription = stringResource(R.string.quality_filter),
+                        tint = if (viewModel.minSteamRating > 0 || viewModel.minReviewCount > 0) MaterialTheme.colorScheme.primary else Color.Gray
+                    )
+                }
+            }
+        }
+    ) { innerPadding ->
+        if (viewModel.dealList.isEmpty() && !viewModel.isPageLoading) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("🔍", fontSize = 48.sp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(stringResource(R.string.no_deals_found), color = Color.Gray)
+                    if (viewModel.isSteamOnly) {
+                        Text(stringResource(R.string.no_deals_hint), fontSize = 12.sp, color = Color.Gray.copy(alpha = 0.7f))
+                    }
+                }
+            }
+        }
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = innerPadding.calculateTopPadding(),
+                    bottom = outerPadding.calculateBottomPadding()
+                ),
+            contentPadding = PaddingValues(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            items(
+                items = viewModel.dealList,
+                key = { it.dealID }
+            ) { deal ->
+                val store = viewModel.storeList.find { it.storeID == deal.storeID }
+                val steamAppId = deal.steamAppID?.trim() ?: ""
+                val officialPrice = if (steamAppId.isNotEmpty()) viewModel.steamPriceMap[steamAppId] else null
+
+                GameDealCard(
+                    deal = deal,
+                    storeInfo = store,
+                    officialPrice = officialPrice,
+                    isRmbMode = viewModel.isRmbMode,
+                    exchangeRate = viewModel.exchangeRate,
+                    isPackage = deal.steamAppID?.let { viewModel.packageIdSet.contains(it) } ?: false,
+                    onClick = { onGameClick(deal) }
+                )
+            }
+
+            item(span = { GridItemSpan(2) }) {
+                LaunchedEffect(viewModel.dealList.size) {
+                    if (!viewModel.isAllLoaded && !viewModel.isPageLoading) {
+                        viewModel.loadNextPage()
+                    }
+                }
+
+                if (viewModel.isPageLoading) {
+                    Box(modifier = Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SettingsTab(viewModel: MarketViewModel) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "⚙️", fontSize = 48.sp)
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = stringResource(R.string.settings_title), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // 🚀 新增：主题模式切换
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(text = stringResource(R.string.theme_mode), fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                Spacer(modifier = Modifier.height(12.dp))
+                
+                SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+                    MarketViewModel.ThemeMode.entries.forEachIndexed { index, mode ->
+                        SegmentedButton(
+                            selected = viewModel.currentThemeMode == mode,
+                            onClick = { viewModel.onThemeModeChanged(mode) },
+                            shape = SegmentedButtonDefaults.itemShape(index = index, count = MarketViewModel.ThemeMode.entries.size)
+                        ) {
+                            Text(
+                                text = when (mode) {
+                                    MarketViewModel.ThemeMode.System -> stringResource(R.string.theme_system)
+                                    MarketViewModel.ThemeMode.Light -> stringResource(R.string.theme_light)
+                                    MarketViewModel.ThemeMode.Dark -> stringResource(R.string.theme_dark)
+                                },
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(text = stringResource(R.string.auto_update), fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                    Text(
+                        text = stringResource(R.string.auto_update_desc),
+                        fontSize = 12.sp,
+                        color = Color.Gray
+                    )
+                }
+                Switch(
+                    checked = viewModel.isAutoUpdateEnabled,
+                    onCheckedChange = { viewModel.toggleAutoUpdate(it) }
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+        
+        Text(
+            text = stringResource(R.string.current_version, "1.2"),
+            fontSize = 12.sp,
+            color = Color.Gray
+        )
+        Text(
+            text = stringResource(R.string.app_edition),
+            fontSize = 11.sp,
+            color = Color.Gray.copy(alpha = 0.7f)
+        )
+    }
+}
+</file>
+
+</files>

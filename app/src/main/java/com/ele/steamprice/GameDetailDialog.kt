@@ -451,7 +451,6 @@ fun GameDetailDialog(
 
                                 Column(
                                     modifier = Modifier
-                                        .fillMaxWidth()
                                         .animateContentSize()
                                         .clickable { isExpanded = !isExpanded }
                                 ) {
@@ -552,14 +551,6 @@ fun GameDetailDialog(
                                     }
                                 }
 
-                                steam.dlc?.let { dlcList ->
-                                    Text(
-                                        text = stringResource(R.string.dlc_count_label, dlcList.size),
-                                        fontSize = 11.sp,
-                                        color = MaterialTheme.colorScheme.secondary,
-                                        modifier = Modifier.padding(top = 8.dp)
-                                    )
-                                }
 
                                 steam.recommendations?.let { recs ->
                                     Text(

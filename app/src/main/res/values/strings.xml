@@ -80,5 +80,5 @@
     <string name="notif_channel_name">Steam 降价提醒</string>
     <string name="notif_channel_desc">当监控的游戏降到目标价格时通知我</string>
     <string name="notif_title">🎮 降价提醒：%1$s</string>
-    <string name="notif_content">你关注的游戏已降至 $%1$.2f，快去看看吧！</string>
+    <string name="notif_content">你关注的游戏已降至 %1$s，快去看看吧！</string>
 </resources>
